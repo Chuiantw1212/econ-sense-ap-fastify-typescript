@@ -11,7 +11,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fastify": "^4.26.2"
+    "@fastify/autoload": "^5.8.0",
+    "@fastify/formbody": "^7.4.0",
+    "fastify": "^4.26.2",
+    "google-auth-library": "^9.8.0",
+    "googleapi": "^1.0.2",
+    "googleapis": "^134.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",
