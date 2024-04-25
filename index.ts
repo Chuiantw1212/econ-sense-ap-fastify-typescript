@@ -7,6 +7,7 @@ import Fastify from 'fastify'
 import path from 'path'
 import AutoLoad from '@fastify/autoload'
 import FormBody from '@fastify/formbody'
+import JcicModel from './models/jcic'
 import LocationModel from './models/location'
 import UserModel from './models/user'
 // initilize server
@@ -21,7 +22,8 @@ const appService = async function (server: FastifyInstance, opts: FastifyPluginO
         // ignorePattern: /.*(uuid|socketio|cache).*/
     })
     // Models
-    server.register(UserModel)
+    // server.register(JcicModel)
+    // server.register(UserModel)
     // server.register(LocationModel)
     // server.register(AutoLoad, {
     //     dir: path.join(__dirname, 'models'),

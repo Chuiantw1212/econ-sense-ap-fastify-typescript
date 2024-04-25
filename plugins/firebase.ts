@@ -12,18 +12,22 @@ export class FirebasePlugin {
         //  * https://console.firebase.google.com/project/econ-sense-9a250/settings/serviceaccounts/adminsdk
         //  * https://firebase.google.com/docs/reference/admin/node/firebase-admin.app.md#applicationdefault_2121df4
         //  */
-        // const serviceAccount = path.join(__dirname, '../serviceAccountKey.json')
-        // try {
-        //     admin.initializeApp({
-        //         credential: admin.credential.cert(serviceAccount)
-        //     });
-        //     this.firestore = getFirestore();
+        // initializeApp({
+        //     credential: applicationDefault()
+        // });
+        // this.firestore = getFirestore();
+        const serviceAccount = path.join(__dirname, '../serviceAccountKey.json')
+        try {
+            admin.initializeApp({
+                credential: admin.credential.cert(serviceAccount)
+            });
+            this.firestore = getFirestore();
 
-        // } catch (error) {
-        //     console.log('something wrong');
-            
-        //     throw error
-        // }
+        } catch (error) {
+            console.log('something wrong');
+
+            throw error
+        }
         // console.log('FirebasePlugin');
     }
 }
