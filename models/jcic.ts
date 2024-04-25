@@ -62,6 +62,5 @@ export class JCIC {
     // console.log(result.data)
 }
 export default fp(async function (fastify: any) {
-    const jcicModal = new JCIC(fastify)
-    fastify.decorate('JcicModel', jcicModal)
+    fastify.decorate('JcicModel', new JCIC(fastify))
 })

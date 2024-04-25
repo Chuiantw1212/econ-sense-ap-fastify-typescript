@@ -13,6 +13,5 @@ export class User {
     }
 }
 export default fp(async function (fastify: any) {
-    const userModel = new User(fastify)
-    fastify.decorate('UserModel', userModel)
+    fastify.decorate('UserModel', new User(fastify))
 })

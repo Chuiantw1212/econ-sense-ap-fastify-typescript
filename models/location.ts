@@ -75,6 +75,5 @@ export class Location {
     }
 }
 export default fp(async function (fastify: any) {
-    const selectModel = new Location(fastify)
-    fastify.decorate('SelectModel', selectModel)
+    fastify.decorate('LocationModel', new Location(fastify))
 })
