@@ -7,5 +7,6 @@ export interface ICollection {
 
 export interface IDocument {
     id: string,
-    exists: boolean
+    exists: boolean,
+    data: Function
 }

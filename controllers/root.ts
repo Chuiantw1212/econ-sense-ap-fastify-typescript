@@ -3,7 +3,6 @@ export default async function (fastify: extendsFastifyInstance,) {
     const {
         UserModel,
         JcicModel,
-        SelectModel
     } = fastify
     fastify.get('/', async function (request, reply) {
         // UserModel.getPublicFiles()

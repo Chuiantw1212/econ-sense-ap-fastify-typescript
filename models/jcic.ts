@@ -1,6 +1,6 @@
 import axios from 'axios'
 import fp from 'fastify-plugin'
-import type { extendsFastifyInstance } from '../types/fastify.js'
+import type { extendsFastifyInstance } from '../types/fastify'
 import fs from 'fs'
 
 interface IPriceTableItem {
@@ -17,6 +17,7 @@ interface IPriceTableItem {
 export class JCIC {
     constructor(fastify: extendsFastifyInstance) {
         // this.getContractPriceTable()
+        console.log('JCIC');
     }
     async getMortgageLocation() {
         const result = await axios.get('https://www.jcic.org.tw/openapi/api/Mortgage_Location')
@@ -60,7 +61,7 @@ export class JCIC {
     // const result = await axios.get('https://storage.googleapis.com/public.econ-sense.com/ContractPrice_TABLE_C_2023.json')
     // console.log(result.data)
 }
-export default fp(async function (fastify: any, opts) {
+export default fp(async function (fastify: any) {
     const jcicModal = new JCIC(fastify)
     fastify.decorate('JcicModel', jcicModal)
 })
