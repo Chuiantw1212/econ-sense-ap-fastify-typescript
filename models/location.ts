@@ -30,9 +30,9 @@ export class Location {
     locationMap: ISelectMap = {}
     collection: ICollection
     constructor(fastify: extendsFastifyInstance) {
-        const { firestore } = fastify.googleCloud
+        const { firestore } = fastify.firebase
         this.collection = firestore.collection('locations')
-        // this.setCountiesAndTowns()
+        this.setCountiesAndTowns()
     }
     async setCountiesAndTowns() {
         // Set counties from https://data.gov.tw/dataset/101905
@@ -69,7 +69,7 @@ export class Location {
         console.log(selectMap);
 
         try {
-            // const snapshots = await this.collection.get()
+            const snapshots = await this.collection.get()
             // const promises = snapshots.docs.map((doc: IDocument) => {
             //     return this.collection.doc(doc.id).delete()
             // })

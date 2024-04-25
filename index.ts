@@ -29,7 +29,7 @@ const appService = async function (server: FastifyInstance, opts: FastifyPluginO
     server.register(AutoLoad, {
         dir: path.join(__dirname, 'models'),
         options: Object.assign({}, opts),
-        ignorePattern: /.*(location|question|select|industry).*/
+        // ignorePattern: /.*(location|question|select|industry).*/
     })
     // Conterollers
     server.register(AutoLoad, {

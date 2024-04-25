@@ -7,7 +7,8 @@ import { User } from '../models/user'
 import { JCIC } from '../models/jcic'
 import { Select } from '../models/select'
 // Plugins
-import { GoogleCloud } from '../plugins/googleCloud.js'
+import { GoogleCloud } from '../plugins/googleCloud'
+import { Firebase } from '../plugins/firebase'
 
 export interface extendsFastifyInstance extends FastifyInstance {
     // Models
@@ -16,6 +17,7 @@ export interface extendsFastifyInstance extends FastifyInstance {
     SelectModel: Select,
     // Plugins
     googleCloud: GoogleCloud,
+    firebase: Firebase
 }
 
 export interface eFastifyPluginOptions extends FastifyPluginOptions {
