@@ -1,4 +1,4 @@
-export interface ISelectItem {
+export interface IOptionsItem {
     label: string,
     value: string,
 }
@@ -16,5 +16,10 @@ export interface ITown {
 }
 
 export interface ISelectMap {
-    [key: string]: ISelectItem[];
+    [key: string]: IOptionsItem[];
+}
+
+export interface ISelectDocData {
+    key: string,
+    options: IOptionsItem[]
 }

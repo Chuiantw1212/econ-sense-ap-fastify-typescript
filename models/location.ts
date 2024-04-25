@@ -2,36 +2,17 @@ import axios from 'axios'
 import fp from 'fastify-plugin'
 import type { extendsFastifyInstance } from '../types/fastify'
 import type { ICollection, IDocument } from '../types/googleCloud'
-// const { XMLParser, } = require("fast-xml-parser");
-import type { ISelectItem, ICounty, ITown, ISelectMap } from '../types/select'
-
-interface IOption {
-    label: string,
-    value: string,
-}
-
-interface ICounty {
-    countycode: string,
-    countyname: string,
-    countycode01: number,
-}
-
-interface ITown {
-    towncode: string,
-    townname: string,
-    towncode01: number,
-}
-
-interface ISelectMap {
-    [key: string]: IOption[];
-}
+import type { IOptionsItem, ICounty, ITown, ISelectMap, ISelectDocData } from '../types/select'
+const { XMLParser, } = require("fast-xml-parser");
 
 export class Location {
-    counties: ISelectItem[] = []
-    locationMap: ISelectMap = {}
-    // collection: ICollection
+    counties: IOptionsItem[] = []
+    townMap: ISelectMap = {}
+    collection: ICollection
     constructor(fastify: extendsFastifyInstance) {
-        console.log('Location');
+        const { firestore } = fastify.firebase
+        this.collection = firestore.collection('locations')
+        this.setCountiesAndTowns()
     }
     async fetchCountiesAndTowns() {
         // Set counties from https://data.gov.tw/dataset/101905
@@ -45,34 +26,33 @@ export class Location {
                 label: item.countyname,
             }
         })
-        // Set locationMap from https://data.gov.tw/dataset/102011
-        const promises = this.counties.map((county: ISelectItem) => {
+        // Set townMap from https://data.gov.tw/dataset/102011
+        const promises = this.counties.map((county: IOptionsItem) => {
             const promise = axios.get(`https://api.nlsc.gov.tw/other/ListTown1/${county.value}`)
             return promise
         })
         const townResults = await Promise.all(promises)
-        this.counties.forEach((county: ISelectItem, index) => {
-            this.locationMap[county.value] = townResults[index].data.map((item: ITown) => {
+        this.counties.forEach((county: IOptionsItem, index) => {
+            this.townMap[county.value] = townResults[index].data.map((item: ITown) => {
                 return {
                     label: item.townname,
                     value: item.towncode,
                 }
             })
         })
-        // Add TW counties in locationMap
-        this.locationMap.TW = this.counties
-        // Upload select options
-        // this.checkAllItems(this.locationMap)
     }
     async setCountiesAndTowns() {
         const snapshots = await this.collection.get()
         const promises = snapshots.docs.map((doc: IDocument) => {
             return doc.data()
         })
-        const items = await Promise.all(promises)
-        console.log(items);
-        this.counties = items.find(item=>{
-
+        const items: ISelectDocData[] = await Promise.all(promises)
+        items.forEach((item: ISelectDocData) => {
+            if (item.key === 'TW') {
+                this.counties = item.options
+            } else {
+                this.townMap[item.key] = item.options
+            }
         })
     }
     async putAllItems(selectMap: ISelectMap) {
