@@ -6,6 +6,6 @@ export default async function (fastify: extendsFastifyInstance,) {
     } = fastify
     fastify.get('/', async function (request, reply) {
         // UserModel.getPublicFiles()
-        await JcicModel.getMortgageLocation()
+        await JcicModel.getContractPriceTable()
     })
 }
