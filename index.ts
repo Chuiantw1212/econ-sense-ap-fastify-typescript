@@ -1,40 +1,41 @@
-// Plugins
+// Fastify core
+import Fastify from 'fastify'
 import {
     FastifyInstance,
     FastifyPluginOptions
 } from 'fastify'
-import Fastify from 'fastify'
-import path from 'path'
+// Plugins
 import AutoLoad from '@fastify/autoload'
 import FormBody from '@fastify/formbody'
-import JcicModel from './models/jcic'
-import LocationModel from './models/location'
-import UserModel from './models/user'
-// initilize server
-const appService = async function (server: FastifyInstance, opts: FastifyPluginOptions) {
-    const { ready, } = server
+// Node native modeuls
+import path from 'path'
+// // Models
+// import JcicModel from './models/jcic'
+// import LocationModel from './models/location'
+// import UserModel from './models/user'
+const appService = async function (fastify: FastifyInstance, opts: FastifyPluginOptions) {
+    const { ready, } = fastify
     const __dirname = path.resolve()
     // Plugins
-    server.register(FormBody)
-    server.register(AutoLoad, {
+    fastify.register(FormBody)
+    fastify.register(AutoLoad, {
         dir: path.join(__dirname, 'plugins'),
         options: Object.assign({}, opts),
         // ignorePattern: /.*(uuid|socketio|cache).*/
     })
     // Models
-    // server.register(JcicModel)
-    // server.register(UserModel)
-    // server.register(LocationModel)
-    // server.register(AutoLoad, {
-    //     dir: path.join(__dirname, 'models'),
-    //     options: Object.assign({}, opts),
-    //     // ignorePattern: /.*(location|question|select|industry).*/
-    // })
-    // // Conterollers
-    // server.register(AutoLoad, {
-    //     dir: path.join(__dirname, 'controllers'),
-    //     options: Object.assign({}, opts)
-    // })
+    // fastify.register(JcicModel)
+    // fastify.register(UserModel)
+    // fastify.register(LocationModel)
+    fastify.register(AutoLoad, {
+        dir: path.join(__dirname, 'models'),
+        options: Object.assign({}, opts),
+    })
+    // Conterollers
+    fastify.register(AutoLoad, {
+        dir: path.join(__dirname, 'controllers'),
+        options: Object.assign({}, opts)
+    })
     // Output log
     console.time('Server boot')
     ready(() => {
