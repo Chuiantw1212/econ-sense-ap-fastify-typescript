@@ -7,11 +7,8 @@ import Fastify from 'fastify'
 import path from 'path'
 import AutoLoad from '@fastify/autoload'
 import FormBody from '@fastify/formbody'
-// Models 
-// import Industry from './models/industry.js'
 import LocationModel from './models/location'
-// import Question from './models/question'
-import SelectModel from './models/select'
+import UserModel from './models/user'
 // initilize server
 const appService = async function (server: FastifyInstance, opts: FastifyPluginOptions) {
     const { ready, } = server
@@ -21,21 +18,21 @@ const appService = async function (server: FastifyInstance, opts: FastifyPluginO
     server.register(AutoLoad, {
         dir: path.join(__dirname, 'plugins'),
         options: Object.assign({}, opts),
-        ignorePattern: /.*(uuid|socketio|cache).*/
+        // ignorePattern: /.*(uuid|socketio|cache).*/
     })
     // Models
-    // server.register(SelectModel)
+    server.register(UserModel)
     // server.register(LocationModel)
-    server.register(AutoLoad, {
-        dir: path.join(__dirname, 'models'),
-        options: Object.assign({}, opts),
-        // ignorePattern: /.*(location|question|select|industry).*/
-    })
-    // Conterollers
-    server.register(AutoLoad, {
-        dir: path.join(__dirname, 'controllers'),
-        options: Object.assign({}, opts)
-    })
+    // server.register(AutoLoad, {
+    //     dir: path.join(__dirname, 'models'),
+    //     options: Object.assign({}, opts),
+    //     // ignorePattern: /.*(location|question|select|industry).*/
+    // })
+    // // Conterollers
+    // server.register(AutoLoad, {
+    //     dir: path.join(__dirname, 'controllers'),
+    //     options: Object.assign({}, opts)
+    // })
     // Output log
     console.time('Server boot')
     ready(() => {

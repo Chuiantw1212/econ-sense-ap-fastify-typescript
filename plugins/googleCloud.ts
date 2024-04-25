@@ -6,11 +6,13 @@ export class GoogleCloud {
     bucket: typeof Storage
     firestore: typeof Firestore
     constructor() {
-        // Creates a client using Application Default Credentials
-        const storage = new Storage();
-        this.bucket = storage.bucket('public.econ-sense.com');
-        // Obtain a document reference.
-        this.firestore = new Firestore();
+        // // Creates a client using Application Default Credentials
+        // const storage = new Storage();
+        // this.bucket = storage.bucket('public.econ-sense.com');
+        // // Obtain a document reference.
+        // this.firestore = new Firestore();
+        // console.log('GoogleCloud');
+
     }
     getPublicFiles() {
         this.bucket.getFiles(function (err: any, files: File[]) {
