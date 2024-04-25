@@ -1,7 +1,7 @@
 import axios from 'axios'
 import fp from 'fastify-plugin'
 import type { extendsFastifyInstance } from '../types/fastify'
-import type { ICollection, IDocument } from '../types/googleCloud'
+import type { ICollection, IDocument } from '../types/firebase'
 import type { IOptionsItem, ICounty, ITown, ISelectMap, ISelectDocData } from '../types/select'
 const { XMLParser, } = require("fast-xml-parser");
 

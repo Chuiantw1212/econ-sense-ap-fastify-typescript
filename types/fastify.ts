@@ -7,7 +7,6 @@ import { User } from '../models/user'
 import { JCIC } from '../models/jcic'
 import { Location } from '../models/location'
 // Plugins
-import { GoogleCloud } from '../plugins/googleCloud'
 import { FirebasePlugin } from '../plugins/firebase'
 
 export interface extendsFastifyInstance extends FastifyInstance {
@@ -16,7 +15,6 @@ export interface extendsFastifyInstance extends FastifyInstance {
     JcicModel: JCIC,
     LocationModel: Location
     // Plugins
-    googleCloud: GoogleCloud,
     firebase: FirebasePlugin
 }
 
