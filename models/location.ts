@@ -42,7 +42,7 @@ export class Location {
         })
     }
     async setCountiesAndTowns() {
-        const snapshots = await this.collection.get()
+        const snapshots = await this.collection.orderBy('key').get()
         const promises = snapshots.docs.map((doc: IDocument) => {
             return doc.data()
         })

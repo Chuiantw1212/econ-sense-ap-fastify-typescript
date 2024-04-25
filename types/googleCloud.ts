@@ -3,6 +3,7 @@ export interface ICollection {
     add: Function,
     get: Function,
     doc: Function,
+    orderBy: Function
 }
 
 export interface IDocument {
