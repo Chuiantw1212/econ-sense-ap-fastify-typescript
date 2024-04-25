@@ -16,32 +16,44 @@ interface IPriceTableItem {
 
 export class JCIC {
     constructor(fastify: extendsFastifyInstance) {
-
+        // this.getContractPriceTable()
     }
     async getMortgageLocation() {
         const result = await axios.get('https://www.jcic.org.tw/openapi/api/Mortgage_Location')
     }
     async getContractPriceTable() {
+        console.log('processing');
         const result = await axios.get('https://www.jcic.org.tw/openapi/api/ContractPriceTableC2023')
+        console.log('completed');
         const divisionSet1: Set<string> = new Set()
+        const additionalTypeSet: Set<string> = new Set()
         const contractPriceTableItems: IPriceTableItem[] = result.data
         contractPriceTableItems.forEach((item: IPriceTableItem) => {
             divisionSet1.add(item['縣市名稱'])
+            additionalTypeSet.add(item['建物類別'])
         })
+        // Array from 
+        const additionalTypeItems: string[] = Array.from(additionalTypeSet)
+        try {
+            const jsonString = JSON.stringify(additionalTypeItems)
+            fs.writeFileSync('建物類別', jsonString);
+            console.log('JSON data saved to file successfully.');
+        } catch (error) {
+            console.error('Error writing JSON data to file:', error);
+        }
         const division1Items: string[] = Array.from(divisionSet1)
-        division1Items.forEach((division1Value: string) => {
-            const matchedItems: IPriceTableItem[] = contractPriceTableItems.filter(item => {
-                return item['縣市名稱'] === division1Value
-            })
-            try {
-                const jsonString = JSON.stringify(matchedItems)
-                fs.writeFileSync(division1Value, jsonString);
-                console.log('JSON data saved to file successfully.');
-            } catch (error) {
-                console.error('Error writing JSON data to file:', error);
-            }
-        })
-        // console.log(test)
+        // division1Items.forEach((division1Value: string) => {
+        //     const matchedItems: IPriceTableItem[] = contractPriceTableItems.filter(item => {
+        //         return item['縣市名稱'] === division1Value
+        //     })
+        //     try {
+        //         const jsonString = JSON.stringify(matchedItems)
+        //         fs.writeFileSync(division1Value, jsonString);
+        //         console.log('JSON data saved to file successfully.');
+        //     } catch (error) {
+        //         console.error('Error writing JSON data to file:', error);
+        //     }
+        // })
     }
 
     //     import axios from 'axios'

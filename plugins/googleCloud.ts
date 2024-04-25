@@ -1,12 +1,16 @@
 import fp from 'fastify-plugin'
 const { Storage } = require('@google-cloud/storage');
+const { Firestore, } = require('@google-cloud/firestore');
+
 export class GoogleCloud {
     bucket: typeof Storage
-
+    firestore: typeof Firestore
     constructor() {
         // Creates a client using Application Default Credentials
         const storage = new Storage();
         this.bucket = storage.bucket('public.econ-sense.com');
+        // Obtain a document reference.
+        this.firestore = new Firestore();
     }
     getPublicFiles() {
         this.bucket.getFiles(function (err: any, files: File[]) {
