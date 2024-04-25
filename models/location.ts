@@ -1,14 +1,14 @@
 import axios from 'axios'
 import fp from 'fastify-plugin'
 import type { extendsFastifyInstance } from '../types/fastify'
-import type { ICollection, IDocument } from '../types/firebase'
-import type { IOptionsItem, ICounty, ITown, ISelectMap, ISelectDocData } from '../types/select'
+import { CollectionReference, DocumentSnapshot, DocumentData } from '@firebase/firestore-types/index'
+import type { IOptionsItem, ICounty, ITown, ISelectMap, } from '../types/select'
 const { XMLParser, } = require("fast-xml-parser");
 
 export class Location {
     counties: IOptionsItem[] = []
     townMap: ISelectMap = {}
-    collection: ICollection
+    collection: CollectionReference
     constructor(fastify: extendsFastifyInstance) {
         const { firestore } = fastify.firebase
         this.collection = firestore.collection('locations')
@@ -43,11 +43,11 @@ export class Location {
     }
     async setCountiesAndTowns() {
         const snapshots = await this.collection.orderBy('key').get()
-        const promises = snapshots.docs.map((doc: IDocument) => {
-            return doc.data()
+        const promises = snapshots.docs.map((doc: DocumentSnapshot) => {
+            return doc.data() || {}
         })
-        const items: ISelectDocData[] = await Promise.all(promises)
-        items.forEach((item: ISelectDocData) => {
+        const items: DocumentData[] = await Promise.all(promises)
+        items.forEach((item: DocumentData) => {
             if (item.key === 'TW') {
                 this.counties = item.options
             } else {
@@ -58,7 +58,7 @@ export class Location {
     async putAllItems(selectMap: ISelectMap) {
         try {
             const snapshots = await this.collection.get()
-            const promises = snapshots.docs.map((doc: IDocument) => {
+            const promises = snapshots.docs.map((doc: DocumentSnapshot) => {
                 return this.collection.doc(doc.id).delete()
             })
             await Promise.all(promises)

@@ -26,6 +26,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@firebase/firestore-types": "^3.0.1",
     "@types/node": "^20.12.7",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
