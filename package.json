@@ -15,6 +15,7 @@
     "@fastify/env": "^4.3.0",
     "@fastify/formbody": "^7.4.0",
     "@google-cloud/storage": "^7.10.1",
+    "axios": "^1.6.8",
     "fastify": "^4.26.2",
     "google-auth-library": "^9.8.0",
     "uuid": "^9.0.1"

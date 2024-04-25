@@ -1,7 +1,11 @@
 import type { extendsFastifyInstance } from '../types/fastify.ts'
 export default async function (fastify: extendsFastifyInstance,) {
-    const { UserModel, } = fastify
+    const {
+        UserModel,
+        JcicModel
+    } = fastify
     fastify.get('/', async function (request, reply) {
-        UserModel.getPublicFiles()
+        // UserModel.getPublicFiles()
+        await JcicModel.getMortgageLocation()
     })
 }
