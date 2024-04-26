@@ -15,6 +15,7 @@ import path from 'path'
 import LocationModel from './models/location'
 import SelectModel from './models/select'
 import JcicModel from './models/jcic'
+import NdcModel from './models/ndc'
 // Controllsers
 import SelectController from './controllers/select'
 import JcicController from './controllers/jcic'
@@ -29,6 +30,7 @@ const appService = async function (fastify: FastifyInstance, opts: FastifyPlugin
     fastify.register(SelectModel)
     fastify.register(LocationModel)
     fastify.register(JcicModel)
+    fastify.register(NdcModel)
     // Conterollers
     fastify.register(SelectController)
     fastify.register(JcicController)

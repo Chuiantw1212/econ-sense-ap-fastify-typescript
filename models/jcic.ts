@@ -40,7 +40,6 @@ export class JCIC {
         this.SelectModel = SelectModel
         this.LocationModel = LocationModel
         this.collectionContracts = firebase.firestore.collection('jcicContracts')
-        this.getContractPriceTable()
     }
     async getContractsByQuery(query: IPriceTableItem) {
         let contractQuery: Query = this.collectionContracts
