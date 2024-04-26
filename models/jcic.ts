@@ -40,6 +40,7 @@ export class JCIC {
         this.SelectModel = SelectModel
         this.LocationModel = LocationModel
         this.collectionContracts = firebase.firestore.collection('jcicContracts')
+        this.getContractPriceTable()
     }
     async getContractsByQuery(query: IPriceTableItem) {
         let contractQuery: Query = this.collectionContracts
@@ -85,7 +86,7 @@ export class JCIC {
             resultData = result.data
         }
         const contractPriceTableRawItems: IPriceTableRawItem[] = resultData
-        const contractPriceTableItems: IPriceTableItem[] = contractPriceTableRawItems.slice(0, 10).map(item => {
+        const contractPriceTableItems: IPriceTableItem[] = contractPriceTableRawItems.map(item => {
             const county = item['縣市名稱']
             const traditionCounty = county.replace('台', '臺')
             const booleanMap: { [key: string]: boolean } = {
@@ -108,7 +109,7 @@ export class JCIC {
             const item = contractPriceTableItems[index++]
             await this.collectionContracts.add(item)
             console.log(`total ${contractPriceTableItems.length}, ${index} added.`)
-        }, 10)
+        }, 100)
     }
 }
 export default fp(async function (fastify: any) {
