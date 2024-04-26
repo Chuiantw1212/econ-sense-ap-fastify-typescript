@@ -79,10 +79,14 @@ export class JCIC {
     }
     async getContractPriceTable() {
         let resultData = []
-        resultData = require('./ContractPrice_TABLE_C_2023')
-        if (!resultData) {
-            const result = await axios.get('https://www.jcic.org.tw/openapi/api/ContractPriceTableC2023')
-            resultData = result.data
+        try {
+            resultData = require('./ContractPrice_TABLE_C_2023')
+            if (!resultData) {
+                const result = await axios.get('https://www.jcic.org.tw/openapi/api/ContractPriceTableC2023')
+                resultData = result.data
+            }
+        } catch (error) {
+            throw error
         }
 
         const countData: DocumentData = await this.collectionContracts.count().get()

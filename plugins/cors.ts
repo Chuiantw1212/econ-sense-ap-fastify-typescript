@@ -13,8 +13,6 @@ interface ICorsOptions {
 }
 
 export default fp(async function (fastify, opts) {
-    console.log('before error');
-    
     fastify.register(cors, () => {
         return (req: FastifyRequest, callback: any) => {
             const origin: string | boolean = process.env.ORIGIN || 'http://localhost:5173/'
