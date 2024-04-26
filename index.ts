@@ -1,3 +1,4 @@
+console.time('Server boot')
 // Fastify core
 import Fastify from 'fastify'
 import {
@@ -19,6 +20,7 @@ import NdcModel from './models/ndc'
 // Controllsers
 import SelectController from './controllers/select'
 import JcicController from './controllers/jcic'
+import CalculateController from './controllers/calculate'
 const appService = async function (fastify: FastifyInstance, opts: FastifyPluginOptions) {
     const { ready, } = fastify
     // Plugins
@@ -34,8 +36,8 @@ const appService = async function (fastify: FastifyInstance, opts: FastifyPlugin
     // Conterollers
     fastify.register(SelectController)
     fastify.register(JcicController)
+    fastify.register(CalculateController)
     // Output log
-    console.time('Server boot')
     ready(() => {
         console.timeEnd('Server boot')
     })
