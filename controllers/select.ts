@@ -1,14 +1,21 @@
 import type { extendsFastifyInstance } from '../types/fastify.ts'
 import fp from 'fastify-plugin'
-import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
-export default fp(async function (fastify: any) {
+import { FastifyRequest, FastifyReply, } from 'fastify'
+export default fp(async function (fastify) {
     const {
-        LocationModel
-    } = fastify
+        LocationModel,
+        SelectModel,
+    } = fastify as extendsFastifyInstance
     fastify.get('/select', async function (req: FastifyRequest, res: FastifyReply) {
         try {
-            const response = LocationModel.getCountiesAndTowns()
-            res.status(200).send(response)
+
+            const countiesAndTownMap = await LocationModel.getCountiesAndTowns()
+            const selectOptionsMap = await SelectModel.getOptionsMap()
+            const result = {
+                ...countiesAndTownMap,
+                ...selectOptionsMap,
+            }
+            res.status(200).send(result)
         } catch (error: any) {
             res.code(500).send(error.message || error)
         }

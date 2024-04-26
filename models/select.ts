@@ -1,12 +1,47 @@
 import fp from 'fastify-plugin'
-import type { extendsFastifyInstance } from '../types/fastify.ts'
-import type { IOptionsItem, } from '../types/select'
+import type { extendsFastifyInstance } from '../types/fastify'
+import type { IOptionsItem, ISelectMap, ISelectDocData } from '../types/select'
 import { Query, QuerySnapshot, CollectionReference, DocumentReference, DocumentData } from 'firebase-admin/firestore'
+
 export class Select {
     collection: CollectionReference
+    options: ISelectMap = {}
+    optionKeys: string[] = ['floorSize', 'buildingAge', 'buildingType']
     constructor(fastify: extendsFastifyInstance) {
         const { firestore } = fastify.firebase
         this.collection = firestore.collection('selects')
+        this.setOptions()
+    }
+    setOptions() {
+        this.optionKeys.forEach(async key => {
+            const options = await this.getOptionsByKey(key)
+            this.options[key] = options
+        })
+    }
+    async getOptionsMap() {
+        const promises = this.optionKeys.map(async (key: string) => {
+            let options = this.options[key]
+            if (!options?.length) {
+                options = await this.getOptionsByKey(key)
+            }
+            const selectDocData: ISelectDocData = {
+                key: key,
+                options
+            }
+            return selectDocData
+        })
+        const docDatas: ISelectDocData[] = await Promise.all(promises)
+        const selectMap: ISelectMap = {}
+        docDatas.forEach(docData => {
+            selectMap[docData.key] = docData.options
+        })
+        return selectMap
+    }
+    async getOptionsByKey(key: string,): Promise<IOptionsItem[]> {
+        const keyQuery: Query = this.collection.where('key', '==', key).limit(1)
+        const snapshot: QuerySnapshot = await keyQuery.get()
+        const options: IOptionsItem[] = snapshot.docs[0].data().options
+        return options
     }
     async replaceByKey(key: string, options: IOptionsItem[] = []) {
         const keyQuery: Query = this.collection.where('key', '==', key)
@@ -14,7 +49,6 @@ export class Select {
         const count: number = countData.data().count
         switch (count) {
             case 0: {
-                console.log('0', options.length)
                 this.collection.add({
                     key,
                     options
@@ -22,7 +56,6 @@ export class Select {
                 break;
             }
             case 1: {
-                console.log('1', options.length)
                 const snapshot: QuerySnapshot = await keyQuery.get()
                 snapshot.forEach(data => {
                     const dataReference: DocumentReference = data.ref

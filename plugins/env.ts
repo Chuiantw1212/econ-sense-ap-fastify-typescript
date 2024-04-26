@@ -17,7 +17,7 @@ const schema = {
         },
         ORIGIN: {
             type: 'string',
-            default: 'http://localhost:3000/'
+            default: 'http://localhost:5173/'
         }
     }
 }

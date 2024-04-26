@@ -17,7 +17,7 @@ export default fp(async function (fastify, opts) {
     
     fastify.register(cors, () => {
         return (req: FastifyRequest, callback: any) => {
-            const origin: string | boolean = process.env.ORIGIN || 'http://localhost:3000/'
+            const origin: string | boolean = process.env.ORIGIN || 'http://localhost:5173/'
             const corsOptions: ICorsOptions = {
                 // This is NOT recommended for production as it enables reflection exploits
                 origin,
@@ -27,7 +27,7 @@ export default fp(async function (fastify, opts) {
             if (process.env.MODE === 'development') {
                 corsOptions.origin = true
             } else {
-                const requestOrigin = req.headers.origin || 'http://localhost:3000/'
+                const requestOrigin = req.headers.origin || 'http://localhost:5173/'
                 if (/^localhost$/m.test(requestOrigin)) {
                     corsOptions.origin = false
                 }
