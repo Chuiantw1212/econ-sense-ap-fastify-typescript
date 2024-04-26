@@ -1,12 +1,11 @@
 import fp from 'fastify-plugin'
-import fs from 'fs'
 import path from 'path'
-const admin = require("firebase-admin");
-const { getFirestore, } = require('firebase-admin/firestore');
-const { getStorage } = require('firebase-admin/storage');
+import admin from "firebase-admin"
+import { getFirestore, Firestore } from 'firebase-admin/firestore'
+import { getStorage, Storage, } from 'firebase-admin/storage'
 export class FirebasePlugin {
-    firestore: any
-    bucketPublic: any
+    firestore: Firestore
+    bucketPublic: ReturnType<Storage['bucket']>
     constructor() {
         /**
          * https://console.firebase.google.com/project/econ-sense-9a250/settings/serviceaccounts/adminsdk
@@ -23,10 +22,12 @@ export class FirebasePlugin {
         /**
          * https://firebase.google.com/docs/storage/admin/start
          */
-        this.bucketPublic = getStorage().bucket('public.econ-sense.com');
+        const firebaseStorage: Storage = getStorage()
+        this.bucketPublic = firebaseStorage.bucket('public.econ-sense.com');
+        this.getPublicFiles()
     }
     getPublicFiles() {
-        this.bucketPublic.getFiles(function (err: any, files: File[]) {
+        this.bucketPublic.getFiles(function (err, files) {
             if (!err) {
                 // files is an array of File objects.
                 console.log(files);
