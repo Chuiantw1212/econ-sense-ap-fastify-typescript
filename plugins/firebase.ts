@@ -34,7 +34,7 @@ export class FirebasePlugin {
         });
     }
 }
-export default fp(async function (fastify, opts) {
+export default fp(async function (fastify) {
     const firebase = new FirebasePlugin()
     fastify.decorate('firebase', firebase)
 })

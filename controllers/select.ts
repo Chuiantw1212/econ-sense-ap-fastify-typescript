@@ -5,12 +5,7 @@ export default async function (fastify: extendsFastifyInstance,) {
     } = fastify
     fastify.get('/select', async function (req, res,) {
         try {
-            const counties = LocationModel.counties
-            const townMap = LocationModel.townMap
-            const response = {
-                counties,
-                townMap
-            }
+            const response = LocationModel.getCountiesAndTowns()
             res.status(200).send(response)
         } catch (error: any) {
             res.code(500).send(error.message || error)

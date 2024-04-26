@@ -41,6 +41,15 @@ export class Location {
             })
         })
     }
+    async getCountiesAndTowns() {
+        if (!this.counties.length) {
+            await this.setCountiesAndTowns()
+        }
+        return {
+            counties: this.counties,
+            townMap: this.townMap
+        }
+    }
     async setCountiesAndTowns() {
         const snapshots = await this.collection.orderBy('key').get()
         const promises = snapshots.docs.map((doc: DocumentSnapshot) => {
