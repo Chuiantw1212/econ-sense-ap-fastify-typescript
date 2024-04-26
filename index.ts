@@ -5,36 +5,29 @@ import {
     FastifyPluginOptions
 } from 'fastify'
 // Plugins
-import AutoLoad from '@fastify/autoload'
 import FormBody from '@fastify/formbody'
+import corsPlugin from './plugins/cors'
+import envPlugin from './plugins/env'
+import firebasePlugin from './plugins/firebase'
 // Node native modeuls
 import path from 'path'
 // Models
 import LocationModel from './models/location'
 import SelectModel from './models/select'
+// Controllsers
+import SelectController from './controllers/select'
 const appService = async function (fastify: FastifyInstance, opts: FastifyPluginOptions) {
     const { ready, } = fastify
-    const __dirname = path.resolve()
     // Plugins
     fastify.register(FormBody)
-    fastify.register(AutoLoad, {
-        dir: path.join(__dirname, 'plugins'),
-        options: Object.assign({}, opts),
-        // ignorePattern: /.*(uuid|socketio|cache).*/
-    })
+    fastify.register(corsPlugin)
+    fastify.register(envPlugin)
+    fastify.register(firebasePlugin)
     // Models
     fastify.register(SelectModel)
     fastify.register(LocationModel)
-    fastify.register(AutoLoad, {
-        dir: path.join(__dirname, 'models'),
-        options: Object.assign({}, opts),
-        ignorePattern: /.*(location|select).*/
-    })
     // Conterollers
-    fastify.register(AutoLoad, {
-        dir: path.join(__dirname, 'controllers'),
-        options: Object.assign({}, opts)
-    })
+    fastify.register(SelectController)
     // Output log
     console.time('Server boot')
     ready(() => {
