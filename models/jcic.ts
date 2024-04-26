@@ -85,8 +85,11 @@ export class JCIC {
             const result = await axios.get('https://www.jcic.org.tw/openapi/api/ContractPriceTableC2023')
             resultData = result.data
         }
+
+        const countData: DocumentData = await this.collectionContracts.count().get()
+        const count: number = countData.data().count
         const contractPriceTableRawItems: IPriceTableRawItem[] = resultData
-        const contractPriceTableItems: IPriceTableItem[] = contractPriceTableRawItems.map(item => {
+        const contractPriceTableItems: IPriceTableItem[] = contractPriceTableRawItems.slice(count, contractPriceTableRawItems.length).map(item => {
             const county = item['縣市名稱']
             const traditionCounty = county.replace('台', '臺')
             const booleanMap: { [key: string]: boolean } = {
