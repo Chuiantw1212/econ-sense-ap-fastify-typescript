@@ -14,6 +14,14 @@ export class Location {
         this.collection = firestore.collection('locations')
         this.setCountiesAndTowns()
     }
+    getTownLabel(countyValue: string, townValue: string) {
+        const matchedItem = this.townMap[countyValue].find(item => item.value === townValue)
+        return matchedItem?.label
+    }
+    getCountyLabel(countyValue: string) {
+        const matchedItem = this.counties.find(item => item.value === countyValue)
+        return matchedItem?.label
+    }
     async fetchCountiesAndTowns() {
         // Set counties from https://data.gov.tw/dataset/101905
         const result = await axios.get('https://api.nlsc.gov.tw/other/ListCounty')

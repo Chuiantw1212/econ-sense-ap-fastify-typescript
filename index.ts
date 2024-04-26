@@ -17,6 +17,7 @@ import SelectModel from './models/select'
 import JcicModel from './models/jcic'
 // Controllsers
 import SelectController from './controllers/select'
+import JcicController from './controllers/jcic'
 const appService = async function (fastify: FastifyInstance, opts: FastifyPluginOptions) {
     const { ready, } = fastify
     // Plugins
@@ -30,6 +31,7 @@ const appService = async function (fastify: FastifyInstance, opts: FastifyPlugin
     fastify.register(JcicModel)
     // Conterollers
     fastify.register(SelectController)
+    fastify.register(JcicController)
     // Output log
     console.time('Server boot')
     ready(() => {
