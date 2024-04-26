@@ -1,7 +1,7 @@
 import fp from 'fastify-plugin'
 import type { extendsFastifyInstance } from '../types/fastify.ts'
 import type { IOptionsItem, ICounty, ITown, ISelectMap, ISelectDocData } from '../types/select'
-import { CollectionReference, DocumentSnapshot, DocumentData } from '@firebase/firestore-types/index'
+import { getFirestore, Firestore, CollectionReference, DocumentSnapshot, DocumentData } from 'firebase-admin/firestore'
 export class Select {
     collection: CollectionReference
     constructor(fastify: extendsFastifyInstance) {

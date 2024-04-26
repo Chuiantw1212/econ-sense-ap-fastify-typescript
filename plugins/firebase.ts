@@ -24,7 +24,6 @@ export class FirebasePlugin {
          */
         const firebaseStorage: Storage = getStorage()
         this.bucketPublic = firebaseStorage.bucket('public.econ-sense.com');
-        this.getPublicFiles()
     }
     getPublicFiles() {
         this.bucketPublic.getFiles(function (err, files) {
