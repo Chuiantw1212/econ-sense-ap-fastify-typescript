@@ -3,7 +3,7 @@ import fp from 'fastify-plugin'
 import type { extendsFastifyInstance } from '../types/fastify'
 import fs from 'fs'
 import type { IOptionsItem, } from '../types/select'
-import { Query, QuerySnapshot, CollectionReference, DocumentReference, DocumentData } from 'firebase-admin/firestore'
+import { Query, QuerySnapshot, CollectionReference, DocumentReference, DocumentData, FieldValue } from 'firebase-admin/firestore'
 import { Select } from './select'
 
 interface IPriceTableRawItem {
@@ -22,10 +22,10 @@ interface IPriceTableItem {
     'town': string,
     'contractYear': string,
     'buildingType': string,
-    'unitPrice': string | number,
-    'floorSize': string | number,
-    'buildingAge': string | number,
-    'totalPrice': string | number,
+    'unitPrice': number,
+    'floorSize': string,
+    'buildingAge': string,
+    'hasParking': string,
 }
 
 export class JCIC {
@@ -38,16 +38,17 @@ export class JCIC {
         } = fastify
         this.SelectModel = SelectModel
         this.collectionContracts = firebase.firestore.collection('jcicContracts')
-        this.getContractPriceTable()
     }
     async getMortgageLocation() {
         const result = await axios.get('https://www.jcic.org.tw/openapi/api/Mortgage_Location')
     }
     async getContractPriceTable() {
-        // console.log('start loading')
-        // const result = await axios.get('https://www.jcic.org.tw/openapi/api/ContractPriceTableC2023')
-        // console.log('load completed')
-        const resultData = require('./ContractPrice_TABLE_C_2023')
+        let resultData = []
+        resultData = require('./ContractPrice_TABLE_C_2023')
+        if (!resultData) {
+            const result = await axios.get('https://www.jcic.org.tw/openapi/api/ContractPriceTableC2023')
+            resultData = result.data
+        }
         const contractPriceTableRawItems: IPriceTableRawItem[] = resultData
         const contractPriceTableItems: IPriceTableItem[] = contractPriceTableRawItems.map(item => {
             return {
@@ -55,10 +56,10 @@ export class JCIC {
                 'town': item['鄉鎮市區名稱'],
                 'contractYear': item['買賣契約年季'],
                 'buildingType': item['建物類別'],
-                'unitPrice': item['契約單價[萬元/坪]'],
+                'unitPrice': Number(item['契約單價[萬元/坪]']),
                 'floorSize': item['建坪[坪]'],
                 'buildingAge': item['屋齡[年]'],
-                'totalPrice': item['含車位價格'],
+                'hasParking': item['含車位價格'],
             }
         })
         let index = 0
@@ -67,9 +68,6 @@ export class JCIC {
             await this.collectionContracts.add(item)
             console.log(`total ${contractPriceTableItems.length}, ${index} added.`)
         }, 100)
-        // contractPriceTableItems.forEach(async (item, index) => {
-
-        // })
     }
 }
 export default fp(async function (fastify: any) {

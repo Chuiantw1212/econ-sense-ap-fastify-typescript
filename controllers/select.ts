@@ -1,6 +1,6 @@
 import type { extendsFastifyInstance } from '../types/fastify.ts'
 import fp from 'fastify-plugin'
-import { FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 export default fp(async function (fastify: any) {
     const {
         LocationModel
