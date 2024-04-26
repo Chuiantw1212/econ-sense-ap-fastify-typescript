@@ -2,8 +2,11 @@ import axios from 'axios'
 import fp from 'fastify-plugin'
 import type { extendsFastifyInstance } from '../types/fastify'
 import fs from 'fs'
+import type { IOptionsItem, } from '../types/select'
+import { Query, QuerySnapshot, CollectionReference, DocumentReference, DocumentData } from 'firebase-admin/firestore'
+import { Select } from './select'
 
-interface IPriceTableItem {
+interface IPriceTableRawItem {
     '縣市名稱': string;
     '鄉鎮市區名稱': string;
     '買賣契約年季': string;
@@ -14,75 +17,60 @@ interface IPriceTableItem {
     '含車位價格': string;
 }
 
+interface IPriceTableItem {
+    'county': string,
+    'town': string,
+    'contractYear': string,
+    'buildingType': string,
+    'unitPrice': string | number,
+    'floorSize': string | number,
+    'buildingAge': string | number,
+    'totalPrice': string | number,
+}
+
 export class JCIC {
+    SelectModel: Select
+    collectionContracts: CollectionReference
     constructor(fastify: extendsFastifyInstance) {
-        const { 
-            
+        const {
+            SelectModel,
+            firebase,
         } = fastify
-        // this.getContractPriceTable()
-        // console.log('JCIC');
+        this.SelectModel = SelectModel
+        this.collectionContracts = firebase.firestore.collection('jcicContracts')
+        this.getContractPriceTable()
     }
     async getMortgageLocation() {
         const result = await axios.get('https://www.jcic.org.tw/openapi/api/Mortgage_Location')
     }
     async getContractPriceTable() {
-        // var someObject = require('../ContractPrice_TABLE_C_2023.json')
-        // console.log('processing');
-        const result = await axios.get('https://www.jcic.org.tw/openapi/api/ContractPriceTableC2023')
-        // console.log('completed');
-        // Prepare sets
-        const divisionSet1: Set<string> = new Set()
-        const additionalTypeSet: Set<string> = new Set()
-        const floorSizeSet: Set<string> = new Set()
-        const ageSet: Set<string> = new Set()
-
-        const contractPriceTableItems: IPriceTableItem[] = result.data
-        contractPriceTableItems.forEach((item: IPriceTableItem) => {
-            divisionSet1.add(item['縣市名稱'])
-            additionalTypeSet.add(item['建物類別'])
-            floorSizeSet.add(item['建坪[坪]'])
-            ageSet.add(item['屋齡[年]'])
+        // console.log('start loading')
+        // const result = await axios.get('https://www.jcic.org.tw/openapi/api/ContractPriceTableC2023')
+        // console.log('load completed')
+        const resultData = require('./ContractPrice_TABLE_C_2023')
+        const contractPriceTableRawItems: IPriceTableRawItem[] = resultData
+        const contractPriceTableItems: IPriceTableItem[] = contractPriceTableRawItems.map(item => {
+            return {
+                'county': item['縣市名稱'],
+                'town': item['鄉鎮市區名稱'],
+                'contractYear': item['買賣契約年季'],
+                'buildingType': item['建物類別'],
+                'unitPrice': item['契約單價[萬元/坪]'],
+                'floorSize': item['建坪[坪]'],
+                'buildingAge': item['屋齡[年]'],
+                'totalPrice': item['含車位價格'],
+            }
         })
-        // Array from 
-        try {
-            const additionalTypeItems: string[] = Array.from(additionalTypeSet)
-            // const t1 = JSON.stringify(additionalTypeItems)
-            // fs.writeFileSync('建物類別', t1);
+        let index = 0
+        setInterval(async () => {
+            const item = contractPriceTableItems[index++]
+            await this.collectionContracts.add(item)
+            console.log(`total ${contractPriceTableItems.length}, ${index} added.`)
+        }, 100)
+        // contractPriceTableItems.forEach(async (item, index) => {
 
-            const floorSizeItems: string[] = Array.from(floorSizeSet)
-            // const t2 = JSON.stringify(floorSizeItems)
-            // fs.writeFileSync('大小', t2);
-
-            const ageItems: string[] = Array.from(ageSet)
-            // const t3 = JSON.stringify(ageItems)
-            // fs.writeFileSync('屋齡', t3);
-
-            // const priceItems: string[] = Array.from(unitPrice)
-            // const t4 = JSON.stringify(priceItems)
-            // fs.writeFileSync('單價', t4);
-
-            console.log('JSON data saved to file successfully.');
-        } catch (error) {
-            console.error('Error writing JSON data to file:', error);
-        }
-        const division1Items: string[] = Array.from(divisionSet1)
-        // division1Items.forEach((division1Value: string) => {
-        //     const matchedItems: IPriceTableItem[] = contractPriceTableItems.filter(item => {
-        //         return item['縣市名稱'] === division1Value
-        //     })
-        //     try {
-        //         const jsonString = JSON.stringify(matchedItems)
-        //         fs.writeFileSync(division1Value, jsonString);
-        //         console.log('JSON data saved to file successfully.');
-        //     } catch (error) {
-        //         console.error('Error writing JSON data to file:', error);
-        //     }
         // })
     }
-
-    //     import axios from 'axios'
-    // const result = await axios.get('https://storage.googleapis.com/public.econ-sense.com/ContractPrice_TABLE_C_2023.json')
-    // console.log(result.data)
 }
 export default fp(async function (fastify: any) {
     fastify.decorate('JcicModel', new JCIC(fastify))

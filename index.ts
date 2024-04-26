@@ -9,10 +9,9 @@ import AutoLoad from '@fastify/autoload'
 import FormBody from '@fastify/formbody'
 // Node native modeuls
 import path from 'path'
-// // Models
-// import JcicModel from './models/jcic'
-// import LocationModel from './models/location'
-// import UserModel from './models/user'
+// Models
+import LocationModel from './models/location'
+import SelectModel from './models/select'
 const appService = async function (fastify: FastifyInstance, opts: FastifyPluginOptions) {
     const { ready, } = fastify
     const __dirname = path.resolve()
@@ -24,12 +23,12 @@ const appService = async function (fastify: FastifyInstance, opts: FastifyPlugin
         // ignorePattern: /.*(uuid|socketio|cache).*/
     })
     // Models
-    // fastify.register(JcicModel)
-    // fastify.register(UserModel)
-    // fastify.register(LocationModel)
+    fastify.register(SelectModel)
+    fastify.register(LocationModel)
     fastify.register(AutoLoad, {
         dir: path.join(__dirname, 'models'),
         options: Object.assign({}, opts),
+        ignorePattern: /.*(location|select).*/
     })
     // Conterollers
     fastify.register(AutoLoad, {

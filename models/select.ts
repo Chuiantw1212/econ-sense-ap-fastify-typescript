@@ -14,6 +14,7 @@ export class Select {
         const count: number = countData.data().count
         switch (count) {
             case 0: {
+                console.log('0', options.length)
                 this.collection.add({
                     key,
                     options
@@ -21,6 +22,7 @@ export class Select {
                 break;
             }
             case 1: {
+                console.log('1', options.length)
                 const snapshot: QuerySnapshot = await keyQuery.get()
                 snapshot.forEach(data => {
                     const dataReference: DocumentReference = data.ref
