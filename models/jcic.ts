@@ -45,11 +45,12 @@ export class JCIC {
         let contractQuery: Query = this.collectionContracts
         if (query.county) {
             let countyLabel = this.LocationModel.getCountyLabel(query.county)
-            console.log(countyLabel);
             contractQuery = contractQuery.where('county', '==', countyLabel)
             if (query.town) {
                 const townLabel = this.LocationModel.getTownLabel(query.county, query.town)
-                contractQuery = contractQuery.where('town', '==', townLabel)
+                if (townLabel) {
+                    contractQuery = contractQuery.where('town', '==', townLabel)
+                }
             }
         }
         if (query.buildingAge) {
@@ -58,7 +59,7 @@ export class JCIC {
         if (query.buildingType) {
             contractQuery = contractQuery.where('buildingType', '==', query.buildingType)
         }
-        if (query.hasParking) {
+        if (typeof query.hasParking === 'boolean') {
             contractQuery = contractQuery.where('hasParking', '==', query.hasParking)
         }
 
@@ -86,7 +87,7 @@ export class JCIC {
             });
             const averageSnapshot = await averageAggregateQuery.get();
             const averageDocData = averageSnapshot.data()
-            average = averageDocData.averageUnitPrice || 0
+            average = Number(Number(averageDocData.averageUnitPrice).toFixed(2)) || 0
         }
 
         return {
@@ -131,7 +132,16 @@ export class JCIC {
         }
     }
     async getMortgageLocation() {
-        const result = await axios.get('https://www.jcic.org.tw/openapi/api/Mortgage_Location')
+        let resultData = []
+        try {
+            resultData = require('./ContractPrice_TABLE_C_2023')
+            if (!resultData) {
+                const result = await axios.get('https://www.jcic.org.tw/openapi/api/ContractPriceTableC2023')
+                resultData = result.data
+            }
+        } catch (error) {
+            throw error
+        }
     }
     async getContractPriceTable() {
         let resultData = []
