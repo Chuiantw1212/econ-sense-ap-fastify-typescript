@@ -10,6 +10,10 @@ export class BankModel {
         this.fetchInterestRate()
     }
     async fetchInterestRate() {
+        if (this.interestRate) {
+            return this.interestRate
+        }
+
         const crawlCompanyResult = await axios.request({
             url: 'https://www.cbc.gov.tw/tw/lp-370-1.html',
         })
@@ -23,6 +27,8 @@ export class BankModel {
         const mostRecentItem = filteredItems[0]
         const interestRate = mostRecentItem.innerHTML.replaceAll(/(<[^>]*>|\n)/g, '')
         this.interestRate = Number(interestRate)
+
+        return this.interestRate
     }
 }
 export default fp(async function (fastify: any) {
