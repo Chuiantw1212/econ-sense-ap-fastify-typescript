@@ -132,7 +132,16 @@ export class JCIC {
         }
     }
     async getMortgageLocation() {
-        const result = await axios.get('https://www.jcic.org.tw/openapi/api/Mortgage_Location')
+        let resultData = []
+        try {
+            resultData = require('./ContractPrice_TABLE_C_2023')
+            if (!resultData) {
+                const result = await axios.get('https://www.jcic.org.tw/openapi/api/ContractPriceTableC2023')
+                resultData = result.data
+            }
+        } catch (error) {
+            throw error
+        }
     }
     async getContractPriceTable() {
         let resultData = []
