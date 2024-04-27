@@ -45,11 +45,12 @@ export class JCIC {
         let contractQuery: Query = this.collectionContracts
         if (query.county) {
             let countyLabel = this.LocationModel.getCountyLabel(query.county)
-            console.log(countyLabel);
             contractQuery = contractQuery.where('county', '==', countyLabel)
             if (query.town) {
                 const townLabel = this.LocationModel.getTownLabel(query.county, query.town)
-                contractQuery = contractQuery.where('town', '==', townLabel)
+                if (townLabel) {
+                    contractQuery = contractQuery.where('town', '==', townLabel)
+                }
             }
         }
         if (query.buildingAge) {
@@ -58,7 +59,7 @@ export class JCIC {
         if (query.buildingType) {
             contractQuery = contractQuery.where('buildingType', '==', query.buildingType)
         }
-        if (query.hasParking) {
+        if (typeof query.hasParking === 'boolean') {
             contractQuery = contractQuery.where('hasParking', '==', query.hasParking)
         }
 
@@ -66,8 +67,6 @@ export class JCIC {
         const countData: DocumentData = await orderedQuery.count().get()
         const count: number = countData.data().count
 
-        let max: number = 0
-        let min: number = 0
         let pr25: number = 0
         let pr75: number = 0
         let average: number = 0
@@ -88,7 +87,7 @@ export class JCIC {
             });
             const averageSnapshot = await averageAggregateQuery.get();
             const averageDocData = averageSnapshot.data()
-            average = averageDocData.averageUnitPrice || 0
+            average = Number(Number(averageDocData.averageUnitPrice).toFixed(2)) || 0
         }
 
         return {
