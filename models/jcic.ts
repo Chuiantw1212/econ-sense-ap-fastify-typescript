@@ -66,8 +66,6 @@ export class JCIC {
         const countData: DocumentData = await orderedQuery.count().get()
         const count: number = countData.data().count
 
-        let max: number = 0
-        let min: number = 0
         let pr25: number = 0
         let pr75: number = 0
         let average: number = 0
