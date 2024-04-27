@@ -16,4 +16,12 @@ export default fp(async function (fastify) {
             res.code(500).send(error.message || error)
         }
     })
+    fastify.post('/calculate/unitPrice', async function (req: FastifyRequest, res: FastifyReply) {
+        try {
+            const result = await JcicModel.calculateUnitPrice(req.body as any)
+            res.status(200).send(result)
+        } catch (error: any) {
+            res.code(500).send(error.message || error)
+        }
+    })
 })

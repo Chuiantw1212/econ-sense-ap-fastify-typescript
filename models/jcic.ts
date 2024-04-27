@@ -1,7 +1,7 @@
 import axios from 'axios'
 import fp from 'fastify-plugin'
 import type { extendsFastifyInstance } from '../types/fastify'
-import { Query, CollectionReference, DocumentData, AggregateField, FieldValue } from 'firebase-admin/firestore'
+import { Query, QuerySnapshot, CollectionReference, DocumentData, AggregateField, FieldValue } from 'firebase-admin/firestore'
 import { Select } from './select'
 import { Location } from './location'
 
@@ -41,6 +41,60 @@ export class JCIC {
         this.LocationModel = LocationModel
         this.collectionContracts = firebase.firestore.collection('jcicContracts')
     }
+    async calculateUnitPrice(query: IPriceTableItem) {
+        let contractQuery: Query = this.collectionContracts
+        if (query.county) {
+            let countyLabel = this.LocationModel.getCountyLabel(query.county)
+            contractQuery = contractQuery.where('county', '==', countyLabel)
+            if (query.town) {
+                const townLabel = this.LocationModel.getTownLabel(query.county, query.town)
+                contractQuery = contractQuery.where('town', '==', townLabel)
+            }
+        }
+        if (query.buildingAge) {
+            contractQuery = contractQuery.where('buildingAge', '==', query.buildingAge)
+        }
+        if (query.buildingType) {
+            contractQuery = contractQuery.where('buildingType', '==', query.buildingType)
+        }
+        if (query.hasParking) {
+            contractQuery = contractQuery.where('hasParking', '==', query.hasParking)
+        }
+
+        const orderedQuery = contractQuery.orderBy('unitPrice', 'asc')
+        const countData: DocumentData = await orderedQuery.count().get()
+        const count: number = countData.data().count
+
+        let pr25: number = 0
+        let pr75: number = 0
+        let average: number = 0
+
+        if (count && count >= 4) {
+            const pr25Index: number = Math.floor(count / 4)
+            const pr25Snapshot: QuerySnapshot = await orderedQuery.offset(pr25Index).limit(1).get()
+            const pr25DocData: IPriceTableItem = pr25Snapshot.docs[0].data()
+            pr25 = pr25DocData.unitPrice || 0
+
+            const pr75Index: number = Math.floor(count / 4 * 3)
+            const pr75Snapshot: QuerySnapshot = await orderedQuery.offset(pr75Index).limit(1).get()
+            const pr75DocData: IPriceTableItem = pr75Snapshot.docs[0].data()
+            pr75 = pr75DocData.unitPrice || 0
+
+            const averageAggregateQuery = orderedQuery.aggregate({
+                averageUnitPrice: AggregateField.average('unitPrice'),
+            });
+            const averageSnapshot = await averageAggregateQuery.get();
+            const averageDocData = averageSnapshot.data()
+            average = averageDocData.averageUnitPrice || 0
+        }
+
+        return {
+            count,
+            pr25,
+            pr75,
+            average
+        }
+    }
     async getContractsByQuery(query: IPriceTableItem) {
         let contractQuery: Query = this.collectionContracts
         if (query.county) {
@@ -61,18 +115,19 @@ export class JCIC {
         const countData: DocumentData = await contractQuery.count().get()
         const count: number = countData.data().count
 
-        const firstDoc = await contractQuery.orderBy('unitPrice', 'asc').limit(1)
-        const lastDoc = await contractQuery.orderBy('unitPrice', 'asc').limitToLast(1)
         /**
          * Firestore資料分析
          * https://firebase.google.com/docs/firestore/query-data/aggregation-queries
          */
-        const averageAggregateQuery = contractQuery.aggregate({
-            averageUnitPrice: AggregateField.sum('unitPrice'),
-        });
-
-        const snapshot = await averageAggregateQuery.get();
-        console.log('unitPrice: ', snapshot.data().averageUnitPrice);
+        let unitPrice = 0
+        if (count) {
+            const averageAggregateQuery = contractQuery.aggregate({
+                averageUnitPrice: AggregateField.average('unitPrice'),
+            });
+            const snapshot = await averageAggregateQuery.get();
+            console.log('count: ', count);
+            console.log('unitPrice: ', snapshot.data().averageUnitPrice);
+        }
     }
     async getMortgageLocation() {
         const result = await axios.get('https://www.jcic.org.tw/openapi/api/Mortgage_Location')
