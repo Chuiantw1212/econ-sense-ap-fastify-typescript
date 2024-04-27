@@ -1,6 +1,6 @@
 import fp from 'fastify-plugin'
 import type { extendsFastifyInstance } from '../types/fastify.ts'
-export class User {
+export class UserModel {
     constructor(fastify: extendsFastifyInstance) {
 
     }
@@ -8,5 +8,5 @@ export class User {
     }
 }
 export default fp(async function (fastify: any) {
-    fastify.decorate('UserModel', new User(fastify))
+    fastify.decorate('UserModel', new UserModel(fastify))
 })

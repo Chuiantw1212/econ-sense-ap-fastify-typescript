@@ -10,8 +10,6 @@ import FormBody from '@fastify/formbody'
 import corsPlugin from './plugins/cors'
 import envPlugin from './plugins/env'
 import firebasePlugin from './plugins/firebase'
-// Node native modeuls
-import path from 'path'
 // Models
 import LocationModel from './models/location'
 import SelectModel from './models/select'
@@ -20,7 +18,7 @@ import NdcModel from './models/ndc'
 import BankModel from './models/bank'
 // Controllsers
 import SelectController from './controllers/select'
-import JcicController from './controllers/jcic'
+import BankController from './controllers/bank'
 import CalculateController from './controllers/calculate'
 const appService = async function (fastify: FastifyInstance, opts: FastifyPluginOptions) {
     const { ready, } = fastify
@@ -37,7 +35,7 @@ const appService = async function (fastify: FastifyInstance, opts: FastifyPlugin
     fastify.register(BankModel)
     // Conterollers
     fastify.register(SelectController)
-    fastify.register(JcicController)
+    fastify.register(BankController)
     fastify.register(CalculateController)
     // Output log
     ready(() => {

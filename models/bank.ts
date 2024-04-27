@@ -3,7 +3,7 @@ import fp from 'fastify-plugin'
 import { JSDOM } from 'jsdom'
 import type { extendsFastifyInstance } from '../types/fastify'
 
-export class Bank {
+export class BankModel {
     interestRate: number = 0
     constructor(fastify: extendsFastifyInstance) {
         const { firestore } = fastify.firebase
@@ -26,5 +26,5 @@ export class Bank {
     }
 }
 export default fp(async function (fastify: any) {
-    fastify.decorate('BankModel', new Bank(fastify))
+    fastify.decorate('BankModel', new BankModel(fastify))
 })

@@ -2,8 +2,8 @@ import axios from 'axios'
 import fp from 'fastify-plugin'
 import type { extendsFastifyInstance } from '../types/fastify'
 import { Query, QuerySnapshot, CollectionReference, DocumentData, AggregateField, FieldValue } from 'firebase-admin/firestore'
-import { Select } from './select'
-import { Location } from './location'
+import { SelectModel } from './select'
+import { LocationModel } from './location'
 
 interface IPriceTableRawItem {
     '縣市名稱': string;
@@ -27,9 +27,9 @@ interface IPriceTableItem {
     hasParking?: boolean,
 }
 
-export class JCIC {
-    SelectModel: Select
-    LocationModel: Location
+export class JcicModel {
+    SelectModel: SelectModel
+    LocationModel: LocationModel
     collectionContracts: CollectionReference
     constructor(fastify: extendsFastifyInstance) {
         const {
@@ -97,40 +97,6 @@ export class JCIC {
             average
         }
     }
-    async getContractsByQuery(query: IPriceTableItem) {
-        let contractQuery: Query = this.collectionContracts
-        if (query.county) {
-            let countyLabel = this.LocationModel.getCountyLabel(query.county)
-            countyLabel = countyLabel?.replace('臺', '台')
-            contractQuery = contractQuery.where('county', '==', countyLabel)
-            if (query.town) {
-                const townLabel = this.LocationModel.getTownLabel(query.county, query.town)
-                contractQuery = contractQuery.where('town', '==', townLabel)
-            }
-        }
-        if (query.buildingAge) {
-            contractQuery = contractQuery.where('buildingAge', '==', query.buildingAge)
-        }
-        if (query.buildingType) {
-            contractQuery = contractQuery.where('buildingType', '==', query.buildingType)
-        }
-        const countData: DocumentData = await contractQuery.count().get()
-        const count: number = countData.data().count
-
-        /**
-         * Firestore資料分析
-         * https://firebase.google.com/docs/firestore/query-data/aggregation-queries
-         */
-        let unitPrice = 0
-        if (count) {
-            const averageAggregateQuery = contractQuery.aggregate({
-                averageUnitPrice: AggregateField.average('unitPrice'),
-            });
-            const snapshot = await averageAggregateQuery.get();
-            console.log('count: ', count);
-            console.log('unitPrice: ', snapshot.data().averageUnitPrice);
-        }
-    }
     async getMortgageLocation() {
         let resultData = []
         try {
@@ -185,5 +151,5 @@ export class JCIC {
     }
 }
 export default fp(async function (fastify: any) {
-    fastify.decorate('JcicModel', new JCIC(fastify))
+    fastify.decorate('JcicModel', new JcicModel(fastify))
 })

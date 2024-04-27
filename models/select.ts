@@ -3,7 +3,7 @@ import type { extendsFastifyInstance } from '../types/fastify'
 import type { IOptionsItem, ISelectMap, ISelectDocData } from '../types/select'
 import { Query, QuerySnapshot, CollectionReference, DocumentReference, DocumentData } from 'firebase-admin/firestore'
 
-export class Select {
+export class SelectModel {
     collection: CollectionReference
     options: ISelectMap = {}
     optionKeys: string[] = ['floorSizes', 'buildingAges', 'buildingTypes', 'genders']
@@ -72,5 +72,5 @@ export class Select {
     }
 }
 export default fp(async function (fastify: any) {
-    fastify.decorate('SelectModel', new Select(fastify))
+    fastify.decorate('SelectModel', new SelectModel(fastify))
 })

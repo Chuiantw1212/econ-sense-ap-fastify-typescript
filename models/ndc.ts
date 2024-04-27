@@ -19,7 +19,7 @@ interface INdcLifeExpectancyItem {
     lifeExpectancy?: number
 }
 
-export class Ndc {
+export class NdcModel {
     collectionLifeExpectancy: CollectionReference
     constructor(fastify: extendsFastifyInstance) {
         const { firestore } = fastify.firebase
@@ -72,5 +72,5 @@ export class Ndc {
     }
 }
 export default fp(async function (fastify: any) {
-    fastify.decorate('NdcModel', new Ndc(fastify))
+    fastify.decorate('NdcModel', new NdcModel(fastify))
 })

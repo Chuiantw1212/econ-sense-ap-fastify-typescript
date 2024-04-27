@@ -5,7 +5,7 @@ import { getFirestore, Firestore, CollectionReference, DocumentSnapshot, Documen
 import type { IOptionsItem, ICounty, ITown, ISelectMap, } from '../types/select'
 const { XMLParser, } = require("fast-xml-parser");
 
-export class Location {
+export class LocationModel {
     counties: IOptionsItem[] = []
     townMap: ISelectMap = {}
     collection: CollectionReference
@@ -92,5 +92,5 @@ export class Location {
     }
 }
 export default fp(async function (fastify: any) {
-    fastify.decorate('LocationModel', new Location(fastify))
+    fastify.decorate('LocationModel', new LocationModel(fastify))
 })
