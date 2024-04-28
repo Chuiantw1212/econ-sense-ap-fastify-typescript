@@ -7,10 +7,12 @@ export default fp(async function (fastify) {
     } = fastify as extendsFastifyInstance
     fastify.get('/bank/config', async function (req: FastifyRequest, res: FastifyReply) {
         try {
+            const interestRate = await BankModel.fetchInterestRate()
+            const portfolioIRR = await BankModel.fetchCoreSeriesIRR()
             const response = {
-                interestRate: 0
+                interestRate,
+                portfolioIRR
             }
-            response.interestRate = await BankModel.fetchInterestRate()
             res.status(200).send(response)
         } catch (error: any) {
             res.code(500).send(error.message || error)
