@@ -1,4 +1,4 @@
-import type { extendsFastifyInstance } from '../types/fastify.ts'
+import type { extendsFastifyInstance } from '../types/fastify'
 import { FastifyRequest, FastifyReply, } from 'fastify'
 import fp from 'fastify-plugin'
 export default fp(async function (fastify) {

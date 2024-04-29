@@ -1,4 +1,5 @@
 import fp from 'fastify-plugin'
+import path from 'path'
 import admin from "firebase-admin"
 import { applicationDefault } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth'
@@ -11,9 +12,16 @@ export class FirebasePlugin {
         /**
          * https://firebase.google.com/docs/admin/setup
          */
-        admin.initializeApp({
-            credential: applicationDefault()
-        })
+        if (process.env.MODE === 'development') {
+            const serviceAccount = path.join(__dirname, '../serviceAccountKey.json')
+            admin.initializeApp({
+                credential: admin.credential.cert(serviceAccount)
+            })
+        } else {
+            admin.initializeApp({
+                credential: applicationDefault()
+            })
+        }
         /**
          * https://firebase.google.com/docs/firestore/quickstart
          */
