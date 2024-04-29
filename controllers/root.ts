@@ -1,7 +1,8 @@
 import type { extendsFastifyInstance } from '../types/fastify.ts'
 import { FastifyRequest, FastifyReply, } from 'fastify'
-export default async function (fastify: extendsFastifyInstance,) {
+import fp from 'fastify-plugin'
+export default fp(async function (fastify) {
     fastify.get('/', async function (req: FastifyRequest, res: FastifyReply) {
         res.status(200).send('Hello, World!')
     })
-}
+})
