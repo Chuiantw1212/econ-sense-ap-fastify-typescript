@@ -1,12 +1,7 @@
 import type { extendsFastifyInstance } from '../types/fastify.ts'
+import { FastifyRequest, FastifyReply, } from 'fastify'
 export default async function (fastify: extendsFastifyInstance,) {
-    const {
-        UserModel,
-        JcicModel,
-    } = fastify
-    fastify.get('/', async function (request, reply) {
-        // UserModel.getPublicFiles()
-        // await JcicModel.getContractPriceTable()
-        // SelectModel.getCounties()
+    fastify.get('/', async function (req: FastifyRequest, res: FastifyReply) {
+        res.status(200).send('Hello, World!')
     })
 }
