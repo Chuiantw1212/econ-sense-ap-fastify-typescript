@@ -1,70 +1,7 @@
 import fp from 'fastify-plugin'
 import { CollectionReference, QuerySnapshot, } from 'firebase-admin/firestore'
 import type { extendsFastifyInstance } from '../types/fastify'
-
-interface UserForm {
-    profile: {
-        dateOfBirth: string,
-        gender: string,
-    },
-    career: {
-        monthlyBasicPay: number,
-        insurance: {
-            salary: number,
-        },
-        pension: {
-            salary: number,
-            rate: number,
-        },
-        monthlyNetPay: number,
-        monthlyExpense: number
-    },
-    retirement: {
-        age: number,
-        insurance: {
-            presentSeniority: number,
-        },
-        pension: {
-            employerContribution: number,
-            employerContributionIncome: number,
-            employeeContrubution: number,
-            employeeContrubutionIncome: number,
-            irrOverDecade: number,
-        },
-        qualityLevel: number,
-        percentileRank: number,
-    },
-    estatePrice: {
-        county: string,
-        town: string,
-        buildingType: string,
-        buildingAge: string,
-        hasParking: string,
-    },
-    estateSize: {
-        doubleBedRoom: number,
-        singleBedRoom: number,
-        livingRoom: number,
-        bathroom: number,
-        publicRatio: number,
-    },
-    mortgage: {
-        buyHouseYear: number,
-        loanPercent: number,
-        interestRate: number,
-        loanTerm: number
-    },
-    parenting: {
-        childAnnualExpense: number,
-        independantAge: number,
-        firstBornYear: number,
-        secondBornYear: number,
-    },
-    investment: {
-        allocationETF: string,
-        presentAsset: number,
-    }
-}
+import type { IUserForm } from '../types/user'
 
 export class UserModel {
     collection: CollectionReference
@@ -81,8 +18,79 @@ export class UserModel {
             return docData
         }
     }
-    async addUserForm(form: UserForm) {
-
+    async addNewUserForm(uid: string) {
+        const targetQuery = this.collection.where('uid', '==', uid)
+        const countData = await targetQuery.count().get()
+        const count: number = countData.data().count
+        if (count !== 0) {
+            throw '資料重複'
+        }
+        const userForm: IUserForm = {
+            uid,
+            profile: {
+                dateOfBirth: "",
+                gender: "",
+            },
+            career: {
+                monthlyBasicPay: 0,
+                insurance: {
+                    salary: 0,
+                },
+                pension: {
+                    salary: 0,
+                    rate: 0,
+                },
+                monthlyNetPay: 0,
+                monthlyExpense: 0
+            },
+            retirement: {
+                age: 0,
+                insurance: {
+                    presentSeniority: 0,
+                },
+                pension: {
+                    employerContribution: 0,
+                    employerContributionIncome: 0,
+                    employeeContrubution: 0,
+                    employeeContrubutionIncome: 0,
+                    irrOverDecade: 0,
+                },
+                qualityLevel: 0,
+                percentileRank: 0,
+            },
+            estatePrice: {
+                county: "",
+                town: "",
+                buildingType: "",
+                buildingAge: "",
+                hasParking: false,
+            },
+            estateSize: {
+                doubleBedRoom: 0,
+                singleBedRoom: 0,
+                livingRoom: 0,
+                bathroom: 0,
+                publicRatio: 0,
+            },
+            mortgage: {
+                buyHouseYear: 0,
+                loanPercent: 0,
+                interestRate: 0,
+                loanTerm: 0
+            },
+            parenting: {
+                childAnnualExpense: 0,
+                independantAge: 0,
+                firstBornYear: 0,
+                secondBornYear: 0,
+            },
+            investment: {
+                allocationETF: "",
+                presentAsset: 0,
+            }
+        }
+        this.collection.add(userForm)
+        return userForm
     }
 }
 export default fp(async function (fastify: any) {
