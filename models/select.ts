@@ -6,7 +6,7 @@ import { Query, QuerySnapshot, CollectionReference, DocumentReference, DocumentD
 export class SelectModel {
     collection: CollectionReference
     options: ISelectMap = {}
-    optionKeys: string[] = ['floorSizes', 'buildingAges', 'buildingTypes', 'genders']
+    optionKeys: string[] = ['floorSizes', 'buildingAges', 'buildingTypes', 'genders', 'retirementQuartile']
     constructor(fastify: extendsFastifyInstance) {
         const { firestore } = fastify.firebase
         this.collection = firestore.collection('selects')
