@@ -1,7 +1,7 @@
 import fp from 'fastify-plugin'
-import path from 'path'
 import admin from "firebase-admin"
 import { applicationDefault } from 'firebase-admin/app';
+import { getAuth } from 'firebase-admin/auth'
 import { getFirestore, Firestore } from 'firebase-admin/firestore'
 import { getStorage, Storage, } from 'firebase-admin/storage'
 export class FirebasePlugin {
@@ -23,6 +23,21 @@ export class FirebasePlugin {
          */
         const firebaseStorage: Storage = getStorage()
         this.bucketPublic = firebaseStorage.bucket('public.econ-sense.com');
+    }
+    async verifyIdToken(idToken: string) {
+        try {
+            if (!idToken) {
+                throw 'idToken is not given.'
+            }
+            const replacedToken = idToken.replace('Bearer ', '')
+            const decodedToken = await getAuth().verifyIdToken(replacedToken)
+            if (!decodedToken) {
+                throw '未知的用戶'
+            }
+            return decodedToken
+        } catch (error) {
+            throw error
+        }
     }
     getPublicFiles() {
         this.bucketPublic.getFiles(function (err, files) {
