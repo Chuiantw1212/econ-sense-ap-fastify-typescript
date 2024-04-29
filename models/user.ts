@@ -23,8 +23,6 @@ interface UserForm {
         age: number,
         insurance: {
             presentSeniority: number,
-            finalSeniority: number,
-            monthlyAnnuity: number,
         },
         pension: {
             employerContribution: number,
@@ -32,7 +30,6 @@ interface UserForm {
             employeeContrubution: number,
             employeeContrubutionIncome: number,
             irrOverDecade: number,
-            finalValue: number,
         },
         qualityLevel: number,
         percentileRank: number,
@@ -50,6 +47,22 @@ interface UserForm {
         livingRoom: number,
         bathroom: number,
         publicRatio: number,
+    },
+    mortgage: {
+        buyHouseYear: number,
+        loanPercent: number,
+        interestRate: number,
+        loanTerm: number
+    },
+    parenting: {
+        childAnnualExpense: number,
+        independantAge: number,
+        firstBornYear: number,
+        secondBornYear: number,
+    },
+    investment: {
+        allocationETF: string,
+        presentAsset: number,
     }
 }
 
