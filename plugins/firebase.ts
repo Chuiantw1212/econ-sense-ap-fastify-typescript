@@ -9,19 +9,11 @@ export class FirebasePlugin {
     bucketPublic: ReturnType<Storage['bucket']>
     constructor() {
         /**
-         * https://console.firebase.google.com/project/econ-sense-9a250/settings/serviceaccounts/adminsdk
-         * https://firebase.google.com/docs/reference/admin/node/firebase-admin.app.md#applicationdefault_2121df4
+         * https://firebase.google.com/docs/admin/setup
          */
-        if (process.env.MODE === 'development') {
-            const serviceAccount = path.join(__dirname, '../serviceAccountKey.json')
-            admin.initializeApp({
-                credential: admin.credential.cert(serviceAccount)
-            })
-        } else {
-            admin.initializeApp({
-                credential: applicationDefault()
-            })
-        }
+        admin.initializeApp({
+            credential: applicationDefault()
+        })
         /**
          * https://firebase.google.com/docs/firestore/quickstart
          */
