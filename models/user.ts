@@ -36,6 +36,20 @@ interface UserForm {
         },
         qualityLevel: number,
         percentileRank: number,
+    },
+    estatePrice: {
+        county: string,
+        town: string,
+        buildingType: string,
+        buildingAge: string,
+        hasParking: string,
+    },
+    estateSize: {
+        doubleBedRoom: number,
+        singleBedRoom: number,
+        livingRoom: number,
+        bathroom: number,
+        publicRatio: number,
     }
 }
 
