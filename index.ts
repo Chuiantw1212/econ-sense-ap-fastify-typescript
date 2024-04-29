@@ -49,4 +49,9 @@ const app = Fastify({
     logger: true
 })
 app.register(appService)
-app.listen({ port: 8080 })
+/**
+ * 保留PORT
+ * https://cloud.google.com/functions/docs/configuring/env-var
+ */
+const port: any = process.env.PORT || 8080
+app.listen({ port: port })
