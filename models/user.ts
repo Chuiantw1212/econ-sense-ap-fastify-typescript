@@ -19,16 +19,51 @@ export class UserModel {
         const { firestore } = fastify.firebase
         this.collection = firestore.collection('users')
     }
-    async mergeProfile(uid: string, data: any) {
-        const docData = await this.checkDuplicateData(uid)
+    async mergeProfile(uid: string, data: any = {}) {
+        const docSnapshot = await this.checkDuplicateData(uid)
         const profile: IUserProfile = {
-            gender: data.gender,
-            dateOfBirth: data.dateOfBirth
+            gender: data.gender || '',
+            dateOfBirth: data.dateOfBirth || ''
         }
-        this.updateSingleDocAttribute(docData, 'profile', profile)
+        this.updateSingleDocAttribute(docSnapshot, 'profile', profile)
     }
-    async updateSingleDocAttribute(docData: DocumentSnapshot, attribute: string, value: any) {
-        const docRef = docData.ref
+    async mergeCareer(uid: string, data: any = {}) {
+        const docSnapshot = await this.checkDuplicateData(uid)
+        const career: IUserCareer = {
+            monthlyBasicPay: data.monthlyBasicPay || 0,
+            insurance: {
+                salary: data.insurance.salary || 0,
+            },
+            pension: {
+                salary: data.pension.salary || 0,
+                rate: data.pension.rate || 0,
+            },
+            monthlyNetPay: data.monthlyNetPay || 0,
+            monthlyExpense: data.monthlyExpense || 0
+        }
+        this.updateSingleDocAttribute(docSnapshot, 'career', career)
+    }
+    async mergeRetirement(uid: string, data: any = {}) {
+        const docSnapshot = await this.checkDuplicateData(uid)
+        const retirement: IUserRetirement = {
+            age: data.age || 0,
+            insurance: {
+                presentSeniority: data.insurance.presentSeniority || 0,
+            },
+            pension: {
+                employerContribution: data.pension.employerContribution || 0,
+                employerContributionIncome: data.pension.employerContributionIncome || 0,
+                employeeContrubution: data.pension.employeeContrubution || 0,
+                employeeContrubutionIncome: data.pension.employeeContrubutionIncome || 0,
+                irrOverDecade: data.pension.irrOverDecade || 0,
+            },
+            qualityLevel: data.qualityLevel,
+            percentileRank: data.percentileRank,
+        }
+        this.updateSingleDocAttribute(docSnapshot, 'retirement', retirement)
+    }
+    async updateSingleDocAttribute(docSnapshot: DocumentSnapshot, attribute: string, value: any) {
+        const docRef = docSnapshot.ref
         docRef.update({
             [attribute]: value
         })
