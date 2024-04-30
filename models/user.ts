@@ -128,6 +128,7 @@ export class UserModel {
             independantAge: data.independantAge || 0,
             firstBornYear: data.firstBornYear || 0,
             secondBornYear: data.secondBornYear || 0,
+            spouseMonthlyContribution: data.spouseMonthlyContribution || 0,
         }
         const user: IUser = {
             uid,
@@ -233,6 +234,7 @@ export class UserModel {
                 independantAge: 0,
                 firstBornYear: 0,
                 secondBornYear: 0,
+                spouseMonthlyContribution: 0,
             },
             investment: {
                 allocationETF: "",
