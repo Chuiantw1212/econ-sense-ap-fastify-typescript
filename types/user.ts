@@ -37,7 +37,7 @@ export interface IUserEstatePrice {
     town: string,
     buildingType: string,
     buildingAge: string,
-    hasParking: boolean,
+    hasParking: string | boolean,
 }
 
 export interface IUserEstateSize {
@@ -69,12 +69,12 @@ export interface IUserInvestment {
 
 export interface IUser {
     uid: string,
-    profile: IUserProfile,
-    career: IUserCareer,
-    retirement: IUserRetirement,
-    estatePrice: IUserEstatePrice,
-    estateSize: IUserEstateSize,
-    mortgage: IUserMortgage,
-    parenting: IUserParenting,
-    investment: IUserInvestment
+    profile?: IUserProfile,
+    career?: IUserCareer,
+    retirement?: IUserRetirement,
+    estatePrice?: IUserEstatePrice,
+    estateSize?: IUserEstateSize,
+    mortgage?: IUserMortgage,
+    parenting?: IUserParenting,
+    investment?: IUserInvestment
 }

@@ -20,15 +20,19 @@ export class UserModel {
         this.collection = firestore.collection('users')
     }
     async mergeProfile(uid: string, data: any = {}) {
-        const docSnapshot = await this.checkDuplicateData(uid)
+        const singleDocSnapshot = await this.checkSingleDoc(uid)
         const profile: IUserProfile = {
             gender: data.gender || '',
             dateOfBirth: data.dateOfBirth || ''
         }
-        this.updateSingleDocAttribute(docSnapshot, 'profile', profile)
+        const user: IUser = {
+            uid,
+            profile,
+        }
+        singleDocSnapshot.ref.update({ ...user })
     }
     async mergeCareer(uid: string, data: any = {}) {
-        const docSnapshot = await this.checkDuplicateData(uid)
+        const singleDocSnapshot = await this.checkSingleDoc(uid)
         const career: IUserCareer = {
             monthlyBasicPay: data.monthlyBasicPay || 0,
             insurance: {
@@ -41,10 +45,14 @@ export class UserModel {
             monthlyNetPay: data.monthlyNetPay || 0,
             monthlyExpense: data.monthlyExpense || 0
         }
-        this.updateSingleDocAttribute(docSnapshot, 'career', career)
+        const user: IUser = {
+            uid,
+            career,
+        }
+        singleDocSnapshot.ref.update({ ...user })
     }
     async mergeRetirement(uid: string, data: any = {}) {
-        const docSnapshot = await this.checkDuplicateData(uid)
+        const singleDocSnapshot = await this.checkSingleDoc(uid)
         const retirement: IUserRetirement = {
             age: data.age || 0,
             insurance: {
@@ -60,15 +68,83 @@ export class UserModel {
             qualityLevel: data.qualityLevel,
             percentileRank: data.percentileRank,
         }
-        this.updateSingleDocAttribute(docSnapshot, 'retirement', retirement)
+        const user: IUser = {
+            uid,
+            retirement,
+        }
+        singleDocSnapshot.ref.update({ ...user })
     }
-    async updateSingleDocAttribute(docSnapshot: DocumentSnapshot, attribute: string, value: any) {
-        const docRef = docSnapshot.ref
-        docRef.update({
-            [attribute]: value
-        })
+    async mergeEstatePrice(uid: string, data: any = {}) {
+        const singleDocSnapshot = await this.checkSingleDoc(uid)
+        const estatePrice: IUserEstatePrice = {
+            county: data.county || '',
+            town: data.town || '',
+            buildingType: data.buildingType || '',
+            buildingAge: data.buildingAge || '',
+            hasParking: data.hasParking || '',
+        }
+        const user: IUser = {
+            uid,
+            estatePrice,
+        }
+        singleDocSnapshot.ref.update({ ...user })
     }
-    async checkDuplicateData(uid: string) {
+    async mergeEstateSize(uid: string, data: any = {}) {
+        const singleDocSnapshot = await this.checkSingleDoc(uid)
+        const estateSize: IUserEstateSize = {
+            doubleBedRoom: data.doubleBedRoom || 0,
+            singleBedRoom: data.singleBedRoom || 0,
+            livingRoom: data.livingRoom || 0,
+            bathroom: data.bathroom || 0,
+            publicRatio: data.publicRatio || 0,
+        }
+        const user: IUser = {
+            uid,
+            estateSize,
+        }
+        singleDocSnapshot.ref.update({ ...user })
+    }
+    async mergeMortgage(uid: string, data: any = {}) {
+        const singleDocSnapshot = await this.checkSingleDoc(uid)
+        const mortgage: IUserMortgage = {
+            buyHouseYear: data.buyHouseYear || 0,
+            loanPercent: data.loanPercent || 0,
+            interestRate: data.interestRate || 0,
+            loanTerm: data.loanTerm || 0
+        }
+        const user: IUser = {
+            uid,
+            mortgage,
+        }
+        singleDocSnapshot.ref.update({ ...user })
+    }
+    async mergeParenting(uid: string, data: any = {}) {
+        const singleDocSnapshot = await this.checkSingleDoc(uid)
+        const parenting: IUserParenting = {
+            childAnnualExpense: data.childAnnualExpense || 0,
+            independantAge: data.independantAge || 0,
+            firstBornYear: data.firstBornYear || 0,
+            secondBornYear: data.secondBornYear || 0,
+        }
+        const user: IUser = {
+            uid,
+            parenting,
+        }
+        singleDocSnapshot.ref.update({ ...user })
+    }
+    async mergeInvestment(uid: string, data: any = {}) {
+        const singleDocSnapshot = await this.checkSingleDoc(uid)
+        const investment: IUserInvestment = {
+            allocationETF: data.allocationETF || '',
+            presentAsset: data.presentAsset || 0,
+        }
+        const user: IUser = {
+            uid,
+            investment,
+        }
+        singleDocSnapshot.ref.update({ ...user })
+    }
+    async checkSingleDoc(uid: string) {
         const targetQuery = this.collection.where('uid', '==', uid)
         const countData = await targetQuery.count().get()
         const count: number = countData.data().count
