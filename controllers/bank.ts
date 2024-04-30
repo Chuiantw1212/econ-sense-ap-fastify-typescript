@@ -13,7 +13,7 @@ export default fp(async function (fastify) {
                 interestRate,
                 portfolioIRR
             }
-            res.status(200).send(response)
+            res.code(200).send(response)
         } catch (error: any) {
             res.code(500).send(error.message || error)
         }
