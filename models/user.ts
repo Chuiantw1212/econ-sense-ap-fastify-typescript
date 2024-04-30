@@ -1,5 +1,5 @@
 import fp from 'fastify-plugin'
-import { CollectionReference, QuerySnapshot, } from 'firebase-admin/firestore'
+import { CollectionReference, Query, } from 'firebase-admin/firestore'
 import type { extendsFastifyInstance } from '../types/fastify'
 import type {
     IUserProfile,
@@ -20,16 +20,23 @@ export class UserModel {
         this.collection = firestore.collection('users')
     }
     async mergeByKey(uid: string, formKey: string, form: any) {
+        const targetQuery = await this.checkDuplicateData(uid)
+        this.updateSingleDocAttribute(targetQuery, formKey, form)
+    }
+    async updateSingleDocAttribute(targetQuery: Query, attribute: string, value: any) {
+        const docRef = (await targetQuery.get()).docs[0].ref
+        docRef.update({
+            [attribute]: value
+        })
+    }
+    async checkDuplicateData(uid: string) {
         const targetQuery = this.collection.where('uid', '==', uid)
         const countData = await targetQuery.count().get()
         const count: number = countData.data().count
         if (count !== 1) {
             throw '資料重複'
         }
-        const docRef = (await targetQuery.get()).docs[0].ref
-        docRef.update({
-            [formKey]: form
-        })
+        return targetQuery
     }
     async getUser(uid: string) {
         const targetQuery = this.collection.where('uid', '==', uid)
