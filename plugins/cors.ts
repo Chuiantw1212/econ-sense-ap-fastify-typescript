@@ -21,8 +21,10 @@ export default fp(async function (fastify, opts) {
                 origin,
                 optionsSuccessStatus: 200
             }
+            // console.log(process.env.MODE)
             // do not include CORS headers for requests from localhost
             if (process.env.MODE === 'development') {
+                console.log(process.env.MODE)
                 corsOptions.origin = true
             } else {
                 const requestOrigin = req.headers.origin || 'http://localhost:5173/'

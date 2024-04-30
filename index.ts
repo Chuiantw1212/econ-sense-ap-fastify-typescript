@@ -16,11 +16,13 @@ import SelectModel from './models/select'
 import JcicModel from './models/jcic'
 import NdcModel from './models/ndc'
 import BankModel from './models/bank'
+import UserModel from './models/user'
 // Controllsers
 import SelectController from './controllers/select'
 import BankController from './controllers/bank'
 import CalculateController from './controllers/calculate'
 import RootController from './controllers/root'
+import UserController from './controllers/user'
 const appService = async function (fastify: FastifyInstance, opts: FastifyPluginOptions) {
     const { ready, } = fastify
     // Plugins
@@ -34,11 +36,13 @@ const appService = async function (fastify: FastifyInstance, opts: FastifyPlugin
     fastify.register(JcicModel)
     fastify.register(NdcModel)
     fastify.register(BankModel)
+    fastify.register(UserModel)
     // Conterollers
     fastify.register(SelectController)
     fastify.register(BankController)
     fastify.register(CalculateController)
     fastify.register(RootController)
+    fastify.register(UserController)
     // Output log
     ready(() => {
         console.timeEnd('Server boot')

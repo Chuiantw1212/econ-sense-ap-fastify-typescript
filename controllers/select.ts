@@ -1,4 +1,4 @@
-import type { extendsFastifyInstance } from '../types/fastify.ts'
+import type { extendsFastifyInstance } from '../types/fastify'
 import fp from 'fastify-plugin'
 import { FastifyRequest, FastifyReply, } from 'fastify'
 export default fp(async function (fastify) {
@@ -15,7 +15,7 @@ export default fp(async function (fastify) {
                 ...countiesAndTownMap,
                 ...selectOptionsMap,
             }
-            res.status(200).send(result)
+            res.code(200).send(result)
         } catch (error: any) {
             res.code(500).send(error.message || error)
         }
