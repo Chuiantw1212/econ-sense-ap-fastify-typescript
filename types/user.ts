@@ -4,7 +4,7 @@ export interface IUserProfile {
 }
 
 export interface IUserCareer {
-    monthlyBasicPay: number,
+    monthlyBasicSalary: number,
     insurance: {
         salary: number,
     },
