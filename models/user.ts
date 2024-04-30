@@ -98,6 +98,7 @@ export class UserModel {
             bathroom: data.bathroom || 0,
             publicRatio: data.publicRatio || 0,
             balcany: data.balcany || 0,
+            parkingSpace: data.parkingSpace || 0
         }
         const user: IUser = {
             uid,
@@ -217,6 +218,7 @@ export class UserModel {
                 bathroom: 0,
                 publicRatio: 0,
                 balcany: 0,
+                parkingSpace: 0,
             },
             mortgage: {
                 buyHouseYear: 0,

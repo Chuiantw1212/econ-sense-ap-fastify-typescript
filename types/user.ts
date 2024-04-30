@@ -46,7 +46,8 @@ export interface IUserEstateSize {
     livingRoom: number,
     bathroom: number,
     publicRatio: number,
-    balcany: number
+    balcany: number,
+    parkingSpace: number,
 }
 
 export interface IUserMortgage {
