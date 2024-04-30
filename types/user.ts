@@ -1,4 +1,5 @@
 export interface IUserProfile {
+    yearOfBirth: string,
     dateOfBirth: string,
     gender: string,
 }
@@ -62,6 +63,7 @@ export interface IUserParenting {
     independantAge: number,
     firstBornYear: number,
     secondBornYear: number,
+    spouseMonthlyContribution: number,
 }
 
 export interface IUserInvestment {

@@ -23,6 +23,7 @@ export class UserModel {
         const singleDocSnapshot = await this.checkSingleDoc(uid)
         const profile: IUserProfile = {
             gender: data.gender || '',
+            yearOfBirth: data.yearOfBirth || '',
             dateOfBirth: data.dateOfBirth || ''
         }
         const user: IUser = {
@@ -127,6 +128,7 @@ export class UserModel {
             independantAge: data.independantAge || 0,
             firstBornYear: data.firstBornYear || 0,
             secondBornYear: data.secondBornYear || 0,
+            spouseMonthlyContribution: data.spouseMonthlyContribution || 0,
         }
         const user: IUser = {
             uid,
@@ -174,6 +176,7 @@ export class UserModel {
         const userForm: IUser = {
             uid,
             profile: {
+                yearOfBirth: "",
                 dateOfBirth: "",
                 gender: "",
             },
@@ -231,6 +234,7 @@ export class UserModel {
                 independantAge: 0,
                 firstBornYear: 0,
                 secondBornYear: 0,
+                spouseMonthlyContribution: 0,
             },
             investment: {
                 allocationETF: "",
