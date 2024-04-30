@@ -1,17 +1,6 @@
 import type { extendsFastifyInstance } from '../types/fastify'
 import { FastifyRequest, FastifyReply, } from 'fastify'
 import fp from 'fastify-plugin'
-import type {
-    IUserProfile,
-    IUserCareer,
-    IUserRetirement,
-    IUserEstatePrice,
-    IUserEstateSize,
-    IUserMortgage,
-    IUserParenting,
-    IUserInvestment,
-    IUser
-} from '../types/user'
 export default fp(async function (fastify) {
     const {
         UserModel,
@@ -22,90 +11,90 @@ export default fp(async function (fastify) {
         try {
             const idToken = req.headers.authorization || ''
             const user = await firebase.verifyIdToken(idToken)
-            const userPart = req.body as IUserProfile
-            await UserModel.mergeByKey(user.uid, 'profile', userPart)
+            const userPart = req.body as any
+            await UserModel.mergeProfile(user.uid, userPart)
             res.code(200).send()
         } catch (error: any) {
             res.code(500).send(error.message || error)
         }
     })
-    fastify.put('/user/career', async function (req: FastifyRequest, res: FastifyReply) {
-        try {
-            const idToken = req.headers.authorization || ''
-            const user = await firebase.verifyIdToken(idToken)
-            const userPart = req.body as IUserCareer
-            await UserModel.mergeByKey(user.uid, 'career', userPart)
-            res.code(200).send()
-        } catch (error: any) {
-            res.code(500).send(error.message || error)
-        }
-    })
-    fastify.put('/user/retirement', async function (req: FastifyRequest, res: FastifyReply) {
-        try {
-            const idToken = req.headers.authorization || ''
-            const user = await firebase.verifyIdToken(idToken)
-            const userPart = req.body as IUserRetirement
-            await UserModel.mergeByKey(user.uid, 'retirement', userPart)
-            res.code(200).send()
-        } catch (error: any) {
-            res.code(500).send(error.message || error)
-        }
-    })
-    fastify.put('/user/estatePrice', async function (req: FastifyRequest, res: FastifyReply) {
-        try {
-            const idToken = req.headers.authorization || ''
-            const user = await firebase.verifyIdToken(idToken)
-            const userPart = req.body as IUserEstatePrice
-            await UserModel.mergeByKey(user.uid, 'estatePrice', userPart)
-            res.code(200).send()
-        } catch (error: any) {
-            res.code(500).send(error.message || error)
-        }
-    })
-    fastify.put('/user/estateSize', async function (req: FastifyRequest, res: FastifyReply) {
-        try {
-            const idToken = req.headers.authorization || ''
-            const user = await firebase.verifyIdToken(idToken)
-            const userPart = req.body as IUserEstateSize
-            await UserModel.mergeByKey(user.uid, 'estateSize', userPart)
-            res.code(200).send()
-        } catch (error: any) {
-            res.code(500).send(error.message || error)
-        }
-    })
-    fastify.put('/user/mortgage', async function (req: FastifyRequest, res: FastifyReply) {
-        try {
-            const idToken = req.headers.authorization || ''
-            const user = await firebase.verifyIdToken(idToken)
-            const userPart = req.body as IUserMortgage
-            await UserModel.mergeByKey(user.uid, 'mortgage', userPart)
-            res.code(200).send()
-        } catch (error: any) {
-            res.code(500).send(error.message || error)
-        }
-    })
-    fastify.put('/user/parenting', async function (req: FastifyRequest, res: FastifyReply) {
-        try {
-            const idToken = req.headers.authorization || ''
-            const user = await firebase.verifyIdToken(idToken)
-            const userPart = req.body as IUserParenting
-            await UserModel.mergeByKey(user.uid, 'parenting', userPart)
-            res.code(200).send()
-        } catch (error: any) {
-            res.code(500).send(error.message || error)
-        }
-    })
-    fastify.put('/user/investment', async function (req: FastifyRequest, res: FastifyReply) {
-        try {
-            const idToken = req.headers.authorization || ''
-            const user = await firebase.verifyIdToken(idToken)
-            const userPart = req.body as IUserInvestment
-            await UserModel.mergeByKey(user.uid, 'investment', userPart)
-            res.code(200).send()
-        } catch (error: any) {
-            res.code(500).send(error.message || error)
-        }
-    })
+    // fastify.put('/user/career', async function (req: FastifyRequest, res: FastifyReply) {
+    //     try {
+    //         const idToken = req.headers.authorization || ''
+    //         const user = await firebase.verifyIdToken(idToken)
+    //         const userPart = req.body as IUserCareer
+    //         await UserModel.mergeByKey(user.uid, 'career', userPart)
+    //         res.code(200).send()
+    //     } catch (error: any) {
+    //         res.code(500).send(error.message || error)
+    //     }
+    // })
+    // fastify.put('/user/retirement', async function (req: FastifyRequest, res: FastifyReply) {
+    //     try {
+    //         const idToken = req.headers.authorization || ''
+    //         const user = await firebase.verifyIdToken(idToken)
+    //         const userPart = req.body as IUserRetirement
+    //         await UserModel.mergeByKey(user.uid, 'retirement', userPart)
+    //         res.code(200).send()
+    //     } catch (error: any) {
+    //         res.code(500).send(error.message || error)
+    //     }
+    // })
+    // fastify.put('/user/estatePrice', async function (req: FastifyRequest, res: FastifyReply) {
+    //     try {
+    //         const idToken = req.headers.authorization || ''
+    //         const user = await firebase.verifyIdToken(idToken)
+    //         const userPart = req.body as IUserEstatePrice
+    //         await UserModel.mergeByKey(user.uid, 'estatePrice', userPart)
+    //         res.code(200).send()
+    //     } catch (error: any) {
+    //         res.code(500).send(error.message || error)
+    //     }
+    // })
+    // fastify.put('/user/estateSize', async function (req: FastifyRequest, res: FastifyReply) {
+    //     try {
+    //         const idToken = req.headers.authorization || ''
+    //         const user = await firebase.verifyIdToken(idToken)
+    //         const userPart = req.body as IUserEstateSize
+    //         await UserModel.mergeByKey(user.uid, 'estateSize', userPart)
+    //         res.code(200).send()
+    //     } catch (error: any) {
+    //         res.code(500).send(error.message || error)
+    //     }
+    // })
+    // fastify.put('/user/mortgage', async function (req: FastifyRequest, res: FastifyReply) {
+    //     try {
+    //         const idToken = req.headers.authorization || ''
+    //         const user = await firebase.verifyIdToken(idToken)
+    //         const userPart = req.body as IUserMortgage
+    //         await UserModel.mergeByKey(user.uid, 'mortgage', userPart)
+    //         res.code(200).send()
+    //     } catch (error: any) {
+    //         res.code(500).send(error.message || error)
+    //     }
+    // })
+    // fastify.put('/user/parenting', async function (req: FastifyRequest, res: FastifyReply) {
+    //     try {
+    //         const idToken = req.headers.authorization || ''
+    //         const user = await firebase.verifyIdToken(idToken)
+    //         const userPart = req.body as IUserParenting
+    //         await UserModel.mergeByKey(user.uid, 'parenting', userPart)
+    //         res.code(200).send()
+    //     } catch (error: any) {
+    //         res.code(500).send(error.message || error)
+    //     }
+    // })
+    // fastify.put('/user/investment', async function (req: FastifyRequest, res: FastifyReply) {
+    //     try {
+    //         const idToken = req.headers.authorization || ''
+    //         const user = await firebase.verifyIdToken(idToken)
+    //         const userPart = req.body as IUserInvestment
+    //         await UserModel.mergeByKey(user.uid, 'investment', userPart)
+    //         res.code(200).send()
+    //     } catch (error: any) {
+    //         res.code(500).send(error.message || error)
+    //     }
+    // })
     fastify.post('/user/new', async function (req: FastifyRequest, res: FastifyReply) {
         try {
             const idToken = req.headers.authorization || ''

@@ -1,16 +1,16 @@
 import fp from 'fastify-plugin'
-import { CollectionReference, Query, } from 'firebase-admin/firestore'
+import { CollectionReference, Query, DocumentSnapshot, DocumentData } from 'firebase-admin/firestore'
 import type { extendsFastifyInstance } from '../types/fastify'
-import type {
-    IUserProfile,
-    IUserCareer,
-    IUserRetirement,
-    IUserEstatePrice,
-    IUserEstateSize,
-    IUserMortgage,
-    IUserParenting,
-    IUserInvestment,
-    IUser
+import {
+    type IUserProfile,
+    type IUserCareer,
+    type IUserRetirement,
+    type IUserEstatePrice,
+    type IUserEstateSize,
+    type IUserMortgage,
+    type IUserParenting,
+    type IUserInvestment,
+    type IUser,
 } from '../types/user'
 
 export class UserModel {
@@ -19,12 +19,16 @@ export class UserModel {
         const { firestore } = fastify.firebase
         this.collection = firestore.collection('users')
     }
-    async mergeByKey(uid: string, formKey: string, form: any) {
-        const targetQuery = await this.checkDuplicateData(uid)
-        this.updateSingleDocAttribute(targetQuery, formKey, form)
+    async mergeProfile(uid: string, data: any) {
+        const docData = await this.checkDuplicateData(uid)
+        const profile: IUserProfile = {
+            gender: data.gender,
+            dateOfBirth: data.dateOfBirth
+        }
+        this.updateSingleDocAttribute(docData, 'profile', profile)
     }
-    async updateSingleDocAttribute(targetQuery: Query, attribute: string, value: any) {
-        const docRef = (await targetQuery.get()).docs[0].ref
+    async updateSingleDocAttribute(docData: DocumentSnapshot, attribute: string, value: any) {
+        const docRef = docData.ref
         docRef.update({
             [attribute]: value
         })
@@ -36,7 +40,7 @@ export class UserModel {
         if (count !== 1) {
             throw '資料重複'
         }
-        return targetQuery
+        return (await targetQuery.get()).docs[0]
     }
     async getUser(uid: string) {
         const targetQuery = this.collection.where('uid', '==', uid)
