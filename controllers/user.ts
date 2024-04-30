@@ -1,19 +1,19 @@
 import type { extendsFastifyInstance } from '../types/fastify'
 import { FastifyRequest, FastifyReply, } from 'fastify'
 import fp from 'fastify-plugin'
-import type { IUserForm } from '../types/user'
+import type { IUser } from '../types/user'
 export default fp(async function (fastify) {
     const {
         UserModel,
         BankModel,
         firebase
     } = fastify as extendsFastifyInstance
-    fastify.put('/user/form/profile', async function (req: FastifyRequest, res: FastifyReply) {
+    fastify.put('/user/profile', async function (req: FastifyRequest, res: FastifyReply) {
         try {
             const idToken = req.headers.authorization || ''
             const user = await firebase.verifyIdToken(idToken)
             const userFormPart = req.body as any
-            const userForm: IUserForm = await UserModel.addNewUserForm(user.uid)
+            // const userForm: IUser = await UserModel.margeFinanceProfile(user.uid)
             // const interestRate = await BankModel.fetchInterestRate()
             // userForm.mortgage.interestRate = interestRate
             res.status(200).send()
@@ -22,11 +22,11 @@ export default fp(async function (fastify) {
             res.status(500).send(error.message || error)
         }
     })
-    fastify.post('/user/finance/new', async function (req: FastifyRequest, res: FastifyReply) {
+    fastify.post('/user/new', async function (req: FastifyRequest, res: FastifyReply) {
         try {
             const idToken = req.headers.authorization || ''
             const user = await firebase.verifyIdToken(idToken)
-            const userForm: IUserForm = await UserModel.addNewUserForm(user.uid)
+            const userForm: IUser = await UserModel.addNewUser(user.uid)
             const interestRate = await BankModel.fetchInterestRate()
             userForm.mortgage.interestRate = interestRate
             res.status(200).send(userForm)
@@ -35,11 +35,11 @@ export default fp(async function (fastify) {
             res.status(500).send(error.message || error)
         }
     })
-    fastify.post('/user/finance/:uid', async function (req: FastifyRequest, res: FastifyReply) {
+    fastify.post('/user/:uid', async function (req: FastifyRequest, res: FastifyReply) {
         try {
             const idToken = req.headers.authorization || ''
             const user = await firebase.verifyIdToken(idToken)
-            const userForm = await UserModel.getUserForm(user.uid)
+            const userForm = await UserModel.getUser(user.uid)
             res.status(200).send(userForm)
         } catch (error: any) {
             console.log(error.message || error)

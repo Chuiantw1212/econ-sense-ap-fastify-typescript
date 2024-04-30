@@ -1,9 +1,9 @@
-export interface IUserFormProfile {
+export interface IUserProfile {
     dateOfBirth: string,
     gender: string,
 }
 
-export interface IUserFormCareer {
+export interface IUserCareer {
     monthlyBasicPay: number,
     insurance: {
         salary: number,
@@ -16,7 +16,7 @@ export interface IUserFormCareer {
     monthlyExpense: number
 }
 
-export interface IUserFormRetirement {
+export interface IUserRetirement {
     age: number,
     insurance: {
         presentSeniority: number,
@@ -32,7 +32,7 @@ export interface IUserFormRetirement {
     percentileRank: number,
 }
 
-export interface IUserFormEstatePrice {
+export interface IUserEstatePrice {
     county: string,
     town: string,
     buildingType: string,
@@ -40,7 +40,7 @@ export interface IUserFormEstatePrice {
     hasParking: boolean,
 }
 
-export interface IUserFormEstateSize {
+export interface IUserEstateSize {
     doubleBedRoom: number,
     singleBedRoom: number,
     livingRoom: number,
@@ -48,7 +48,7 @@ export interface IUserFormEstateSize {
     publicRatio: number,
 }
 
-export interface IUserFormMortgage {
+export interface IUserMortgage {
     buyHouseYear: number,
     loanPercent: number,
     interestRate: number,
@@ -62,19 +62,19 @@ export interface IUserParenting {
     secondBornYear: number,
 }
 
-export interface IUserFormInvestment {
+export interface IUserInvestment {
     allocationETF: string,
     presentAsset: number,
 }
 
-export interface IUserForm {
+export interface IUser {
     uid: string,
-    profile: IUserFormProfile,
-    career: IUserFormCareer,
-    retirement: IUserFormRetirement,
-    estatePrice: IUserFormEstatePrice,
-    estateSize: IUserFormEstateSize,
-    mortgage: IUserFormMortgage,
+    profile: IUserProfile,
+    career: IUserCareer,
+    retirement: IUserRetirement,
+    estatePrice: IUserEstatePrice,
+    estateSize: IUserEstateSize,
+    mortgage: IUserMortgage,
     parenting: IUserParenting,
-    investment: IUserFormInvestment
+    investment: IUserInvestment
 }

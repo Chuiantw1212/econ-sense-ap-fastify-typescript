@@ -1,7 +1,7 @@
 import fp from 'fastify-plugin'
 import { CollectionReference, QuerySnapshot, } from 'firebase-admin/firestore'
 import type { extendsFastifyInstance } from '../types/fastify'
-import type { IUserForm } from '../types/user'
+import type { IUser } from '../types/user'
 
 export class UserModel {
     collection: CollectionReference
@@ -9,7 +9,7 @@ export class UserModel {
         const { firestore } = fastify.firebase
         this.collection = firestore.collection('users')
     }
-    async getUserForm(uid: string) {
+    async getUser(uid: string) {
         const targetQuery = this.collection.where('uid', '==', uid)
         const countData = await targetQuery.count().get()
         const count: number = countData.data().count
@@ -18,14 +18,14 @@ export class UserModel {
             return docData
         }
     }
-    async addNewUserForm(uid: string) {
+    async addNewUser(uid: string) {
         const targetQuery = this.collection.where('uid', '==', uid)
         const countData = await targetQuery.count().get()
         const count: number = countData.data().count
         if (count !== 0) {
             throw '資料重複'
         }
-        const userForm: IUserForm = {
+        const userForm: IUser = {
             uid,
             profile: {
                 dateOfBirth: "",
