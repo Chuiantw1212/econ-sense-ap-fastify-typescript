@@ -97,6 +97,7 @@ export class UserModel {
             livingRoom: data.livingRoom || 0,
             bathroom: data.bathroom || 0,
             publicRatio: data.publicRatio || 0,
+            balcany: data.balcany || 0,
         }
         const user: IUser = {
             uid,
@@ -207,7 +208,7 @@ export class UserModel {
                 town: "",
                 buildingType: "",
                 buildingAge: "",
-                hasParking: false,
+                hasParking: "",
             },
             estateSize: {
                 doubleBedRoom: 0,
@@ -215,6 +216,7 @@ export class UserModel {
                 livingRoom: 0,
                 bathroom: 0,
                 publicRatio: 0,
+                balcany: 0,
             },
             mortgage: {
                 buyHouseYear: 0,
