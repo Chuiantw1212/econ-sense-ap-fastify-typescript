@@ -1,13 +1,35 @@
 import fp from 'fastify-plugin'
 import { CollectionReference, QuerySnapshot, } from 'firebase-admin/firestore'
 import type { extendsFastifyInstance } from '../types/fastify'
-import type { IUser } from '../types/user'
+import type {
+    IUserProfile,
+    IUserCareer,
+    IUserRetirement,
+    IUserEstatePrice,
+    IUserEstateSize,
+    IUserMortgage,
+    IUserParenting,
+    IUserInvestment,
+    IUser
+} from '../types/user'
 
 export class UserModel {
     collection: CollectionReference
     constructor(fastify: extendsFastifyInstance) {
         const { firestore } = fastify.firebase
         this.collection = firestore.collection('users')
+    }
+    async mergeByKey(uid: string, formKey: string, form: any) {
+        const targetQuery = this.collection.where('uid', '==', uid)
+        const countData = await targetQuery.count().get()
+        const count: number = countData.data().count
+        if (count !== 1) {
+            throw '資料重複'
+        }
+        const docRef = (await targetQuery.get()).docs[0].ref
+        docRef.update({
+            [formKey]: form
+        })
     }
     async getUser(uid: string) {
         const targetQuery = this.collection.where('uid', '==', uid)
