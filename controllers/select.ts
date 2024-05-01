@@ -8,7 +8,6 @@ export default fp(async function (fastify) {
     } = fastify as extendsFastifyInstance
     fastify.get('/select', async function (req: FastifyRequest, res: FastifyReply) {
         try {
-
             const countiesAndTownMap = await LocationModel.getCountiesAndTowns()
             const selectOptionsMap = await SelectModel.getOptionsMap()
             const result = {

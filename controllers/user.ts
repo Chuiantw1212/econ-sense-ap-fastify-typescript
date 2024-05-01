@@ -116,6 +116,7 @@ export default fp(async function (fastify) {
             const idToken = req.headers.authorization || ''
             const user = await firebase.verifyIdToken(idToken)
             const userForm = await UserModel.getUser(user.uid)
+            
             res.code(200).send(userForm)
         } catch (error: any) {
             res.code(500).send(error.message || error)

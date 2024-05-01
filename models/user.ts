@@ -27,6 +27,7 @@ export class UserModel {
             dateOfBirth: data.dateOfBirth || ''
         }
         const user: IUser = {
+            id: singleDocSnapshot.id,
             uid,
             profile,
         }
@@ -47,6 +48,7 @@ export class UserModel {
             monthlyExpense: data.monthlyExpense || 0
         }
         const user: IUser = {
+            id: singleDocSnapshot.id,
             uid,
             career,
         }
@@ -70,6 +72,7 @@ export class UserModel {
             percentileRank: data.percentileRank,
         }
         const user: IUser = {
+            id: singleDocSnapshot.id,
             uid,
             retirement,
         }
@@ -85,6 +88,7 @@ export class UserModel {
             hasParking: data.hasParking || '',
         }
         const user: IUser = {
+            id: singleDocSnapshot.id,
             uid,
             estatePrice,
         }
@@ -102,6 +106,7 @@ export class UserModel {
             parkingSpace: data.parkingSpace || 0
         }
         const user: IUser = {
+            id: singleDocSnapshot.id,
             uid,
             estateSize,
         }
@@ -116,6 +121,7 @@ export class UserModel {
             loanTerm: data.loanTerm || 0
         }
         const user: IUser = {
+            id: singleDocSnapshot.id,
             uid,
             mortgage,
         }
@@ -129,8 +135,10 @@ export class UserModel {
             firstBornYear: data.firstBornYear || 0,
             secondBornYear: data.secondBornYear || 0,
             spouseMonthlyContribution: data.spouseMonthlyContribution || 0,
+            insurance: data.insurance || 0,
         }
         const user: IUser = {
+            id: singleDocSnapshot.id,
             uid,
             parenting,
         }
@@ -143,6 +151,7 @@ export class UserModel {
             presentAsset: data.presentAsset || 0,
         }
         const user: IUser = {
+            id: singleDocSnapshot.id,
             uid,
             investment,
         }
@@ -173,7 +182,9 @@ export class UserModel {
         if (count !== 0) {
             throw '資料重複'
         }
+        const docRef = this.collection.doc()
         const userForm: IUser = {
+            id: docRef.id,
             uid,
             profile: {
                 yearOfBirth: "",
@@ -235,13 +246,14 @@ export class UserModel {
                 firstBornYear: 0,
                 secondBornYear: 0,
                 spouseMonthlyContribution: 0,
+                insurance: 0,
             },
             investment: {
                 allocationETF: "",
                 presentAsset: 0,
             }
         }
-        this.collection.add(userForm)
+        this.collection.doc(userForm.id).set(userForm)
         return userForm
     }
 }

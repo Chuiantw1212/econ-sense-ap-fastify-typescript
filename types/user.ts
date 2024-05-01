@@ -64,6 +64,7 @@ export interface IUserParenting {
     firstBornYear: number,
     secondBornYear: number,
     spouseMonthlyContribution: number,
+    insurance: number,
 }
 
 export interface IUserInvestment {
@@ -73,6 +74,7 @@ export interface IUserInvestment {
 
 export interface IUser {
     uid: string,
+    id: string, // document id
     profile?: IUserProfile,
     career?: IUserCareer,
     retirement?: IUserRetirement,
