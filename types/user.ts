@@ -6,11 +6,7 @@ export interface IUserProfile {
 
 export interface IUserCareer {
     monthlyBasicSalary: number,
-    insurance: {
-        salary: number,
-    },
     pension: {
-        salary: number,
         rate: number,
     },
     monthlyNetPay: number,
