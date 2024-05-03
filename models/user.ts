@@ -86,6 +86,7 @@ export class UserModel {
             buildingType: data.buildingType || '',
             buildingAge: data.buildingAge || '',
             hasParking: data.hasParking || '',
+            budget: data.budget || 0,
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
@@ -135,7 +136,7 @@ export class UserModel {
             firstBornYear: data.firstBornYear || 0,
             secondBornYear: data.secondBornYear || 0,
             spouseMonthlyContribution: data.spouseMonthlyContribution || 0,
-            insurance: data.insurance || 0,
+            lifeInsurance: data.lifeInsurance || 0,
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
@@ -224,6 +225,7 @@ export class UserModel {
                 buildingType: "",
                 buildingAge: "",
                 hasParking: "",
+                budget: 0,
             },
             estateSize: {
                 doubleBedRoom: 0,
@@ -246,7 +248,7 @@ export class UserModel {
                 firstBornYear: 0,
                 secondBornYear: 0,
                 spouseMonthlyContribution: 0,
-                insurance: 0,
+                lifeInsurance: 0,
             },
             investment: {
                 allocationETF: "",
