@@ -37,11 +37,7 @@ export class UserModel {
         const singleDocSnapshot = await this.checkSingleDoc(uid)
         const career: IUserCareer = {
             monthlyBasicSalary: data.monthlyBasicSalary || 0,
-            insurance: {
-                salary: data.insurance.salary || 0,
-            },
             pension: {
-                salary: data.pension.salary || 0,
                 rate: data.pension.rate || 0,
             },
             monthlyNetPay: data.monthlyNetPay || 0,
@@ -86,6 +82,8 @@ export class UserModel {
             buildingType: data.buildingType || '',
             buildingAge: data.buildingAge || '',
             hasParking: data.hasParking || '',
+            budget: data.budget || 0,
+            budgetGoal: data.budgetGoal || 0,
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
@@ -135,7 +133,7 @@ export class UserModel {
             firstBornYear: data.firstBornYear || 0,
             secondBornYear: data.secondBornYear || 0,
             spouseMonthlyContribution: data.spouseMonthlyContribution || 0,
-            insurance: data.insurance || 0,
+            lifeInsurance: data.lifeInsurance || 0,
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
@@ -193,11 +191,7 @@ export class UserModel {
             },
             career: {
                 monthlyBasicSalary: 0,
-                insurance: {
-                    salary: 0,
-                },
                 pension: {
-                    salary: 0,
                     rate: 0,
                 },
                 monthlyNetPay: 0,
@@ -224,6 +218,8 @@ export class UserModel {
                 buildingType: "",
                 buildingAge: "",
                 hasParking: "",
+                budget: 0,
+                budgetGoal: 0,
             },
             estateSize: {
                 doubleBedRoom: 0,
@@ -246,7 +242,7 @@ export class UserModel {
                 firstBornYear: 0,
                 secondBornYear: 0,
                 spouseMonthlyContribution: 0,
-                insurance: 0,
+                lifeInsurance: 0,
             },
             investment: {
                 allocationETF: "",
