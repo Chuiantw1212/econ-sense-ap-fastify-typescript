@@ -7,8 +7,7 @@
     "start": "node dist/index.js",
     "dev": "gcloud config configurations activate econ && nodemon index.ts",
     "build": "tsc -p tsconfig.json",
-    "predeploy": "tsc -p tsconfig.json",
-    "deploy": "gcloud config configurations activate econ && gcloud app deploy"
+    "predeploy": "tsc -p tsconfig.json"
   },
   "keywords": [],
   "author": "",
