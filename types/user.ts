@@ -36,9 +36,10 @@ export interface IUserInvestment {
 
 export interface IUserSpouse {
     yearOfMarriage: string,
-    marriageLength: 0,
-    monthlyContribution: 0,
-    weddingExpense: 0,
+    marriageLength: number,
+    monthlyContribution: number,
+    weddingExpense: number,
+    yearOfBirth: number,
 }
 
 export interface IUserParenting {

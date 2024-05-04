@@ -37,6 +37,7 @@ export class UserModel {
     async mergeSpouse(uid: string, data: any = {}) {
         const singleDocSnapshot = await this.checkSingleDoc(uid)
         const spouse: IUserSpouse = {
+            yearOfBirth: data.yearOfBirth || '',
             yearOfMarriage: data.yearOfMarriage || '',
             marriageLength: data.marriageLength || 0,
             monthlyContribution: data.monthlyContribution || 0,
@@ -228,6 +229,25 @@ export class UserModel {
                 qualityLevel: 0,
                 percentileRank: 0,
             },
+            investment: {
+                allocationETF: "",
+                presentAsset: 0,
+            },
+            spouse: {
+                yearOfMarriage: '',
+                marriageLength: 0,
+                monthlyContribution: 0,
+                weddingExpense: 0,
+                yearOfBirth: 0,
+            },
+            parenting: {
+                childAnnualExpense: 0,
+                independantAge: 0,
+                firstBornYear: 0,
+                secondBornYear: 0,
+                spouseMonthlyContribution: 0,
+                lifeInsurance: 0,
+            },
             estatePrice: {
                 county: "",
                 town: "",
@@ -252,18 +272,6 @@ export class UserModel {
                 interestRate: 0,
                 loanTerm: 0
             },
-            parenting: {
-                childAnnualExpense: 0,
-                independantAge: 0,
-                firstBornYear: 0,
-                secondBornYear: 0,
-                spouseMonthlyContribution: 0,
-                lifeInsurance: 0,
-            },
-            investment: {
-                allocationETF: "",
-                presentAsset: 0,
-            }
         }
         this.collection.doc(userForm.id).set(userForm)
         return userForm
