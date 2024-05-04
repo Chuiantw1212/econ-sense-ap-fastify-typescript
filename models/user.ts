@@ -1,16 +1,17 @@
 import fp from 'fastify-plugin'
 import { CollectionReference, Query, DocumentSnapshot, DocumentData } from 'firebase-admin/firestore'
 import type { extendsFastifyInstance } from '../types/fastify'
-import {
-    type IUserProfile,
-    type IUserCareer,
-    type IUserRetirement,
-    type IUserEstatePrice,
-    type IUserEstateSize,
-    type IUserMortgage,
-    type IUserParenting,
-    type IUserInvestment,
-    type IUser,
+import type {
+    IUserProfile,
+    IUserCareer,
+    IUserRetirement,
+    IUserInvestment,
+    IUserSpouse,
+    IUserParenting,
+    IUserEstatePrice,
+    IUserEstateSize,
+    IUserMortgage,
+    IUser,
 } from '../types/user'
 
 export class UserModel {
@@ -30,6 +31,22 @@ export class UserModel {
             id: singleDocSnapshot.id,
             uid,
             profile,
+        }
+        singleDocSnapshot.ref.update({ ...user })
+    }
+    async mergeSpouse(uid: string, data: any = {}) {
+        const singleDocSnapshot = await this.checkSingleDoc(uid)
+        const spouse: IUserSpouse = {
+            yearOfBirth: data.yearOfBirth || '',
+            yearOfMarriage: data.yearOfMarriage || '',
+            marriageLength: data.marriageLength || 0,
+            monthlyContribution: data.monthlyContribution || 0,
+            weddingExpense: data.weddingExpense || 0,
+        }
+        const user: IUser = {
+            id: singleDocSnapshot.id,
+            uid,
+            spouse,
         }
         singleDocSnapshot.ref.update({ ...user })
     }
@@ -212,6 +229,25 @@ export class UserModel {
                 qualityLevel: 0,
                 percentileRank: 0,
             },
+            investment: {
+                allocationETF: "",
+                presentAsset: 0,
+            },
+            spouse: {
+                yearOfMarriage: '',
+                marriageLength: 0,
+                monthlyContribution: 0,
+                weddingExpense: 0,
+                yearOfBirth: 0,
+            },
+            parenting: {
+                childAnnualExpense: 0,
+                independantAge: 0,
+                firstBornYear: 0,
+                secondBornYear: 0,
+                spouseMonthlyContribution: 0,
+                lifeInsurance: 0,
+            },
             estatePrice: {
                 county: "",
                 town: "",
@@ -236,18 +272,6 @@ export class UserModel {
                 interestRate: 0,
                 loanTerm: 0
             },
-            parenting: {
-                childAnnualExpense: 0,
-                independantAge: 0,
-                firstBornYear: 0,
-                secondBornYear: 0,
-                spouseMonthlyContribution: 0,
-                lifeInsurance: 0,
-            },
-            investment: {
-                allocationETF: "",
-                presentAsset: 0,
-            }
         }
         this.collection.doc(userForm.id).set(userForm)
         return userForm
