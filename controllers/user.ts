@@ -74,6 +74,17 @@ export default fp(async function (fastify) {
             res.code(500).send(error.message || error)
         }
     })
+    fastify.put('/user/spouse', async function (req: FastifyRequest, res: FastifyReply) {
+        try {
+            const idToken = req.headers.authorization || ''
+            const user = await firebase.verifyIdToken(idToken)
+            const userPart = req.body as any
+            await UserModel.mergeSpouse(user.uid, userPart)
+            res.code(200).send()
+        } catch (error: any) {
+            res.code(500).send(error.message || error)
+        }
+    })
     fastify.put('/user/parenting', async function (req: FastifyRequest, res: FastifyReply) {
         try {
             const idToken = req.headers.authorization || ''
@@ -116,7 +127,7 @@ export default fp(async function (fastify) {
             const idToken = req.headers.authorization || ''
             const user = await firebase.verifyIdToken(idToken)
             const userForm = await UserModel.getUser(user.uid)
-            
+
             res.code(200).send(userForm)
         } catch (error: any) {
             res.code(500).send(error.message || error)

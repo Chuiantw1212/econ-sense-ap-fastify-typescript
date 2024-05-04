@@ -29,6 +29,27 @@ export interface IUserRetirement {
     percentileRank: number,
 }
 
+export interface IUserInvestment {
+    allocationETF: string,
+    presentAsset: number,
+}
+
+export interface IUserSpouse {
+    yearOfMarriage: string,
+    marriageLength: 0,
+    monthlyContribution: 0,
+    weddingExpense: 0,
+}
+
+export interface IUserParenting {
+    childAnnualExpense: number,
+    independantAge: number,
+    firstBornYear: number,
+    secondBornYear: number,
+    spouseMonthlyContribution: number,
+    lifeInsurance: number,
+}
+
 export interface IUserEstatePrice {
     county: string,
     town: string,
@@ -56,26 +77,13 @@ export interface IUserMortgage {
     loanTerm: number,
 }
 
-export interface IUserParenting {
-    childAnnualExpense: number,
-    independantAge: number,
-    firstBornYear: number,
-    secondBornYear: number,
-    spouseMonthlyContribution: number,
-    lifeInsurance: number,
-}
-
-export interface IUserInvestment {
-    allocationETF: string,
-    presentAsset: number,
-}
-
 export interface IUser {
     uid: string,
     id: string, // document id
     profile?: IUserProfile,
     career?: IUserCareer,
     retirement?: IUserRetirement,
+    spouse?: IUserSpouse,
     estatePrice?: IUserEstatePrice,
     estateSize?: IUserEstateSize,
     mortgage?: IUserMortgage,
