@@ -25,7 +25,8 @@ export class UserModel {
         const profile: IUserProfile = {
             gender: data.gender || '',
             yearOfBirth: data.yearOfBirth || '',
-            dateOfBirth: data.dateOfBirth || ''
+            dateOfBirth: data.dateOfBirth || '',
+            insuranceType: data.insuranceType || ''
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
@@ -205,6 +206,7 @@ export class UserModel {
                 yearOfBirth: "",
                 dateOfBirth: "",
                 gender: "",
+                insuranceType: '',
             },
             career: {
                 monthlyBasicSalary: 0,
