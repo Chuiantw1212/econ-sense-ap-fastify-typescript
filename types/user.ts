@@ -3,6 +3,7 @@ export interface IUserProfile {
     dateOfBirth: string,
     gender: string,
     insuranceType: string,
+    yearOfMarriage: string,
 }
 
 export interface IUserCareer {
