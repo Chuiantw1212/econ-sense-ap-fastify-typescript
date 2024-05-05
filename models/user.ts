@@ -55,6 +55,7 @@ export class UserModel {
     async mergeCareer(uid: string, data: any = {}) {
         const singleDocSnapshot = await this.checkSingleDoc(uid)
         const career: IUserCareer = {
+            headCount: data.headCount || 0,
             monthlyBasicSalary: data.monthlyBasicSalary || 0,
             pension: {
                 rate: data.pension.rate || 0,
@@ -211,6 +212,7 @@ export class UserModel {
                 yearOfMarriage: '',
             },
             career: {
+                headCount: 0,
                 monthlyBasicSalary: 0,
                 pension: {
                     rate: 0,
