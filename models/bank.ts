@@ -11,6 +11,11 @@ export class BankModel {
         this.fetchInterestRate()
         this.fetchCoreSeriesIRR()
     }
+    async getInterestRate(): Promise<number> {
+        const interestRateOptions: IOptionsItem[] = await this.getConfigByKey('interestRate')
+        const interestRate = interestRateOptions[0].value
+        return Number(interestRate)
+    }
     async getConfigByKey(key: string) {
         const options = await this.selectModel.getOptionsByKey()
         if (options.length) {
@@ -74,11 +79,13 @@ export class BankModel {
             })
             const mostRecentItem = filteredItems[0]
             const interestRate = mostRecentItem.innerHTML.replaceAll(/(<[^>]*>|\n)/g, '')
-            const option: IOptionsItem = {
+            const options: IOptionsItem[] = []
+            options.push({
                 label: 'interestRate',
                 value: interestRate
-            }
-            this.selectModel.replaceByKey('interestRate', [option])
+            })
+            this.selectModel.replaceByKey('interestRate', options)
+            return options
         } catch (error: any) {
             console.log(error.message || error)
         }

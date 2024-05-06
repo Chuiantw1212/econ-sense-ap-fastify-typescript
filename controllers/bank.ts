@@ -1,7 +1,6 @@
 import type { extendsFastifyInstance } from '../types/fastify'
 import fp from 'fastify-plugin'
 import { FastifyRequest, FastifyReply, } from 'fastify'
-import type { IOptionsItem, } from '../types/select'
 
 export default fp(async function (fastify) {
     const {
@@ -9,10 +8,10 @@ export default fp(async function (fastify) {
     } = fastify as extendsFastifyInstance
     fastify.get('/bank/config/interestRate', async function (req: FastifyRequest, res: FastifyReply) {
         try {
-            const interestRateOptions: IOptionsItem[] = await BankModel.getConfigByKey('interestRate')
-            const interestRate = interestRateOptions[0].value
+            const interestRate: number = await BankModel.getInterestRate()
             res.code(200).send(interestRate)
         } catch (error: any) {
+            console.trace(error.message || error)
             res.code(500).send(error.message || error)
         }
     })
@@ -21,6 +20,7 @@ export default fp(async function (fastify) {
             const portfolioIRR = await BankModel.getConfigByKey('ishareCoreETF')
             res.code(200).send(portfolioIRR)
         } catch (error: any) {
+            console.trace(error.message || error)
             res.code(500).send(error.message || error)
         }
     })
