@@ -25,7 +25,9 @@ export class UserModel {
         const profile: IUserProfile = {
             gender: data.gender || '',
             yearOfBirth: data.yearOfBirth || '',
-            dateOfBirth: data.dateOfBirth || ''
+            dateOfBirth: data.dateOfBirth || '',
+            insuranceType: data.insuranceType || '',
+            yearOfMarriage: data.yearOfMarriage || ''
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
@@ -53,6 +55,8 @@ export class UserModel {
     async mergeCareer(uid: string, data: any = {}) {
         const singleDocSnapshot = await this.checkSingleDoc(uid)
         const career: IUserCareer = {
+            headCount: data.headCount || 0,
+            laborInsuranceType: data.laborInsuranceType || '',
             monthlyBasicSalary: data.monthlyBasicSalary || 0,
             pension: {
                 rate: data.pension.rate || 0,
@@ -99,8 +103,7 @@ export class UserModel {
             buildingType: data.buildingType || '',
             buildingAge: data.buildingAge || '',
             hasParking: data.hasParking || '',
-            budget: data.budget || 0,
-            budgetGoal: data.budgetGoal || 0,
+            unitPrice: data.unitPrice || 0,
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
@@ -118,7 +121,8 @@ export class UserModel {
             bathroom: data.bathroom || 0,
             publicRatio: data.publicRatio || 0,
             balcany: data.balcany || 0,
-            parkingSpace: data.parkingSpace || 0
+            parkingSpace: data.parkingSpace || 0,
+            floorSize: data.floorSize || 0,
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
@@ -130,10 +134,15 @@ export class UserModel {
     async mergeMortgage(uid: string, data: any = {}) {
         const singleDocSnapshot = await this.checkSingleDoc(uid)
         const mortgage: IUserMortgage = {
-            buyHouseYear: data.buyHouseYear || 0,
-            loanPercent: data.loanPercent || 0,
+            downpayYear: data.downpayYear || 0,
+            downpayPercent: data.downpayPercent || 0,
             interestRate: data.interestRate || 0,
-            loanTerm: data.loanTerm || 0
+            loanTerm: data.loanTerm || 0,
+            totalPrice: data.totalPrice || 0,
+            totalPriceEstimated: data.totalPriceEstimated || 0,
+            downpay: data.downpay || 0,
+            downpayGoal: data.downpayGoal || 0,
+
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
@@ -205,8 +214,12 @@ export class UserModel {
                 yearOfBirth: "",
                 dateOfBirth: "",
                 gender: "",
+                insuranceType: '',
+                yearOfMarriage: '',
             },
             career: {
+                headCount: 0,
+                laborInsuranceType: '',
                 monthlyBasicSalary: 0,
                 pension: {
                     rate: 0,
@@ -254,8 +267,7 @@ export class UserModel {
                 buildingType: "",
                 buildingAge: "",
                 hasParking: "",
-                budget: 0,
-                budgetGoal: 0,
+                unitPrice: 0,
             },
             estateSize: {
                 doubleBedRoom: 0,
@@ -265,12 +277,17 @@ export class UserModel {
                 publicRatio: 0,
                 balcany: 0,
                 parkingSpace: 0,
+                floorSize: 0,
             },
             mortgage: {
-                buyHouseYear: 0,
-                loanPercent: 0,
+                totalPrice: 0,
+                totalPriceEstimated: 0,
+                downpay: 0,
+                downpayGoal: 0,
+                downpayYear: 0,
+                downpayPercent: 0,
                 interestRate: 0,
-                loanTerm: 0
+                loanTerm: 0,
             },
         }
         this.collection.doc(userForm.id).set(userForm)

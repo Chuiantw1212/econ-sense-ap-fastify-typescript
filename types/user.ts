@@ -2,9 +2,13 @@ export interface IUserProfile {
     yearOfBirth: string,
     dateOfBirth: string,
     gender: string,
+    insuranceType: string,
+    yearOfMarriage: string,
 }
 
 export interface IUserCareer {
+    headCount: number,
+    laborInsuranceType: string,
     monthlyBasicSalary: number,
     pension: {
         rate: number,
@@ -57,8 +61,7 @@ export interface IUserEstatePrice {
     buildingType: string,
     buildingAge: string,
     hasParking: string | boolean,
-    budget: number, // 自備款
-    budgetGoal: number, // 目標頭期款
+    unitPrice: number,
 }
 
 export interface IUserEstateSize {
@@ -69,13 +72,18 @@ export interface IUserEstateSize {
     publicRatio: number,
     balcany: number,
     parkingSpace: number,
+    floorSize: number,
 }
 
 export interface IUserMortgage {
-    buyHouseYear: number,
-    loanPercent: number,
-    interestRate: number,
+    totalPrice: number,
+    totalPriceEstimated: number,
+    downpay: number, // 自備款
+    downpayGoal: number, // 目標頭期款
+    downpayYear: number,
+    downpayPercent: number,
     loanTerm: number,
+    interestRate: number,
 }
 
 export interface IUser {
