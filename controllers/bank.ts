@@ -15,7 +15,7 @@ export default fp(async function (fastify) {
     })
     fastify.get('/bank/config/portfolioIrr', async function (req: FastifyRequest, res: FastifyReply) {
         try {
-            const portfolioIRR = await BankModel.fetchCoreSeriesIRR()
+            const portfolioIRR = await BankModel.getCoreSeriesIRR()
             res.code(200).send(portfolioIRR)
         } catch (error: any) {
             res.code(500).send(error.message || error)

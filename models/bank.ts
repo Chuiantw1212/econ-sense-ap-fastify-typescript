@@ -12,12 +12,15 @@ export class BankModel {
         this.fetchInterestRate()
         this.fetchCoreSeriesIRR()
     }
-    async fetchCoreSeriesIRR() {
-        const optionsKey = 'ishareCoreETF'
-        const options = await this.selectModel.getOptionsByKey(optionsKey)
+    async getCoreSeriesIRR() {
+        const options = await this.selectModel.getOptionsByKey('ishareCoreETF')
         if (options.length) {
             return options
+        } else {
+            this.fetchCoreSeriesIRR()
         }
+    }
+    async fetchCoreSeriesIRR() {
         const urlMap: { [key: string]: string } = {
             aoa: 'https://www.ishares.com/us/products/239729/ishares-aggressive-allocation-etf',
             aor: 'https://www.ishares.com/us/products/239756/ishares-growth-allocation-etf',
@@ -43,7 +46,7 @@ export class BankModel {
             return portfolioOption
         })
         const portfolioOptions: IOptionsItem[] = await Promise.all(promiese)
-        this.selectModel.replaceByKey(optionsKey, portfolioOptions)
+        this.selectModel.replaceByKey('ishareCoreETF', portfolioOptions)
         return portfolioOptions
     }
     async fetchInterestRate() {

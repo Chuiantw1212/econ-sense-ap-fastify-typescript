@@ -40,8 +40,12 @@ export class SelectModel {
     async getOptionsByKey(key: string,): Promise<IOptionsItem[]> {
         const keyQuery: Query = this.collection.where('key', '==', key).limit(1)
         const snapshot: QuerySnapshot = await keyQuery.get()
-        const options: IOptionsItem[] = snapshot.docs[0].data().options
-        return options
+        if (snapshot.docs.length) {
+            const options: IOptionsItem[] = snapshot.docs[0].data().options
+            return options
+        } else {
+            return []
+        }
     }
     async replaceByKey(key: string, options: IOptionsItem[] = []) {
         const keyQuery: Query = this.collection.where('key', '==', key)
