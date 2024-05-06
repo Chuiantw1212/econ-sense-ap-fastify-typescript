@@ -103,6 +103,7 @@ export class UserModel {
             buildingType: data.buildingType || '',
             buildingAge: data.buildingAge || '',
             hasParking: data.hasParking || '',
+            unitPrice: data.unitPrice || 0,
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
@@ -120,7 +121,8 @@ export class UserModel {
             bathroom: data.bathroom || 0,
             publicRatio: data.publicRatio || 0,
             balcany: data.balcany || 0,
-            parkingSpace: data.parkingSpace || 0
+            parkingSpace: data.parkingSpace || 0,
+            floorSize: data.floorSize || 0,
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
@@ -137,8 +139,10 @@ export class UserModel {
             interestRate: data.interestRate || 0,
             loanTerm: data.loanTerm || 0,
             totalPrice: data.totalPrice || 0,
+            totalPriceEstimated: data.totalPriceEstimated || 0,
             downpay: data.downpay || 0,
             downpayGoal: data.downpayGoal || 0,
+
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
@@ -263,6 +267,7 @@ export class UserModel {
                 buildingType: "",
                 buildingAge: "",
                 hasParking: "",
+                unitPrice: 0,
             },
             estateSize: {
                 doubleBedRoom: 0,
@@ -272,9 +277,11 @@ export class UserModel {
                 publicRatio: 0,
                 balcany: 0,
                 parkingSpace: 0,
+                floorSize: 0,
             },
             mortgage: {
                 totalPrice: 0,
+                totalPriceEstimated: 0,
                 downpay: 0,
                 downpayGoal: 0,
                 downpayYear: 0,

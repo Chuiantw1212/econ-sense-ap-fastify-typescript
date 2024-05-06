@@ -61,6 +61,7 @@ export interface IUserEstatePrice {
     buildingType: string,
     buildingAge: string,
     hasParking: string | boolean,
+    unitPrice: number,
 }
 
 export interface IUserEstateSize {
@@ -71,16 +72,18 @@ export interface IUserEstateSize {
     publicRatio: number,
     balcany: number,
     parkingSpace: number,
+    floorSize: number,
 }
 
 export interface IUserMortgage {
     totalPrice: number,
+    totalPriceEstimated: number,
     downpay: number, // 自備款
     downpayGoal: number, // 目標頭期款
     downpayYear: number,
     downpayPercent: number,
-    interestRate: number,
     loanTerm: number,
+    interestRate: number,
 }
 
 export interface IUser {
