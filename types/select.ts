@@ -1,6 +1,6 @@
 export interface IOptionsItem {
     label: string,
-    value: string,
+    value: string | number,
 }
 
 export interface ICounty {
