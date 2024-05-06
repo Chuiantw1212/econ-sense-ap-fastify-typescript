@@ -56,6 +56,7 @@ export class UserModel {
         const singleDocSnapshot = await this.checkSingleDoc(uid)
         const career: IUserCareer = {
             headCount: data.headCount || 0,
+            laborInsuranceType: data.laborInsuranceType || '',
             monthlyBasicSalary: data.monthlyBasicSalary || 0,
             pension: {
                 rate: data.pension.rate || 0,
@@ -213,6 +214,7 @@ export class UserModel {
             },
             career: {
                 headCount: 0,
+                laborInsuranceType: '',
                 monthlyBasicSalary: 0,
                 pension: {
                     rate: 0,

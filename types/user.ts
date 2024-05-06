@@ -8,6 +8,7 @@ export interface IUserProfile {
 
 export interface IUserCareer {
     headCount: number,
+    laborInsuranceType: string,
     monthlyBasicSalary: number,
     pension: {
         rate: number,
