@@ -103,8 +103,6 @@ export class UserModel {
             buildingType: data.buildingType || '',
             buildingAge: data.buildingAge || '',
             hasParking: data.hasParking || '',
-            budget: data.budget || 0,
-            budgetGoal: data.budgetGoal || 0,
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
@@ -134,10 +132,13 @@ export class UserModel {
     async mergeMortgage(uid: string, data: any = {}) {
         const singleDocSnapshot = await this.checkSingleDoc(uid)
         const mortgage: IUserMortgage = {
-            buyHouseYear: data.buyHouseYear || 0,
-            loanPercent: data.loanPercent || 0,
+            downpayYear: data.downpayYear || 0,
+            downpayPercent: data.downpayPercent || 0,
             interestRate: data.interestRate || 0,
-            loanTerm: data.loanTerm || 0
+            loanTerm: data.loanTerm || 0,
+            totalPrice: data.totalPrice || 0,
+            downpay: data.downpay || 0,
+            downpayGoal: data.downpayGoal || 0,
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
@@ -262,8 +263,6 @@ export class UserModel {
                 buildingType: "",
                 buildingAge: "",
                 hasParking: "",
-                budget: 0,
-                budgetGoal: 0,
             },
             estateSize: {
                 doubleBedRoom: 0,
@@ -275,10 +274,13 @@ export class UserModel {
                 parkingSpace: 0,
             },
             mortgage: {
-                buyHouseYear: 0,
-                loanPercent: 0,
+                totalPrice: 0,
+                downpay: 0,
+                downpayGoal: 0,
+                downpayYear: 0,
+                downpayPercent: 0,
                 interestRate: 0,
-                loanTerm: 0
+                loanTerm: 0,
             },
         }
         this.collection.doc(userForm.id).set(userForm)

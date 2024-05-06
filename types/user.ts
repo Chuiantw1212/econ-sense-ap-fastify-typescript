@@ -61,8 +61,6 @@ export interface IUserEstatePrice {
     buildingType: string,
     buildingAge: string,
     hasParking: string | boolean,
-    budget: number, // 自備款
-    budgetGoal: number, // 目標頭期款
 }
 
 export interface IUserEstateSize {
@@ -76,8 +74,11 @@ export interface IUserEstateSize {
 }
 
 export interface IUserMortgage {
-    buyHouseYear: number,
-    loanPercent: number,
+    totalPrice: number,
+    downpay: number, // 自備款
+    downpayGoal: number, // 目標頭期款
+    downpayYear: number,
+    downpayPercent: number,
     interestRate: number,
     loanTerm: number,
 }
