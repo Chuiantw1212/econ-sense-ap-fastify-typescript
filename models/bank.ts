@@ -3,9 +3,10 @@ import fp from 'fastify-plugin'
 import { JSDOM } from 'jsdom'
 import type { extendsFastifyInstance } from '../types/fastify'
 import type { IOptionsItem, } from '../types/select'
+import { SelectModel } from './select'
 
 export class BankModel {
-    selectModel: any = null
+    selectModel: SelectModel
     constructor(fastify: extendsFastifyInstance) {
         this.selectModel = fastify.SelectModel
         this.fetchInterestRate()
@@ -16,24 +17,24 @@ export class BankModel {
         const interestRate = interestRateOptions[0].value
         return Number(interestRate)
     }
-    async getConfigByKey(key: string) {
-        const options = await this.selectModel.getOptionsByKey()
+    async getConfigByKey(key: string): Promise<IOptionsItem[]> {
+        const options = await this.selectModel.getOptionsByKey(key)
         if (options.length) {
             return options
         } else {
             switch (key) {
                 case 'ishareCoreETF': {
-                    this.fetchCoreSeriesIRR()
-                    break;
+                    return await this.fetchCoreSeriesIRR()
+
                 }
                 case 'interestRate': {
-                    this.fetchInterestRate()
-                    break;
+                    return await this.fetchInterestRate()
                 }
             }
+            return []
         }
     }
-    async fetchCoreSeriesIRR() {
+    async fetchCoreSeriesIRR(): Promise<IOptionsItem[]> {
         try {
             const urlMap: { [key: string]: string } = {
                 aoa: 'https://www.ishares.com/us/products/239729/ishares-aggressive-allocation-etf',
@@ -63,9 +64,10 @@ export class BankModel {
             return portfolioOptions
         } catch (error: any) {
             console.log(error.message || error)
+            return []
         }
     }
-    async fetchInterestRate() {
+    async fetchInterestRate(): Promise<IOptionsItem[]> {
         try {
             const crawlResult = await axios.request({
                 url: 'https://www.cbc.gov.tw/tw/lp-370-1.html',
@@ -82,12 +84,13 @@ export class BankModel {
             const options: IOptionsItem[] = []
             options.push({
                 label: 'interestRate',
-                value: interestRate
+                value: Number(interestRate)
             })
             this.selectModel.replaceByKey('interestRate', options)
             return options
         } catch (error: any) {
             console.log(error.message || error)
+            return []
         }
     }
 }
