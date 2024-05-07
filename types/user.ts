@@ -1,6 +1,5 @@
 export interface IUserProfile {
     yearOfBirth: string,
-    dateOfBirth: string,
     gender: string,
     insuranceType: string,
     yearOfMarriage: string,
