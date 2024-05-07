@@ -121,6 +121,14 @@ export default fp(async function (fastify) {
             res.code(500).send(error.message || error)
         }
     })
+    fastify.get('/user/type', async function (req: FastifyRequest, res: FastifyReply) {
+        try {
+            const userForm = await UserModel.getUserForm()
+            res.code(200).send(userForm)
+        } catch (error: any) {
+            res.code(500).send(error.message || error)
+        }
+    })
     // 不確定如果改成get, cache後會不會造成不驗證直接回傳的狀況
     fastify.post('/user/:uid', async function (req: FastifyRequest, res: FastifyReply) {
         try {

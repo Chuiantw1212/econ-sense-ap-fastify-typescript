@@ -25,7 +25,6 @@ export class UserModel {
         const profile: IUserProfile = {
             gender: data.gender || '',
             yearOfBirth: data.yearOfBirth || '',
-            dateOfBirth: data.dateOfBirth || '',
             insuranceType: data.insuranceType || '',
             yearOfMarriage: data.yearOfMarriage || ''
         }
@@ -219,7 +218,6 @@ export class UserModel {
             uid: '',
             profile: {
                 yearOfBirth: "",
-                dateOfBirth: "",
                 gender: "",
                 insuranceType: '',
                 yearOfMarriage: '',
