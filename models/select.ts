@@ -48,10 +48,6 @@ export class SelectModel {
         }
     }
     async replaceByKey(key: string, options: IOptionsItem[] = []) {
-        console.log({
-            key,
-            options
-        })
         const keyQuery: Query = this.collection.where('key', '==', key)
         const countData: DocumentData = await keyQuery.count().get()
         const count: number = countData.data().count
