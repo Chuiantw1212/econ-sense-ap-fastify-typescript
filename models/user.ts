@@ -207,9 +207,16 @@ export class UserModel {
             throw '資料重複'
         }
         const docRef = this.collection.doc()
+        const userForm: IUser = this.getUserForm()
+        userForm.id = docRef.id
+        userForm.uid = userForm.uid
+        this.collection.doc(userForm.id).set(userForm)
+        return userForm
+    }
+    getUserForm() {
         const userForm: IUser = {
-            id: docRef.id,
-            uid,
+            id: '',
+            uid: '',
             profile: {
                 yearOfBirth: "",
                 dateOfBirth: "",
@@ -290,7 +297,6 @@ export class UserModel {
                 loanTerm: 0,
             },
         }
-        this.collection.doc(userForm.id).set(userForm)
         return userForm
     }
 }

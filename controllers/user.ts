@@ -112,7 +112,7 @@ export default fp(async function (fastify) {
             const idToken = req.headers.authorization || ''
             const user = await firebase.verifyIdToken(idToken)
             const userForm: IUser = await UserModel.addNewUser(user.uid)
-            const interestRate = await BankModel.fetchInterestRate()
+            const interestRate = await BankModel.getInterestRate()
             if (userForm.mortgage) {
                 userForm.mortgage.interestRate = interestRate
             }
