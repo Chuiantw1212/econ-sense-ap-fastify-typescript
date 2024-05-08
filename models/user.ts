@@ -54,8 +54,15 @@ export class UserModel {
     async mergeCareer(uid: string, data: any = {}) {
         const singleDocSnapshot = await this.checkSingleDoc(uid)
         const career: IUserCareer = {
+            // 勞保
             headCount: data.headCount || 0,
             insuredUnit: data.insuredUnit || '',
+            // 公保
+            payPoint: data.payPoint || 0,
+            supervisorRank: data.supervisorRank || '',
+            professionalRank: data.professionalRank || '',
+            regionalAllowance: data.regionalAllowance || 0,
+            // 共同
             monthlyBasicSalary: data.monthlyBasicSalary || 0,
             pension: {
                 rate: data.pension.rate || 0,
@@ -223,8 +230,15 @@ export class UserModel {
                 yearOfMarriage: '',
             },
             career: {
+                // 勞保
                 headCount: 0,
                 insuredUnit: '',
+                // 公保
+                payPoint: 0,
+                supervisorRank: '',
+                professionalRank: '',
+                regionalAllowance: 0,
+                // 共同
                 monthlyBasicSalary: 0,
                 pension: {
                     rate: 0,

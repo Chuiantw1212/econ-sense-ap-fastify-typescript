@@ -6,14 +6,21 @@ export interface IUserProfile {
 }
 
 export interface IUserCareer {
+    // 勞保
     headCount: number,
     insuredUnit: string,
+    // 公保
+    payPoint: number,
+    supervisorRank: string,
+    professionalRank: string,
+    regionalAllowance: number,
+    // 共同
     monthlyBasicSalary: number,
     pension: {
         rate: number,
     },
     monthlyNetPay: number,
-    monthlyExpense: number
+    monthlyExpense: number,
 }
 
 export interface IUserRetirement {
