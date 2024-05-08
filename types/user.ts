@@ -1,13 +1,13 @@
 export interface IUserProfile {
     yearOfBirth: string,
     gender: string,
-    insuranceType: string,
+    careerInsuranceType: string,
     yearOfMarriage: string,
 }
 
 export interface IUserCareer {
     headCount: number,
-    laborInsuranceType: string,
+    insuredUnit: string,
     monthlyBasicSalary: number,
     pension: {
         rate: number,
