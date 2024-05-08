@@ -10,6 +10,7 @@ export interface IUserCareer {
     headCount: number,
     insuredUnit: string,
     // 公保
+    seniorityPayPoint: number,
     payPoint: number,
     supervisorRank: string,
     professionalRank: string,

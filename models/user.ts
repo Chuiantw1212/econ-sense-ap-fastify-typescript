@@ -58,6 +58,7 @@ export class UserModel {
             headCount: data.headCount || 0,
             insuredUnit: data.insuredUnit || '',
             // 公保
+            seniorityPayPoint: data.seniorityPayPoint || 0,
             payPoint: data.payPoint || 0,
             supervisorRank: data.supervisorRank || '',
             professionalRank: data.professionalRank || '',
@@ -234,6 +235,7 @@ export class UserModel {
                 headCount: 0,
                 insuredUnit: '',
                 // 公保
+                seniorityPayPoint: 0,
                 payPoint: 0,
                 supervisorRank: '',
                 professionalRank: '',
