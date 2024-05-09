@@ -1,19 +1,26 @@
 export interface IUserProfile {
     yearOfBirth: string,
     gender: string,
-    insuranceType: string,
+    careerInsuranceType: string,
     yearOfMarriage: string,
 }
 
 export interface IUserCareer {
+    // 勞保
     headCount: number,
-    laborInsuranceType: string,
+    insuredUnit: string,
+    // 公保
+    payPoint: number,
+    supervisorRank: string,
+    professionalRank: string,
+    regionalAllowance: number,
+    // 共同
     monthlyBasicSalary: number,
     pension: {
         rate: number,
     },
     monthlyNetPay: number,
-    monthlyExpense: number
+    monthlyExpense: number,
 }
 
 export interface IUserRetirement {
@@ -22,11 +29,14 @@ export interface IUserRetirement {
         presentSeniority: number,
     },
     pension: {
+        // 勞保
         employerContribution: number,
         employerContributionIncome: number,
         employeeContrubution: number,
         employeeContrubutionIncome: number,
         irrOverDecade: number,
+        // 公保
+        type: string,
     },
     qualityLevel: number,
     percentileRank: number,
