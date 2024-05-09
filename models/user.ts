@@ -58,7 +58,6 @@ export class UserModel {
             headCount: data.headCount || 0,
             insuredUnit: data.insuredUnit || '',
             // 公保
-            seniorityPayPoint: data.seniorityPayPoint || 0,
             payPoint: data.payPoint || 0,
             supervisorRank: data.supervisorRank || '',
             professionalRank: data.professionalRank || '',
@@ -91,6 +90,7 @@ export class UserModel {
                 employeeContrubution: data.pension.employeeContrubution || 0,
                 employeeContrubutionIncome: data.pension.employeeContrubutionIncome || 0,
                 irrOverDecade: data.pension.irrOverDecade || 0,
+                type: data.pension.type || ''
             },
             qualityLevel: data.qualityLevel,
             percentileRank: data.percentileRank,
@@ -235,7 +235,6 @@ export class UserModel {
                 headCount: 0,
                 insuredUnit: '',
                 // 公保
-                seniorityPayPoint: 0,
                 payPoint: 0,
                 supervisorRank: '',
                 professionalRank: '',
@@ -259,6 +258,7 @@ export class UserModel {
                     employeeContrubution: 0,
                     employeeContrubutionIncome: 0,
                     irrOverDecade: 0,
+                    type: '',
                 },
                 qualityLevel: 0,
                 percentileRank: 0,

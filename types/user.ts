@@ -10,7 +10,6 @@ export interface IUserCareer {
     headCount: number,
     insuredUnit: string,
     // 公保
-    seniorityPayPoint: number,
     payPoint: number,
     supervisorRank: string,
     professionalRank: string,
@@ -30,11 +29,14 @@ export interface IUserRetirement {
         presentSeniority: number,
     },
     pension: {
+        // 勞保
         employerContribution: number,
         employerContributionIncome: number,
         employeeContrubution: number,
         employeeContrubutionIncome: number,
         irrOverDecade: number,
+        // 公保
+        type: string,
     },
     qualityLevel: number,
     percentileRank: number,
