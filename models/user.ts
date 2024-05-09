@@ -25,7 +25,7 @@ export class UserModel {
         const profile: IUserProfile = {
             gender: data.gender || '',
             yearOfBirth: data.yearOfBirth || '',
-            insuranceType: data.insuranceType || '',
+            careerInsuranceType: data.careerInsuranceType || '',
             yearOfMarriage: data.yearOfMarriage || ''
         }
         const user: IUser = {
@@ -54,8 +54,15 @@ export class UserModel {
     async mergeCareer(uid: string, data: any = {}) {
         const singleDocSnapshot = await this.checkSingleDoc(uid)
         const career: IUserCareer = {
+            // 勞保
             headCount: data.headCount || 0,
-            laborInsuranceType: data.laborInsuranceType || '',
+            insuredUnit: data.insuredUnit || '',
+            // 公保
+            payPoint: data.payPoint || 0,
+            supervisorRank: data.supervisorRank || '',
+            professionalRank: data.professionalRank || '',
+            regionalAllowance: data.regionalAllowance || 0,
+            // 共同
             monthlyBasicSalary: data.monthlyBasicSalary || 0,
             pension: {
                 rate: data.pension.rate || 0,
@@ -83,6 +90,7 @@ export class UserModel {
                 employeeContrubution: data.pension.employeeContrubution || 0,
                 employeeContrubutionIncome: data.pension.employeeContrubutionIncome || 0,
                 irrOverDecade: data.pension.irrOverDecade || 0,
+                type: data.pension.type || ''
             },
             qualityLevel: data.qualityLevel,
             percentileRank: data.percentileRank,
@@ -219,12 +227,19 @@ export class UserModel {
             profile: {
                 yearOfBirth: "",
                 gender: "",
-                insuranceType: '',
+                careerInsuranceType: '',
                 yearOfMarriage: '',
             },
             career: {
+                // 勞保
                 headCount: 0,
-                laborInsuranceType: '',
+                insuredUnit: '',
+                // 公保
+                payPoint: 0,
+                supervisorRank: '',
+                professionalRank: '',
+                regionalAllowance: 0,
+                // 共同
                 monthlyBasicSalary: 0,
                 pension: {
                     rate: 0,
@@ -243,6 +258,7 @@ export class UserModel {
                     employeeContrubution: 0,
                     employeeContrubutionIncome: 0,
                     irrOverDecade: 0,
+                    type: '',
                 },
                 qualityLevel: 0,
                 percentileRank: 0,
