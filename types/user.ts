@@ -3,6 +3,7 @@ export interface IUserProfile {
     gender: string,
     careerInsuranceType: string,
     yearOfMarriage: string,
+    story: string,
 }
 
 export interface IUserCareer {
@@ -106,5 +107,5 @@ export interface IUser {
     estateSize?: IUserEstateSize,
     mortgage?: IUserMortgage,
     parenting?: IUserParenting,
-    asset?: IUserAsset
+    asset?: IUserAsset,
 }

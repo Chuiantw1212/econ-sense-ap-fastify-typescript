@@ -26,7 +26,8 @@ export class UserModel {
             gender: data.gender || '',
             yearOfBirth: data.yearOfBirth || '',
             careerInsuranceType: data.careerInsuranceType || '',
-            yearOfMarriage: data.yearOfMarriage || ''
+            yearOfMarriage: data.yearOfMarriage || '',
+            story: data.story || '',
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
@@ -229,6 +230,7 @@ export class UserModel {
                 gender: "",
                 careerInsuranceType: '',
                 yearOfMarriage: '',
+                story: '',
             },
             career: {
                 // 勞保

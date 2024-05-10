@@ -12,13 +12,16 @@ export class ChatGptPlugin {
         const instance: any = new ChatGPTAPI({
             apiKey,
         })
+        instance.sendMessage('請為我美化每則獨立故事。')
         this.instance = instance
     }
-    async sendMessage(story: string) {
-        const res = await this.instance.sendMessage(story, {
-            systemMessage: `你是個說書人，請為我美化不同的獨立小故事。`
-        })
-        return res
+    async makeStory(story: string) {
+        const res = await this.instance.sendMessage(`
+            請用中文為我美化以下的故事，將內容擴充到500字，並用p標籤排版。\n\n
+            ${story}
+        `)
+        const { text } = res
+        return text
     }
 }
 export default fp(async function (fastify) {

@@ -5,12 +5,13 @@ export default fp(async function (fastify) {
     const {
         chatGpt,
     } = fastify as extendsFastifyInstance
-    fastify.post('/chat', async function (req: FastifyRequest, res: FastifyReply) {
+    fastify.post('/chat/story', async function (req: FastifyRequest, res: FastifyReply) {
         try {
-            const { story } = req.body as any
-            const result = await chatGpt.sendMessage(story)
-            res.code(200).send(result)
+            const input = req.body as any
+            const output = await chatGpt.makeStory(input)
+            res.code(200).send(output)
         } catch (error: any) {
+            console.log(error.message || error)
             res.code(500).send(error.message || error)
         }
     })
