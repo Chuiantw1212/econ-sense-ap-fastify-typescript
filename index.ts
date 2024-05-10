@@ -10,6 +10,7 @@ import FormBody from '@fastify/formbody'
 import corsPlugin from './plugins/cors'
 import envPlugin from './plugins/env'
 import firebasePlugin from './plugins/firebase'
+import chatGptPlugin from './plugins/chatGpt'
 // Models
 import LocationModel from './models/location'
 import SelectModel from './models/select'
@@ -30,6 +31,7 @@ const appService = async function (fastify: FastifyInstance, opts: FastifyPlugin
     fastify.register(corsPlugin)
     fastify.register(envPlugin)
     fastify.register(firebasePlugin)
+    fastify.register(chatGptPlugin)
     // Models
     fastify.register(SelectModel)
     fastify.register(LocationModel)
