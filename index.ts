@@ -10,6 +10,7 @@ import FormBody from '@fastify/formbody'
 import corsPlugin from './plugins/cors'
 import envPlugin from './plugins/env'
 import firebasePlugin from './plugins/firebase'
+import chatGptPlugin from './plugins/chatGpt'
 // Models
 import LocationModel from './models/location'
 import SelectModel from './models/select'
@@ -23,6 +24,7 @@ import BankController from './controllers/bank'
 import CalculateController from './controllers/calculate'
 import RootController from './controllers/root'
 import UserController from './controllers/user'
+import ChatController from './controllers/chat'
 const appService = async function (fastify: FastifyInstance, opts: FastifyPluginOptions) {
     const { ready, } = fastify
     // Plugins
@@ -30,6 +32,7 @@ const appService = async function (fastify: FastifyInstance, opts: FastifyPlugin
     fastify.register(corsPlugin)
     fastify.register(envPlugin)
     fastify.register(firebasePlugin)
+    fastify.register(chatGptPlugin)
     // Models
     fastify.register(SelectModel)
     fastify.register(LocationModel)
@@ -43,6 +46,7 @@ const appService = async function (fastify: FastifyInstance, opts: FastifyPlugin
     fastify.register(CalculateController)
     fastify.register(RootController)
     fastify.register(UserController)
+    fastify.register(ChatController)
     // Output log
     ready(() => {
         console.timeEnd('Server boot')

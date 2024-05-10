@@ -5,7 +5,7 @@ import type {
     IUserProfile,
     IUserCareer,
     IUserRetirement,
-    IUserInvestment,
+    IUserAsset,
     IUserSpouse,
     IUserParenting,
     IUserEstatePrice,
@@ -26,7 +26,8 @@ export class UserModel {
             gender: data.gender || '',
             yearOfBirth: data.yearOfBirth || '',
             careerInsuranceType: data.careerInsuranceType || '',
-            yearOfMarriage: data.yearOfMarriage || ''
+            yearOfMarriage: data.yearOfMarriage || '',
+            story: data.story || '',
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
@@ -177,14 +178,14 @@ export class UserModel {
     }
     async mergeInvestment(uid: string, data: any = {}) {
         const singleDocSnapshot = await this.checkSingleDoc(uid)
-        const investment: IUserInvestment = {
+        const asset: IUserAsset = {
             allocationETF: data.allocationETF || '',
             presentAsset: data.presentAsset || 0,
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
             uid,
-            investment,
+            asset,
         }
         singleDocSnapshot.ref.update({ ...user })
     }
@@ -229,6 +230,7 @@ export class UserModel {
                 gender: "",
                 careerInsuranceType: '',
                 yearOfMarriage: '',
+                story: '',
             },
             career: {
                 // 勞保
@@ -263,7 +265,7 @@ export class UserModel {
                 qualityLevel: 0,
                 percentileRank: 0,
             },
-            investment: {
+            asset: {
                 allocationETF: "",
                 presentAsset: 0,
             },

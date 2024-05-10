@@ -96,7 +96,7 @@ export default fp(async function (fastify) {
             res.code(500).send(error.message || error)
         }
     })
-    fastify.put('/user/investment', async function (req: FastifyRequest, res: FastifyReply) {
+    fastify.put('/user/asset', async function (req: FastifyRequest, res: FastifyReply) {
         try {
             const idToken = req.headers.authorization || ''
             const user = await firebase.verifyIdToken(idToken)
