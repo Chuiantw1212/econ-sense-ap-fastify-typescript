@@ -5,7 +5,7 @@ import type {
     IUserProfile,
     IUserCareer,
     IUserRetirement,
-    IUserInvestment,
+    IUserAsset,
     IUserSpouse,
     IUserParenting,
     IUserEstatePrice,
@@ -177,14 +177,14 @@ export class UserModel {
     }
     async mergeInvestment(uid: string, data: any = {}) {
         const singleDocSnapshot = await this.checkSingleDoc(uid)
-        const investment: IUserInvestment = {
+        const asset: IUserAsset = {
             allocationETF: data.allocationETF || '',
             presentAsset: data.presentAsset || 0,
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
             uid,
-            investment,
+            asset,
         }
         singleDocSnapshot.ref.update({ ...user })
     }
@@ -263,7 +263,7 @@ export class UserModel {
                 qualityLevel: 0,
                 percentileRank: 0,
             },
-            investment: {
+            asset: {
                 allocationETF: "",
                 presentAsset: 0,
             },

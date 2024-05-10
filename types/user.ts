@@ -42,7 +42,7 @@ export interface IUserRetirement {
     percentileRank: number,
 }
 
-export interface IUserInvestment {
+export interface IUserAsset {
     allocationETF: string,
     presentAsset: number,
 }
@@ -106,5 +106,5 @@ export interface IUser {
     estateSize?: IUserEstateSize,
     mortgage?: IUserMortgage,
     parenting?: IUserParenting,
-    investment?: IUserInvestment
+    asset?: IUserAsset
 }
