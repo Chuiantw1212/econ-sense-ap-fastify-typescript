@@ -51,8 +51,8 @@ export class BankModel {
                 const dom = new JSDOM(pageHtml)
                 const document = dom.window.document
                 const tds = document.getElementsByClassName("sinceInceptionAnnualized ")
-                const lastItem = Array.from(tds)[tds.length - 1]
-                const irrString = String(lastItem.innerHTML).trim()
+                const afterTaxPreLiq = Array.from(tds)[tds.length - 2]
+                const irrString = String(afterTaxPreLiq.innerHTML).trim()
                 const portfolioOption: IOptionsItem = {
                     label: key,
                     value: Number(irrString)
@@ -69,29 +69,59 @@ export class BankModel {
     }
     async fetchInterestRate(): Promise<IOptionsItem[]> {
         try {
-            const crawlResult = await axios.request({
-                url: 'https://www.cbc.gov.tw/tw/lp-370-1.html',
+            const test = await axios.request({
+                url: 'https://cpx.cbc.gov.tw/api/OpenData/OAS?set_id=6022',
             })
-            const pageHtml = crawlResult.data
-            const dom = new JSDOM(pageHtml)
-            const document = dom.window.document
-            const tds = document.getElementsByTagName('td')
-            const filteredItems = Array.from(tds).filter(item => {
-                return item.dataset.th === '擔保放款融通利率'
+            const data: string = test.data.paths['/api/OpenData/DataSet'].get.responses['200'].content['application/json'].example.Data.value
+            const labelAndValues: string[] = data.split(',')
+            const keys = ['調整日期', '重貼現率', '擔保放款融通利率', '短期融通利率']
+            const interestRateMap: {
+                [key: string]: number
+            } = {}
+            let mortgageInterestRate = 0
+            labelAndValues.forEach((item, index) => {
+                const label = keys[index]
+                const value = item.replace(`${label}:`, '').replaceAll("'", '')
+                interestRateMap[label] = Number(value)
+                if (index === 2 && !Number.isNaN(Number(value))) {
+                    mortgageInterestRate = Number(value)
+                }
             })
-            const mostRecentItem = filteredItems[0]
-            const interestRate = mostRecentItem.innerHTML.replaceAll(/(<[^>]*>|\n)/g, '')
+            if (!mortgageInterestRate) {
+                mortgageInterestRate = await this.crawlInterestRateFromCbc()
+            }
+            // set options
             const options: IOptionsItem[] = []
-            options.push({
-                label: 'interestRate',
-                value: Number(interestRate)
-            })
-            this.selectModel.replaceByKey('interestRate', options)
+            if (mortgageInterestRate) {
+                options.push({
+                    label: 'interestRate',
+                    value: mortgageInterestRate
+                })
+                this.selectModel.replaceByKey('interestRate', options)
+            }
             return options
         } catch (error: any) {
             console.log(error.message || error)
             return []
         }
+    }
+    async crawlInterestRateFromCbc(): Promise<number> {
+        const crawlResult = await axios.request({
+            url: 'https://www.cbc.gov.tw/tw/lp-370-1.html',
+        })
+        const pageHtml = crawlResult.data
+        const dom = new JSDOM(pageHtml)
+        const document = dom.window.document
+        const tds = document.getElementsByTagName('td')
+        const filteredItems = Array.from(tds).filter(item => {
+            return item.dataset.th === '擔保放款融通利率'
+        })
+        const mostRecentItem = filteredItems[0]
+        const interestRate = mostRecentItem.innerHTML.replaceAll(/(<[^>]*>|\n)/g, '')
+        if (!Number.isNaN(Number(interestRate))) {
+            return Number(interestRate)
+        }
+        return 0
     }
 }
 export default fp(async function (fastify: any) {
