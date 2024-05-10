@@ -20,7 +20,10 @@ export class ChatGptPlugin {
             請用中文為我美化以下的故事，將內容擴充到500字，並用p標籤排版。\n\n
             ${story}
         `)
-        const { text } = res
+        let text = res.text
+        text = text.replaceAll('```html', '')
+        text = text.replaceAll('```', '')
+        text = text.trim()
         return text
     }
 }
