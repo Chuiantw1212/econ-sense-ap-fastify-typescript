@@ -17,10 +17,13 @@ export class ChatGptPlugin {
     }
     async makeStory(story: string) {
         const res = await this.instance.sendMessage(`
-            請用中文為我美化以下的故事，將內容擴充到500字，並用p標籤排版。\n\n
+            請用中文，以第二人稱視角，將以下的故事內容擴充到至少500字，並且用p標籤分段。\n\n
             ${story}
         `)
-        const { text } = res
+        let text = res.text
+        text = text.replaceAll('```html', '')
+        text = text.replaceAll('```', '')
+        text = text.trim()
         return text
     }
 }
