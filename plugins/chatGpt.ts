@@ -6,14 +6,18 @@ export class ChatGptPlugin {
         this.initialize()
     }
     async initialize() {
-        const { ChatGPTAPI } = await import('chatgpt')
-        const apiKeyPath = path.join(__dirname, '../OPENAI_API_KEY.json')
-        const apiKey = require(apiKeyPath)
-        const instance: any = new ChatGPTAPI({
-            apiKey,
-        })
-        instance.sendMessage('請為我美化每則獨立故事。')
-        this.instance = instance
+        try {
+            const { ChatGPTAPI } = await import('chatgpt')
+            const apiKeyPath = path.join(__dirname, '../OPENAI_API_KEY.json')
+            const apiKey = require(apiKeyPath)
+            const instance: any = new ChatGPTAPI({
+                apiKey,
+            })
+            instance.sendMessage('請為我美化每則獨立故事。')
+            this.instance = instance
+        } catch (error: any) {
+            console.log(error.message || error)
+        }
     }
     async makeStory(story: string) {
         const res = await this.instance.sendMessage(`
