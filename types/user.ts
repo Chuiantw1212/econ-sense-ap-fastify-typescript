@@ -19,6 +19,7 @@ export interface IUserCareer {
     monthlyBasicSalary: number,
     pension: {
         rate: number,
+        monthlyContributionSelf: number,
     },
     monthlyNetPay: number,
     monthlyExpense: number,
@@ -43,7 +44,7 @@ export interface IUserRetirement {
     percentileRank: number,
 }
 
-export interface IUserAsset {
+export interface IUserSecurity {
     allocationETF: string,
     presentAsset: number,
 }
@@ -51,7 +52,8 @@ export interface IUserAsset {
 export interface IUserSpouse {
     yearOfMarriage: string,
     marriageLength: number,
-    monthlyContribution: number,
+    monthlyNetPay: number,
+    monthlyExpense: number,
     weddingExpense: number,
     yearOfBirth: number,
 }
@@ -105,7 +107,7 @@ export interface IUser {
     spouse?: IUserSpouse,
     estatePrice?: IUserEstatePrice,
     estateSize?: IUserEstateSize,
-    mortgage?: IUserMortgage,
+    estate?: IUserMortgage,
     parenting?: IUserParenting,
-    asset?: IUserAsset,
+    security?: IUserSecurity,
 }

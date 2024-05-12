@@ -78,24 +78,24 @@ export class BankModel {
             const interestRateMap: {
                 [key: string]: number
             } = {}
-            let mortgageInterestRate = 0
+            let estateInterestRate = 0
             labelAndValues.forEach((item, index) => {
                 const label = keys[index]
                 const value = item.replace(`${label}:`, '').replaceAll("'", '')
                 interestRateMap[label] = Number(value)
                 if (index === 2 && !Number.isNaN(Number(value))) {
-                    mortgageInterestRate = Number(value)
+                    estateInterestRate = Number(value)
                 }
             })
-            if (!mortgageInterestRate) {
-                mortgageInterestRate = await this.crawlInterestRateFromCbc()
+            if (!estateInterestRate) {
+                estateInterestRate = await this.crawlInterestRateFromCbc()
             }
             // set options
             const options: IOptionsItem[] = []
-            if (mortgageInterestRate) {
+            if (estateInterestRate) {
                 options.push({
                     label: 'interestRate',
-                    value: mortgageInterestRate
+                    value: estateInterestRate
                 })
                 this.selectModel.replaceByKey('interestRate', options)
             }
