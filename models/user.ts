@@ -182,7 +182,7 @@ export class UserModel {
         const singleDocSnapshot = await this.checkSingleDoc(uid)
         const security: IUserSecurity = {
             allocationETF: data.allocationETF || '',
-            presentSecurity: data.presentSecurity || 0,
+            presentAsset: data.presentAsset || 0,
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
@@ -270,7 +270,7 @@ export class UserModel {
             },
             security: {
                 allocationETF: "",
-                presentSecurity: 0,
+                presentAsset: 0,
             },
             spouse: {
                 yearOfMarriage: '',

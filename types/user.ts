@@ -46,7 +46,7 @@ export interface IUserRetirement {
 
 export interface IUserSecurity {
     allocationETF: string,
-    presentSecurity: number,
+    presentAsset: number,
 }
 
 export interface IUserSpouse {
