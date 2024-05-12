@@ -19,6 +19,7 @@ export interface IUserCareer {
     monthlyBasicSalary: number,
     pension: {
         rate: number,
+        monthlyContributionSelf: number,
     },
     monthlyNetPay: number,
     monthlyExpense: number,

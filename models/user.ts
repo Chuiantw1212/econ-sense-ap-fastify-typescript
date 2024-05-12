@@ -11,7 +11,6 @@ import type {
     IUserEstatePrice,
     IUserEstateSize,
     IUserMortgage,
-    IUserReport,
     IUser,
 } from '../types/user'
 
@@ -69,6 +68,7 @@ export class UserModel {
             monthlyBasicSalary: data.monthlyBasicSalary || 0,
             pension: {
                 rate: data.pension.rate || 0,
+                monthlyContributionSelf: data.pension.monthlyContributionSelf || 0
             },
             monthlyNetPay: data.monthlyNetPay || 0,
             monthlyExpense: data.monthlyExpense || 0
@@ -247,6 +247,7 @@ export class UserModel {
                 monthlyBasicSalary: 0,
                 pension: {
                     rate: 0,
+                    monthlyContributionSelf: 0,
                 },
                 monthlyNetPay: 0,
                 monthlyExpense: 0
