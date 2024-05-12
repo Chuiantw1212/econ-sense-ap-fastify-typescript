@@ -11,6 +11,7 @@ import type {
     IUserEstatePrice,
     IUserEstateSize,
     IUserMortgage,
+    IUserReport,
     IUser,
 } from '../types/user'
 
@@ -42,8 +43,9 @@ export class UserModel {
             yearOfBirth: data.yearOfBirth || '',
             yearOfMarriage: data.yearOfMarriage || '',
             marriageLength: data.marriageLength || 0,
-            monthlyContribution: data.monthlyContribution || 0,
             weddingExpense: data.weddingExpense || 0,
+            monthlyNetPay: data.monthlyNetPay || 0,
+            monthlyExpense: data.monthlyExpense || 0,
         }
         const user: IUser = {
             id: singleDocSnapshot.id,
@@ -141,7 +143,7 @@ export class UserModel {
     }
     async mergeMortgage(uid: string, data: any = {}) {
         const singleDocSnapshot = await this.checkSingleDoc(uid)
-        const mortgage: IUserMortgage = {
+        const estate: IUserMortgage = {
             downpayYear: data.downpayYear || 0,
             downpayPercent: data.downpayPercent || 0,
             interestRate: data.interestRate || 0,
@@ -155,7 +157,7 @@ export class UserModel {
         const user: IUser = {
             id: singleDocSnapshot.id,
             uid,
-            mortgage,
+            estate,
         }
         singleDocSnapshot.ref.update({ ...user })
     }
@@ -272,9 +274,10 @@ export class UserModel {
             spouse: {
                 yearOfMarriage: '',
                 marriageLength: 0,
-                monthlyContribution: 0,
                 weddingExpense: 0,
                 yearOfBirth: 0,
+                monthlyNetPay: 0,
+                monthlyExpense: 0,
             },
             parenting: {
                 childAnnualExpense: 0,
@@ -302,7 +305,7 @@ export class UserModel {
                 parkingSpace: 0,
                 floorSize: 0,
             },
-            mortgage: {
+            estate: {
                 totalPrice: 0,
                 totalPriceEstimated: 0,
                 downpay: 0,

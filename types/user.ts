@@ -51,7 +51,8 @@ export interface IUserSecurity {
 export interface IUserSpouse {
     yearOfMarriage: string,
     marriageLength: number,
-    monthlyContribution: number,
+    monthlyNetPay: number,
+    monthlyExpense: number,
     weddingExpense: number,
     yearOfBirth: number,
 }
@@ -105,7 +106,7 @@ export interface IUser {
     spouse?: IUserSpouse,
     estatePrice?: IUserEstatePrice,
     estateSize?: IUserEstateSize,
-    mortgage?: IUserMortgage,
+    estate?: IUserMortgage,
     parenting?: IUserParenting,
     security?: IUserSecurity,
 }
