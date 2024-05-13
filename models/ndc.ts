@@ -37,8 +37,12 @@ export class NdcModel {
             lifeExpQuery = lifeExpQuery.where('gender', '==', query.gender)
         }
         const lifeExpSnapshot = await lifeExpQuery.limit(1).get()
-        const lifeExpDocData: INdcLifeExpectancyItem = lifeExpSnapshot.docs[0].data()
-        return lifeExpDocData.lifeExpectancy as number
+        if (lifeExpSnapshot.size) {
+            const lifeExpDocData: INdcLifeExpectancyItem = lifeExpSnapshot.docs[0].data()
+            return lifeExpDocData.lifeExpectancy as number
+        } else {
+            return 0
+        }
     }
     async uploadFiles() {
         const dataset: INdcLifeExpectancyRawItem[] = require('./8bef5427a12789acdf8c0411131d9221_export.json')
