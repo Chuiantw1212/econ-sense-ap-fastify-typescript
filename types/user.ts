@@ -38,7 +38,7 @@ export interface IUserRetirement {
         employeeContrubutionIncome: number,
         irrOverDecade: number,
         // 公保
-        type: string,
+        requestType: string,
     },
     qualityLevel: number,
     percentileRank: number,

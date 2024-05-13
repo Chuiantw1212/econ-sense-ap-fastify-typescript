@@ -93,7 +93,7 @@ export class UserModel {
                 employeeContrubution: data.pension.employeeContrubution || 0,
                 employeeContrubutionIncome: data.pension.employeeContrubutionIncome || 0,
                 irrOverDecade: data.pension.irrOverDecade || 0,
-                type: data.pension.type || ''
+                requestType: data.pension.requestType || ''
             },
             qualityLevel: data.qualityLevel,
             percentileRank: data.percentileRank,
@@ -263,7 +263,7 @@ export class UserModel {
                     employeeContrubution: 0,
                     employeeContrubutionIncome: 0,
                     irrOverDecade: 0,
-                    type: '',
+                    requestType: '',
                 },
                 qualityLevel: 0,
                 percentileRank: 0,
