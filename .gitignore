@@ -58,5 +58,6 @@ profile*
 *flamegraph*
 
 serviceAccountKey.json
+OPENAI_API_KEY.json
 *.js
 OPENAI_API_KEY.json
