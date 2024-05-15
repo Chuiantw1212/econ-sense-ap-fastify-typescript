@@ -25,7 +25,8 @@ export class FirebasePlugin {
                     credential
                 })
             } else {
-                const { GOOGLE_APPLICATION_CREDENTIALS = '' } = process.env
+                const { GOOGLE_APPLICATION_CREDENTIALS = '', ENV } = process.env
+                console.log({ ENV })
                 if (!GOOGLE_APPLICATION_CREDENTIALS) {
                     throw 'NO GOOGLE_APPLICATION_CREDENTIALS'
                 }
