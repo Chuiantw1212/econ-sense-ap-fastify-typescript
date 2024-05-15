@@ -14,7 +14,7 @@ export class GoogleCloudPlugin {
     async accessLatestSecretVersion(name: string = '') {
         const [version] = await this.sercertManagerServiceClient.accessSecretVersion({
             name: `projects/449033690264/secrets/${name}/versions/latest`,
-        });
+        })
         if (version.payload?.data) {
             // Extract the payload as a string.
             const payload = version.payload.data.toString();
