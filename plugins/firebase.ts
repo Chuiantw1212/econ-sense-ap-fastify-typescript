@@ -13,7 +13,7 @@ export class FirebasePlugin {
          * https://firebase.google.com/docs/admin/setup
          */
         if (process.env.MODE === 'development') {
-            const serviceAccount = path.join(__dirname, '../private/serviceAccountKey.json')
+            const serviceAccount = path.join(__dirname, '../secrets/GOOGLE_APPLICATION_CREDENTIALS.json')
             admin.initializeApp({
                 credential: admin.credential.cert(serviceAccount)
             })
