@@ -1,10 +1,9 @@
 import fp from 'fastify-plugin'
 import admin from "firebase-admin"
 import fs from 'fs'
-// import path from 'path'
+import path from 'path'
 import type { extendsFastifyInstance } from '../types/fastify'
 import { getAuth } from 'firebase-admin/auth'
-import { applicationDefault } from 'firebase-admin/app';
 import { getFirestore, Firestore } from 'firebase-admin/firestore'
 import { getStorage, Storage, } from 'firebase-admin/storage'
 import { GoogleCloudPlugin } from './googleCloud'
@@ -20,13 +19,10 @@ export class FirebasePlugin {
             /**
              * https://firebase.google.com/docs/admin/setup
             */
+            const resolvedPath = path.resolve(__dirname, './secrets/GOOGLE_APPLICATION_CREDENTIALS.json');
             if (process.env.MODE === 'development') {
                 const GOOGLE_APPLICATION_CREDENTIALS = await this.googleCloud.accessLatestSecretVersion('GOOGLE_APPLICATION_CREDENTIALS')
                 await this.wordkAroundWriteFileToLocal(GOOGLE_APPLICATION_CREDENTIALS)
-                const credential = admin.credential.cert('./secrets/GOOGLE_APPLICATION_CREDENTIALS.json')
-                admin.initializeApp({
-                    credential
-                })
             } else {
                 const { GOOGLE_APPLICATION_CREDENTIALS } = process.env
                 let serviceAccountPathOrObject: Object = {}
@@ -35,11 +31,12 @@ export class FirebasePlugin {
                 } else {
                     serviceAccountPathOrObject = GOOGLE_APPLICATION_CREDENTIALS as any
                 }
-                const credential = admin.credential.cert('./secrets/GOOGLE_APPLICATION_CREDENTIALS.json')
-                admin.initializeApp({
-                    credential,
-                })
+                await this.wordkAroundWriteFileToLocal(serviceAccountPathOrObject)
             }
+            const credential = admin.credential.cert(resolvedPath)
+            admin.initializeApp({
+                credential,
+            })
             this.firestore = getFirestore();
             /**
              * https://firebase.google.com/docs/storage/admin/start
