@@ -16,8 +16,8 @@ export class FirebasePlugin {
     async initialize() {
         try {
             if (process.env.MODE === 'development') {
-                const GOOGLE_APPLICATION_CREDENTIALS = await this.googleCloud.accessLatestSecretVersion('GOOGLE_APPLICATION_CREDENTIALS')
-                const credential = admin.credential.cert(GOOGLE_APPLICATION_CREDENTIALS)
+                const NEW_GOOGLE_APPLICATION_CREDENTIALS = await this.googleCloud.accessLatestSecretVersion('NEW_GOOGLE_APPLICATION_CREDENTIALS')
+                const credential = admin.credential.cert(NEW_GOOGLE_APPLICATION_CREDENTIALS)
                 admin.initializeApp({
                     credential
                 })
@@ -27,13 +27,13 @@ export class FirebasePlugin {
                  * https://cloud.google.com/run/docs/tutorials/identity-platform#secret-manager
                  * https://firebase.google.com/docs/reference/admin/node/firebase-admin.credential_n.md#credentialcert
                  */
-                const { GOOGLE_APPLICATION_CREDENTIALS = '', } = process.env
-                console.log({ GOOGLE_APPLICATION_CREDENTIALS, })
+                const { NEW_GOOGLE_APPLICATION_CREDENTIALS = '', } = process.env
+                console.log({ NEW_GOOGLE_APPLICATION_CREDENTIALS, })
                 let serviceAccountPathOrObject = null
-                if (typeof GOOGLE_APPLICATION_CREDENTIALS === 'string') {
-                    serviceAccountPathOrObject = JSON.parse(GOOGLE_APPLICATION_CREDENTIALS);
+                if (typeof NEW_GOOGLE_APPLICATION_CREDENTIALS === 'string') {
+                    serviceAccountPathOrObject = JSON.parse(NEW_GOOGLE_APPLICATION_CREDENTIALS);
                 } else {
-                    serviceAccountPathOrObject = GOOGLE_APPLICATION_CREDENTIALS
+                    serviceAccountPathOrObject = NEW_GOOGLE_APPLICATION_CREDENTIALS
                 }
                 console.log({ serviceAccountPathOrObject })
                 const serviceAccountfrom: ServiceAccount = {
