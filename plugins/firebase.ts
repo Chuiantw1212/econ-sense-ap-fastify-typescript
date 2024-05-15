@@ -1,5 +1,5 @@
 import fp from 'fastify-plugin'
-import admin, { type ServiceAccountfrom } from "firebase-admin"
+import admin, { type ServiceAccount } from "firebase-admin"
 import type { extendsFastifyInstance } from '../types/fastify'
 import { getAuth, } from 'firebase-admin/auth'
 import { getFirestore, Firestore } from 'firebase-admin/firestore'
@@ -36,7 +36,7 @@ export class FirebasePlugin {
                     serviceAccountPathOrObject = GOOGLE_APPLICATION_CREDENTIALS
                 }
                 console.log({ serviceAccountPathOrObject })
-                const serviceAccountfrom: ServiceAccountfrom = {
+                const serviceAccountfrom: ServiceAccount = {
                     projectId: serviceAccountPathOrObject.project_id,
                     clientEmail: serviceAccountPathOrObject.client_email,
                     privateKey: serviceAccountPathOrObject.private_key
