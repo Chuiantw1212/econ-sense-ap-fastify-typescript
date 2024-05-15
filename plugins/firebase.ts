@@ -1,7 +1,7 @@
 import fp from 'fastify-plugin'
-import admin from "firebase-admin"
+import admin, { type ServiceAccountfrom } from "firebase-admin"
 import type { extendsFastifyInstance } from '../types/fastify'
-import { getAuth } from 'firebase-admin/auth'
+import { getAuth, } from 'firebase-admin/auth'
 import { getFirestore, Firestore } from 'firebase-admin/firestore'
 import { getStorage, Storage, } from 'firebase-admin/storage'
 import { GoogleCloudPlugin } from './googleCloud'
@@ -25,17 +25,24 @@ export class FirebasePlugin {
                 /**
                  * Handling sensitive configuration with Secret Manager
                  * https://cloud.google.com/run/docs/tutorials/identity-platform#secret-manager
+                 * https://firebase.google.com/docs/reference/admin/node/firebase-admin.credential_n.md#credentialcert
                  */
-                const { GOOGLE_APPLICATION_CREDENTIALS = '', TEST = '' } = process.env
-                console.log({ GOOGLE_APPLICATION_CREDENTIALS, TEST })
+                const { GOOGLE_APPLICATION_CREDENTIALS = '', } = process.env
+                console.log({ GOOGLE_APPLICATION_CREDENTIALS, })
                 let serviceAccountPathOrObject = null
                 if (typeof GOOGLE_APPLICATION_CREDENTIALS === 'string') {
                     serviceAccountPathOrObject = JSON.parse(GOOGLE_APPLICATION_CREDENTIALS);
                 } else {
                     serviceAccountPathOrObject = GOOGLE_APPLICATION_CREDENTIALS
                 }
+                console.log({ serviceAccountPathOrObject })
+                const serviceAccountfrom: ServiceAccountfrom = {
+                    projectId: serviceAccountPathOrObject.project_id,
+                    clientEmail: serviceAccountPathOrObject.client_email,
+                    privateKey: serviceAccountPathOrObject.private_key
+                }
                 admin.initializeApp({
-                    credential: serviceAccountPathOrObject,
+                    credential: admin.credential.cert(serviceAccountfrom),
                 })
             }
             this.firestore = getFirestore();
