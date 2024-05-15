@@ -39,9 +39,9 @@ export class FirebasePlugin {
             this.bucketPublic = firebaseStorage.bucket('public.econ-sense.com')
         } catch (error: any) {
             if (!GOOGLE_APPLICATION_CREDENTIALS) {
-                console.log(`NO GOOGLE_APPLICATION_CREDENTIALS`)
+                console.error(`NO GOOGLE_APPLICATION_CREDENTIALS`)
             }
-            console.log(error.message || error)
+            console.error(error.message || error)
         }
     }
     async verifyIdToken(idToken: string) {
