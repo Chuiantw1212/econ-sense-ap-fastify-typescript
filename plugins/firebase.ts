@@ -24,9 +24,15 @@ export class FirebasePlugin {
                 credential: credential
             })
         } else {
-            admin.initializeApp({
-                credential: applicationDefault()
-            })
+            try {
+                const { GOOGLE_APPLICATION_CREDENTIALS = '' } = process.env
+                const credential = admin.credential.cert(GOOGLE_APPLICATION_CREDENTIALS)
+                admin.initializeApp({
+                    credential,
+                })
+            } catch (error: any) {
+                console.log(error.message || error)
+            }
         }
         this.firestore = getFirestore();
         /**
