@@ -23,6 +23,7 @@ export class FirebasePlugin {
                 })
             } else {
                 const { GOOGLE_APPLICATION_CREDENTIALS = '' } = process.env
+                console.log({ GOOGLE_APPLICATION_CREDENTIALS })
                 let serviceAccountPathOrObject = null
                 if (typeof GOOGLE_APPLICATION_CREDENTIALS === 'string') {
                     serviceAccountPathOrObject = JSON.parse(GOOGLE_APPLICATION_CREDENTIALS)
