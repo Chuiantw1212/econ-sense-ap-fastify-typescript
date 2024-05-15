@@ -8,7 +8,7 @@ export class ChatGptPlugin {
     async initialize() {
         try {
             const { ChatGPTAPI } = await import('chatgpt')
-            const apiKeyPath = path.join(__dirname, '../OPENAI_API_KEY.json')
+            const apiKeyPath = path.join(__dirname, '../private/OPENAI_API_KEY.json')
             const apiKey = require(apiKeyPath)
             const instance: any = new ChatGPTAPI({
                 apiKey,
