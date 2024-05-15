@@ -59,5 +59,7 @@ profile*
 
 secrets
 private
+OPENAI_API_KEY.json
+GOOGLE_APPLICATION_CREDENTIALS.json
 dist
 *.js

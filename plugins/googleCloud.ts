@@ -11,6 +11,22 @@ export class GoogleCloudPlugin {
         //     OPENAI_API_KEY: 'projects/449033690264/secrets/OPENAI_API_KEY'
         // })
     }
+    async accessLatestSecretVersion(name: string = '') {
+        const [version] = await this.sercertManagerServiceClient.accessSecretVersion({
+            name: `projects/449033690264/secrets/${name}/versions/latest`,
+        });
+        if (version.payload?.data) {
+            // Extract the payload as a string.
+            const payload = version.payload.data.toString();
+
+            // WARNING: Do not print the secret in a production environment - this
+            // snippet is showing how to access the secret material.
+            const parsedValue = JSON.parse(payload)
+            return parsedValue
+        } else {
+            throw `accessSecretVersion failed. ${name}`
+        }
+    }
     async grantAccess(privateKeys: any) {
         const member = 'user:chuiantw1212@gmail.com'
 
