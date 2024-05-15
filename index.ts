@@ -26,11 +26,11 @@ import ChatController from './controllers/chat'
 const appService = async function (fastify: FastifyInstance,) {
     const { ready, } = fastify
     // Plugins
-    fastify.register(googleCloudPlugin)
     fastify.register(FormBody)
     fastify.register(corsPlugin)
     fastify.register(envPlugin)
-    fastify.register(firebasePlugin)
+    await fastify.register(googleCloudPlugin)
+    await fastify.register(firebasePlugin)
     fastify.register(chatGptPlugin)
     // Models
     fastify.register(SelectModel)
