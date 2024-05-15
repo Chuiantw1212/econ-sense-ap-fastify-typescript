@@ -20,6 +20,9 @@ export class ChatGptPlugin {
         }
     }
     async makeStory(story: string) {
+        if (!this.instance) {
+            throw 'ChatGpt初始化失敗！'
+        }
         const res = await this.instance.sendMessage(`
             請用中文，以第二人稱視角，將以下的故事內容擴充到至少500字，並且用p標籤分段。\n\n
             ${story}
