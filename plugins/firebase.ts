@@ -37,7 +37,7 @@ export class FirebasePlugin {
                 }
                 const credential = admin.credential.cert('./secrets/GOOGLE_APPLICATION_CREDENTIALS.json')
                 admin.initializeApp({
-                    credential: applicationDefault() 
+                    credential
                 })
             }
             this.firestore = getFirestore();
