@@ -41,8 +41,11 @@ export class FirebasePlugin {
                     clientEmail: serviceAccountPathOrObject.client_email,
                     privateKey: serviceAccountPathOrObject.private_key
                 }
+                console.log({ serviceAccountfrom })
+                const credential =  admin.credential.cert(serviceAccountfrom)
+                console.log({ credential })
                 admin.initializeApp({
-                    credential: admin.credential.cert(serviceAccountfrom),
+                    credential,
                 })
             }
             this.firestore = getFirestore();
