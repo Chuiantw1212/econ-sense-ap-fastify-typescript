@@ -28,10 +28,13 @@ export class FirebasePlugin {
                     credential
                 })
             } else {
-                const { GOOGLE_APPLICATION_CREDENTIALS = '' } = process.env
+                const { GOOGLE_APPLICATION_CREDENTIALS } = process.env
                 let serviceAccountPathOrObject: Object = {}
-                
-                serviceAccountPathOrObject = JSON.parse(GOOGLE_APPLICATION_CREDENTIALS)
+                if (typeof GOOGLE_APPLICATION_CREDENTIALS === 'string') {
+                    serviceAccountPathOrObject = JSON.parse(GOOGLE_APPLICATION_CREDENTIALS)
+                } else {
+                    serviceAccountPathOrObject = GOOGLE_APPLICATION_CREDENTIALS as any
+                }
                 const credential = admin.credential.cert('./secrets/GOOGLE_APPLICATION_CREDENTIALS.json')
                 admin.initializeApp({
                     credential: applicationDefault() 
