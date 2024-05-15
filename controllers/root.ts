@@ -1,7 +1,10 @@
 import { FastifyRequest, FastifyReply, } from 'fastify'
 import fp from 'fastify-plugin'
+import { memoryUsage } from 'node:process';
 export default fp(async function (fastify) {
     fastify.get('/', async function (req: FastifyRequest, res: FastifyReply) {
-        res.code(200).send('Hello, World!')
+        res.code(200).send({
+            memoryUsage: memoryUsage()
+        })
     })
 })
