@@ -57,7 +57,7 @@ profile*
 *clinic*
 *flamegraph*
 
-serviceAccountKey.json
-OPENAI_API_KEY.json
+private
+dist
 *.js
 OPENAI_API_KEY.json
