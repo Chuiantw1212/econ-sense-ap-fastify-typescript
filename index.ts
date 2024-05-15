@@ -1,16 +1,14 @@
 console.time('Server boot')
 // Fastify core
 import Fastify from 'fastify'
-import {
-    FastifyInstance,
-    FastifyPluginOptions
-} from 'fastify'
+import { FastifyInstance, } from 'fastify'
 // Plugins
 import FormBody from '@fastify/formbody'
 import corsPlugin from './plugins/cors'
 import envPlugin from './plugins/env'
 import firebasePlugin from './plugins/firebase'
 import chatGptPlugin from './plugins/chatGpt'
+import googleCloudPlugin from './plugins/googleCloud'
 // Models
 import LocationModel from './models/location'
 import SelectModel from './models/select'
@@ -25,12 +23,13 @@ import CalculateController from './controllers/calculate'
 import RootController from './controllers/root'
 import UserController from './controllers/user'
 import ChatController from './controllers/chat'
-const appService = async function (fastify: FastifyInstance, opts: FastifyPluginOptions) {
+const appService = async function (fastify: FastifyInstance,) {
     const { ready, } = fastify
     // Plugins
     fastify.register(FormBody)
     fastify.register(corsPlugin)
     fastify.register(envPlugin)
+    fastify.register(googleCloudPlugin)
     fastify.register(firebasePlugin)
     fastify.register(chatGptPlugin)
     // Models

@@ -12,6 +12,7 @@ import { BankModel } from '../models/bank'
 // Plugins
 import { FirebasePlugin } from '../plugins/firebase'
 import { ChatGptPlugin } from '../plugins/chatGpt'
+import { GoogleCloudPlugin } from '../plugins/googleCloud'
 
 export interface extendsFastifyInstance extends FastifyInstance {
     // Models
@@ -24,6 +25,7 @@ export interface extendsFastifyInstance extends FastifyInstance {
     // Plugins
     firebase: FirebasePlugin
     chatGpt: ChatGptPlugin,
+    googleCloud: GoogleCloudPlugin,
 }
 
 export interface eFastifyPluginOptions extends FastifyPluginOptions {
