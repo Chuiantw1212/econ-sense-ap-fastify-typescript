@@ -25,12 +25,9 @@ export class FirebasePlugin {
                     credential
                 })
             } else {
-                const { GOOGLE_APPLICATION_CREDENTIALS = '', ENV } = process.env
-                console.error({ ENV })
-                if (!GOOGLE_APPLICATION_CREDENTIALS) {
-                    throw 'NO GOOGLE_APPLICATION_CREDENTIALS'
-                }
-                const credential = admin.credential.cert(GOOGLE_APPLICATION_CREDENTIALS)
+                const { GOOGLE_APPLICATION_CREDENTIALS = '' } = process.env
+                const serviceAccountObject = JSON.parse(GOOGLE_APPLICATION_CREDENTIALS)
+                const credential = admin.credential.cert(serviceAccountObject)
                 admin.initializeApp({
                     credential,
                 })
@@ -43,6 +40,7 @@ export class FirebasePlugin {
             this.bucketPublic = firebaseStorage.bucket('public.econ-sense.com')
         } catch (error: any) {
             console.error(error.message || error)
+            throw error
         }
     }
     async verifyIdToken(idToken: string) {
