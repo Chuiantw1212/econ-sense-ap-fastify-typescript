@@ -6,7 +6,7 @@ import { getFirestore, Firestore } from 'firebase-admin/firestore'
 import { getStorage, Storage, } from 'firebase-admin/storage'
 import { GoogleCloudPlugin } from './googleCloud'
 
-class FirebasePlugin {
+export class FirebasePlugin {
     firestore: Firestore | any
     bucketPublic: ReturnType<Storage['bucket']> | any
     googleCloud: GoogleCloudPlugin
