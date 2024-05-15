@@ -22,11 +22,15 @@ export class FirebasePlugin {
                     credential
                 })
             } else {
-                const { GOOGLE_APPLICATION_CREDENTIALS = '' } = process.env
-                console.log({ GOOGLE_APPLICATION_CREDENTIALS })
+                /**
+                 * Handling sensitive configuration with Secret Manager
+                 * https://cloud.google.com/run/docs/tutorials/identity-platform#secret-manager
+                 */
+                const { GOOGLE_APPLICATION_CREDENTIALS = '', TEST = '' } = process.env
+                console.log({ GOOGLE_APPLICATION_CREDENTIALS, TEST })
                 let serviceAccountPathOrObject = null
                 if (typeof GOOGLE_APPLICATION_CREDENTIALS === 'string') {
-                    serviceAccountPathOrObject = JSON.parse(GOOGLE_APPLICATION_CREDENTIALS)
+                    serviceAccountPathOrObject = JSON.parse(GOOGLE_APPLICATION_CREDENTIALS);
                 } else {
                     serviceAccountPathOrObject = GOOGLE_APPLICATION_CREDENTIALS
                 }
