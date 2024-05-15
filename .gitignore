@@ -58,6 +58,6 @@ profile*
 *flamegraph*
 
 private
+secrets
 dist
 *.js
-OPENAI_API_KEY.json
