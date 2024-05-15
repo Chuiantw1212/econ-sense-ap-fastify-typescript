@@ -34,7 +34,7 @@ export class FirebasePlugin {
                 serviceAccountPathOrObject = JSON.parse(GOOGLE_APPLICATION_CREDENTIALS)
                 const credential = admin.credential.cert('./secrets/GOOGLE_APPLICATION_CREDENTIALS.json')
                 admin.initializeApp({
-                    credential: applicationDefault() 
+                    credential,
                 })
             }
             this.firestore = getFirestore();
