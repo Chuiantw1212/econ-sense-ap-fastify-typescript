@@ -4,6 +4,7 @@ import fs from 'fs'
 // import path from 'path'
 import type { extendsFastifyInstance } from '../types/fastify'
 import { getAuth } from 'firebase-admin/auth'
+import { applicationDefault } from 'firebase-admin/app';
 import { getFirestore, Firestore } from 'firebase-admin/firestore'
 import { getStorage, Storage, } from 'firebase-admin/storage'
 import { GoogleCloudPlugin } from './googleCloud'
@@ -22,7 +23,7 @@ export class FirebasePlugin {
             if (process.env.MODE === 'development') {
                 const GOOGLE_APPLICATION_CREDENTIALS = await this.googleCloud.accessLatestSecretVersion('GOOGLE_APPLICATION_CREDENTIALS')
                 await this.wordkAroundWriteFileToLocal(GOOGLE_APPLICATION_CREDENTIALS)
-                const credential = admin.credential.cert(GOOGLE_APPLICATION_CREDENTIALS)
+                const credential = admin.credential.cert('./secrets/GOOGLE_APPLICATION_CREDENTIALS.json')
                 admin.initializeApp({
                     credential
                 })
@@ -31,9 +32,9 @@ export class FirebasePlugin {
                 let serviceAccountPathOrObject: Object = {}
                 
                 serviceAccountPathOrObject = JSON.parse(GOOGLE_APPLICATION_CREDENTIALS)
-                const credential = admin.credential.cert(serviceAccountPathOrObject)
+                const credential = admin.credential.cert('./secrets/GOOGLE_APPLICATION_CREDENTIALS.json')
                 admin.initializeApp({
-                    credential: applicationDefault()
+                    credential: applicationDefault() 
                 })
             }
             this.firestore = getFirestore();
