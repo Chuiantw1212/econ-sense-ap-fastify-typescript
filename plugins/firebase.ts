@@ -14,32 +14,35 @@ export class FirebasePlugin {
         this.googleCloud = fastify.googleCloud
     }
     async initialize() {
-        /**
-         * https://firebase.google.com/docs/admin/setup
-        */
-        if (process.env.MODE === 'development') {
-            const GOOGLE_APPLICATION_CREDENTIALS = await this.googleCloud.accessLatestSecretVersion('GOOGLE_APPLICATION_CREDENTIALS')
-            const credential = admin.credential.cert(GOOGLE_APPLICATION_CREDENTIALS)
-            admin.initializeApp({
-                credential: credential
-            })
-        } else {
-            try {
-                const { GOOGLE_APPLICATION_CREDENTIALS = '' } = process.env
+        const { GOOGLE_APPLICATION_CREDENTIALS = '' } = process.env
+        try {
+            /**
+             * https://firebase.google.com/docs/admin/setup
+            */
+            if (process.env.MODE === 'development') {
+                const GOOGLE_APPLICATION_CREDENTIALS = await this.googleCloud.accessLatestSecretVersion('GOOGLE_APPLICATION_CREDENTIALS')
+                const credential = admin.credential.cert(GOOGLE_APPLICATION_CREDENTIALS)
+                admin.initializeApp({
+                    credential
+                })
+            } else {
                 const credential = admin.credential.cert(GOOGLE_APPLICATION_CREDENTIALS)
                 admin.initializeApp({
                     credential,
                 })
-            } catch (error: any) {
-                console.log(error.message || error)
             }
+            this.firestore = getFirestore();
+            /**
+             * https://firebase.google.com/docs/storage/admin/start
+            */
+            const firebaseStorage: Storage = getStorage()
+            this.bucketPublic = firebaseStorage.bucket('public.econ-sense.com')
+        } catch (error: any) {
+            if (!GOOGLE_APPLICATION_CREDENTIALS) {
+                console.log(`NO GOOGLE_APPLICATION_CREDENTIALS`)
+            }
+            console.log(error.message || error)
         }
-        this.firestore = getFirestore();
-        /**
-         * https://firebase.google.com/docs/storage/admin/start
-         */
-        const firebaseStorage: Storage = getStorage()
-        this.bucketPublic = firebaseStorage.bucket('public.econ-sense.com')
     }
     async verifyIdToken(idToken: string) {
         try {
