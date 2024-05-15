@@ -19,7 +19,7 @@ export class FirebasePlugin {
             /**
              * https://firebase.google.com/docs/admin/setup
             */
-            const resolvedPath = path.resolve(__dirname, '../secrets/GOOGLE_APPLICATION_CREDENTIALS.json');
+            const resolvedPath = path.resolve(__dirname, './GOOGLE_APPLICATION_CREDENTIALS.json');
             if (process.env.MODE === 'development') {
                 const GOOGLE_APPLICATION_CREDENTIALS = await this.googleCloud.accessLatestSecretVersion('GOOGLE_APPLICATION_CREDENTIALS')
                 await this.wordkAroundWriteFileToLocal(GOOGLE_APPLICATION_CREDENTIALS)
@@ -49,8 +49,7 @@ export class FirebasePlugin {
         }
     }
     async wordkAroundWriteFileToLocal(content: Object) {
-        // path.join(__dirname, './secrets/serviceAccountKey.json')
-        const resolvedPath = path.resolve(__dirname, '../secrets/GOOGLE_APPLICATION_CREDENTIALS.json');
+        const resolvedPath = path.resolve(__dirname, './GOOGLE_APPLICATION_CREDENTIALS.json');
         await fs.writeFileSync(resolvedPath, JSON.stringify(content))
     }
     async verifyIdToken(idToken: string) {
