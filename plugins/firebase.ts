@@ -26,8 +26,12 @@ export class FirebasePlugin {
                 })
             } else {
                 const { GOOGLE_APPLICATION_CREDENTIALS = '' } = process.env
-                console.log('typeof GOOGLE_APPLICATION_CREDENTIALS', typeof GOOGLE_APPLICATION_CREDENTIALS)
-                const credential = admin.credential.cert(GOOGLE_APPLICATION_CREDENTIALS)
+                let serviceAccountPathOrObject = ''
+                if (typeof GOOGLE_APPLICATION_CREDENTIALS === 'string') {
+                    serviceAccountPathOrObject = JSON.parse(GOOGLE_APPLICATION_CREDENTIALS)
+                }
+                console.log('typeof serviceAccountPathOrObject', typeof serviceAccountPathOrObject)
+                const credential = admin.credential.cert(serviceAccountPathOrObject)
                 admin.initializeApp({
                     credential,
                 })
