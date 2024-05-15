@@ -25,12 +25,12 @@ export class FirebasePlugin {
                     credential
                 })
             } else {
-                const { GOOGLE_APPLICATION_CREDENTIALS = '' } = process.env
-                let serviceAccountPathOrObject: Object = {}
-                serviceAccountPathOrObject = JSON.parse(GOOGLE_APPLICATION_CREDENTIALS)
-                const credential = admin.credential.cert(serviceAccountPathOrObject)
+                // const { GOOGLE_APPLICATION_CREDENTIALS = '' } = process.env
+                // let serviceAccountPathOrObject: Object = {}
+                // serviceAccountPathOrObject = JSON.parse(GOOGLE_APPLICATION_CREDENTIALS)
+                // const credential = admin.credential.cert(serviceAccountPathOrObject)
                 admin.initializeApp({
-                    credential,
+                    credential: applicationDefault()
                 })
             }
             this.firestore = getFirestore();
