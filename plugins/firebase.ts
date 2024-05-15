@@ -14,7 +14,6 @@ export class FirebasePlugin {
         this.googleCloud = fastify.googleCloud
     }
     async initialize() {
-        const { GOOGLE_APPLICATION_CREDENTIALS = '' } = process.env
         try {
             /**
              * https://firebase.google.com/docs/admin/setup
@@ -26,7 +25,9 @@ export class FirebasePlugin {
                     credential
                 })
             } else {
-                const credential = admin.credential.cert(GOOGLE_APPLICATION_CREDENTIALS)
+                const { GOOGLE_APPLICATION_CREDENTIALS = '' } = process.env
+                const serviceAccountObject = JSON.parse(GOOGLE_APPLICATION_CREDENTIALS)
+                const credential = admin.credential.cert(serviceAccountObject)
                 admin.initializeApp({
                     credential,
                 })
@@ -38,10 +39,8 @@ export class FirebasePlugin {
             const firebaseStorage: Storage = getStorage()
             this.bucketPublic = firebaseStorage.bucket('public.econ-sense.com')
         } catch (error: any) {
-            if (!GOOGLE_APPLICATION_CREDENTIALS) {
-                console.error(`NO GOOGLE_APPLICATION_CREDENTIALS`)
-            }
             console.error(error.message || error)
+            throw error
         }
     }
     async verifyIdToken(idToken: string) {
