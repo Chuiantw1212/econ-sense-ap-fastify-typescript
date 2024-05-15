@@ -26,8 +26,8 @@ export class FirebasePlugin {
                 })
             } else {
                 const { GOOGLE_APPLICATION_CREDENTIALS = '' } = process.env
-                const serviceAccountObject = JSON.parse(GOOGLE_APPLICATION_CREDENTIALS)
-                const credential = admin.credential.cert(serviceAccountObject)
+                console.log('typeof GOOGLE_APPLICATION_CREDENTIALS', typeof GOOGLE_APPLICATION_CREDENTIALS)
+                const credential = admin.credential.cert(GOOGLE_APPLICATION_CREDENTIALS)
                 admin.initializeApp({
                     credential,
                 })
