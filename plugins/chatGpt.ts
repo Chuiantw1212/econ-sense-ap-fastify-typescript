@@ -1,15 +1,17 @@
 import fp from 'fastify-plugin'
 import path from 'path'
+import type { extendsFastifyInstance } from '../types/fastify'
+import { GoogleCloudPlugin } from './googleCloud'
 export class ChatGptPlugin {
     instance: any
-    constructor() {
-        this.initialize()
+    googleCloud: GoogleCloudPlugin
+    constructor(fastify: extendsFastifyInstance) {
+        this.googleCloud = fastify.googleCloud
     }
     async initialize() {
         try {
             const { ChatGPTAPI } = await import('chatgpt')
-            const apiKeyPath = path.join(__dirname, '../OPENAI_API_KEY.json')
-            const apiKey = require(apiKeyPath)
+            const apiKey = await this.googleCloud.accessLatestSecretVersion('OPENAI_API_KEY')
             const instance: any = new ChatGPTAPI({
                 apiKey,
             })
@@ -34,6 +36,8 @@ export class ChatGptPlugin {
         return text
     }
 }
-export default fp(async function (fastify) {
-    fastify.decorate('chatGpt', new ChatGptPlugin())
+export default fp(async function (fastify: any) {
+    const chatGpt = new ChatGptPlugin(fastify)
+    await chatGpt.initialize()
+    fastify.decorate('chatGpt', chatGpt)
 })
