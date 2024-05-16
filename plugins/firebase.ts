@@ -1,12 +1,12 @@
 import fp from 'fastify-plugin'
-import admin from "firebase-admin"
+import admin, { type ServiceAccount } from "firebase-admin"
 import type { extendsFastifyInstance } from '../types/fastify'
-import { getAuth } from 'firebase-admin/auth'
+import { getAuth, } from 'firebase-admin/auth'
 import { getFirestore, Firestore } from 'firebase-admin/firestore'
 import { getStorage, Storage, } from 'firebase-admin/storage'
 import { GoogleCloudPlugin } from './googleCloud'
 
-class FirebasePlugin {
+export class FirebasePlugin {
     firestore: Firestore | any
     bucketPublic: ReturnType<Storage['bucket']> | any
     googleCloud: GoogleCloudPlugin
@@ -29,10 +29,10 @@ class FirebasePlugin {
                  */
                 const { SERVICE_ACCOUNT = '', } = process.env
                 let serviceAccountPathOrObject = null
-                if (typeof GOOGLE_APPLICATION_CREDENTIALS === 'string') {
-                    serviceAccountPathOrObject = JSON.parse(GOOGLE_APPLICATION_CREDENTIALS)
+                if (typeof SERVICE_ACCOUNT === 'string') {
+                    serviceAccountPathOrObject = JSON.parse(SERVICE_ACCOUNT);
                 } else {
-                    serviceAccountPathOrObject = GOOGLE_APPLICATION_CREDENTIALS
+                    serviceAccountPathOrObject = SERVICE_ACCOUNT
                 }
                 const serviceAccountfrom: ServiceAccount = {
                     projectId: serviceAccountPathOrObject.project_id,
@@ -41,7 +41,7 @@ class FirebasePlugin {
                 }
                 const credential =  admin.credential.cert(serviceAccountfrom)
                 admin.initializeApp({
-                    credential: serviceAccountPathOrObject,
+                    credential,
                 })
             }
             this.firestore = getFirestore();

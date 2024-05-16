@@ -7,7 +7,6 @@ export class ChatGptPlugin {
     googleCloud: GoogleCloudPlugin
     constructor(fastify: extendsFastifyInstance) {
         this.googleCloud = fastify.googleCloud
-        this.initialize()
     }
     async initialize() {
         try {
@@ -38,5 +37,7 @@ export class ChatGptPlugin {
     }
 }
 export default fp(async function (fastify: any) {
-    fastify.decorate('chatGpt', new ChatGptPlugin(fastify))
+    const chatGpt = new ChatGptPlugin(fastify)
+    await chatGpt.initialize()
+    fastify.decorate('chatGpt', chatGpt)
 })

@@ -61,8 +61,15 @@ const app = Fastify({
 })
 app.register(appService)
 /**
- * 保留PORT
+ * AppEngine保留PORT
  * https://cloud.google.com/functions/docs/configuring/env-var
  */
+/**
+ * Cloud Run要host0.0.0.0
+ * https://cloud.google.com/run/docs/troubleshooting#container-failed-to-start
+ */
 const port: any = process.env.PORT || 8080
-app.listen({ port: port })
+app.listen({
+    port: port,
+    host: '0.0.0.0'
+})
