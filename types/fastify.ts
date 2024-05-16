@@ -26,6 +26,8 @@ export interface extendsFastifyInstance extends FastifyInstance {
     firebase: FirebasePlugin
     chatGpt: ChatGptPlugin,
     googleCloud: GoogleCloudPlugin,
+    // meta
+    startupTime: number,
 }
 
 export interface eFastifyPluginOptions extends FastifyPluginOptions {
