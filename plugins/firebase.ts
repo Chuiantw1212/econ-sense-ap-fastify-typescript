@@ -15,6 +15,11 @@ export class FirebasePlugin {
     }
     async initialize() {
         try {
+            /**
+             * 使用Secret Manager拉service account key，
+             * 直得注意的是透過secret managert會抓回完整的object，
+             * 如果是cloud run的secret則會是回傳JSON.stringify(object)
+             */
             if (process.env.MODE === 'development') {
                 const FIREBASE_SERVICE_ACCOUNT_KEY_JSON = await this.googleCloud.accessLatestSecretVersion('FIREBASE_SERVICE_ACCOUNT_KEY_JSON')
                 const credential = admin.credential.cert(FIREBASE_SERVICE_ACCOUNT_KEY_JSON)
