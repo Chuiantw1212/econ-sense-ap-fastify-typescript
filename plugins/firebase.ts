@@ -22,13 +22,24 @@ class FirebasePlugin {
                     credential
                 })
             } else {
-                const { GOOGLE_APPLICATION_CREDENTIALS = '' } = process.env
+                /**
+                 * Handling sensitive configuration with Secret Manager
+                 * https://cloud.google.com/run/docs/tutorials/identity-platform#secret-manager
+                 * https://firebase.google.com/docs/reference/admin/node/firebase-admin.credential_n.md#credentialcert
+                 */
+                const { SERVICE_ACCOUNT = '', } = process.env
                 let serviceAccountPathOrObject = null
                 if (typeof GOOGLE_APPLICATION_CREDENTIALS === 'string') {
                     serviceAccountPathOrObject = JSON.parse(GOOGLE_APPLICATION_CREDENTIALS)
                 } else {
                     serviceAccountPathOrObject = GOOGLE_APPLICATION_CREDENTIALS
                 }
+                const serviceAccountfrom: ServiceAccount = {
+                    projectId: serviceAccountPathOrObject.project_id,
+                    clientEmail: serviceAccountPathOrObject.client_email,
+                    privateKey: serviceAccountPathOrObject.private_key
+                }
+                const credential =  admin.credential.cert(serviceAccountfrom)
                 admin.initializeApp({
                     credential: serviceAccountPathOrObject,
                 })
