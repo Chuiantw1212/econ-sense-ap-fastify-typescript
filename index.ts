@@ -25,27 +25,31 @@ import UserController from './controllers/user'
 import ChatController from './controllers/chat'
 const appService = async function (fastify: FastifyInstance,) {
     const { ready, } = fastify
-    // Plugins
-    fastify.register(googleCloudPlugin)
-    fastify.register(FormBody)
-    fastify.register(corsPlugin)
-    fastify.register(envPlugin)
-    fastify.register(firebasePlugin)
-    fastify.register(chatGptPlugin)
-    // Models
-    fastify.register(SelectModel)
-    fastify.register(LocationModel)
-    fastify.register(JcicModel)
-    fastify.register(NdcModel)
-    fastify.register(BankModel)
-    fastify.register(UserModel)
-    // Conterollers
-    fastify.register(SelectController)
-    fastify.register(BankController)
-    fastify.register(CalculateController)
-    fastify.register(RootController)
-    fastify.register(UserController)
-    fastify.register(ChatController)
+    try {
+        // Plugins
+        await fastify.register(FormBody)
+        await fastify.register(corsPlugin)
+        await fastify.register(envPlugin)
+        await fastify.register(googleCloudPlugin)
+        await fastify.register(firebasePlugin)
+        await fastify.register(chatGptPlugin)
+        // Models
+        await fastify.register(SelectModel)
+        await fastify.register(LocationModel)
+        await fastify.register(JcicModel)
+        await fastify.register(NdcModel)
+        await fastify.register(BankModel)
+        await fastify.register(UserModel)
+        // Conterollers
+        await fastify.register(SelectController)
+        await fastify.register(BankController)
+        await fastify.register(CalculateController)
+        await fastify.register(RootController)
+        await fastify.register(UserController)
+        await fastify.register(ChatController)
+    } catch (error: any) {
+        console.error(error.message || error)
+    }
     // Output log
     ready(() => {
         console.timeEnd('Server boot')
@@ -57,8 +61,15 @@ const app = Fastify({
 })
 app.register(appService)
 /**
- * 保留PORT
+ * AppEngine保留PORT
  * https://cloud.google.com/functions/docs/configuring/env-var
  */
+/**
+ * Cloud Run要host0.0.0.0
+ * https://cloud.google.com/run/docs/troubleshooting#container-failed-to-start
+ */
 const port: any = process.env.PORT || 8080
-app.listen({ port: port })
+app.listen({
+    port: port,
+    host: '0.0.0.0'
+})

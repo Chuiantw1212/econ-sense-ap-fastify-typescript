@@ -1,36 +1,59 @@
 import fp from 'fastify-plugin'
-import path from 'path'
-import admin from "firebase-admin"
-import { applicationDefault } from 'firebase-admin/app';
-import { getAuth } from 'firebase-admin/auth'
+import admin, { type ServiceAccount } from "firebase-admin"
+import type { extendsFastifyInstance } from '../types/fastify'
+import { getAuth, } from 'firebase-admin/auth'
 import { getFirestore, Firestore } from 'firebase-admin/firestore'
 import { getStorage, Storage, } from 'firebase-admin/storage'
+import { GoogleCloudPlugin } from './googleCloud'
+
 export class FirebasePlugin {
-    firestore: Firestore
-    bucketPublic: ReturnType<Storage['bucket']>
-    constructor() {
-        /**
-         * https://firebase.google.com/docs/admin/setup
-         */
-        if (process.env.MODE === 'development') {
-            const serviceAccount = path.join(__dirname, '../secrets/GOOGLE_APPLICATION_CREDENTIALS.json')
-            admin.initializeApp({
-                credential: admin.credential.cert(serviceAccount)
-            })
-        } else {
-            admin.initializeApp({
-                credential: applicationDefault()
-            })
+    firestore: Firestore | any
+    bucketPublic: ReturnType<Storage['bucket']> | any
+    googleCloud: GoogleCloudPlugin
+    constructor(fastify: extendsFastifyInstance) {
+        this.googleCloud = fastify.googleCloud
+    }
+    async initialize() {
+        try {
+            if (process.env.MODE === 'development') {
+                const GOOGLE_APPLICATION_CREDENTIALS = await this.googleCloud.accessLatestSecretVersion('GOOGLE_APPLICATION_CREDENTIALS')
+                const credential = admin.credential.cert(GOOGLE_APPLICATION_CREDENTIALS)
+                admin.initializeApp({
+                    credential
+                })
+            } else {
+                /**
+                 * Handling sensitive configuration with Secret Manager
+                 * https://cloud.google.com/run/docs/tutorials/identity-platform#secret-manager
+                 * https://firebase.google.com/docs/reference/admin/node/firebase-admin.credential_n.md#credentialcert
+                 */
+                const { SERVICE_ACCOUNT = '', } = process.env
+                let serviceAccountPathOrObject = null
+                if (typeof SERVICE_ACCOUNT === 'string') {
+                    serviceAccountPathOrObject = JSON.parse(SERVICE_ACCOUNT);
+                } else {
+                    serviceAccountPathOrObject = SERVICE_ACCOUNT
+                }
+                const serviceAccountfrom: ServiceAccount = {
+                    projectId: serviceAccountPathOrObject.project_id,
+                    clientEmail: serviceAccountPathOrObject.client_email,
+                    privateKey: serviceAccountPathOrObject.private_key
+                }
+                const credential =  admin.credential.cert(serviceAccountfrom)
+                admin.initializeApp({
+                    credential,
+                })
+            }
+            this.firestore = getFirestore();
+            /**
+             * https://firebase.google.com/docs/storage/admin/start
+            */
+            const firebaseStorage: Storage = getStorage()
+            this.bucketPublic = firebaseStorage.bucket('public.econ-sense.com')
+        } catch (error: any) {
+            console.error(error.message || error)
+            throw error
         }
-        /**
-         * https://firebase.google.com/docs/firestore/quickstart
-         */
-        this.firestore = getFirestore();
-        /**
-         * https://firebase.google.com/docs/storage/admin/start
-         */
-        const firebaseStorage: Storage = getStorage()
-        this.bucketPublic = firebaseStorage.bucket('public.econ-sense.com');
     }
     async verifyIdToken(idToken: string) {
         try {
@@ -48,7 +71,7 @@ export class FirebasePlugin {
         }
     }
     getPublicFiles() {
-        this.bucketPublic.getFiles(function (err, files) {
+        this.bucketPublic.getFiles(function (err: any, files: []) {
             if (!err) {
                 // files is an array of File objects.
                 console.log(files);
@@ -56,7 +79,8 @@ export class FirebasePlugin {
         });
     }
 }
-export default fp(async function (fastify) {
-    const firebase = new FirebasePlugin()
+export default fp(async function (fastify: any) {
+    const firebase = new FirebasePlugin(fastify)
+    await firebase.initialize()
     fastify.decorate('firebase', firebase)
 })
