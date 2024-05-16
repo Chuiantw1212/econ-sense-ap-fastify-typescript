@@ -16,8 +16,8 @@ export class FirebasePlugin {
     async initialize() {
         try {
             if (process.env.MODE === 'development') {
-                const GOOGLE_APPLICATION_CREDENTIALS = await this.googleCloud.accessLatestSecretVersion('GOOGLE_APPLICATION_CREDENTIALS')
-                const credential = admin.credential.cert(GOOGLE_APPLICATION_CREDENTIALS)
+                const FIREBASE_SERVICE_ACCOUNT_KEY_JSON = await this.googleCloud.accessLatestSecretVersion('FIREBASE_SERVICE_ACCOUNT_KEY_JSON')
+                const credential = admin.credential.cert(FIREBASE_SERVICE_ACCOUNT_KEY_JSON)
                 admin.initializeApp({
                     credential
                 })
@@ -27,23 +27,19 @@ export class FirebasePlugin {
                  * https://cloud.google.com/run/docs/tutorials/identity-platform#secret-manager
                  * https://firebase.google.com/docs/reference/admin/node/firebase-admin.credential_n.md#credentialcert
                  */
-                const { SERVICE_ACCOUNT = '', } = process.env
-                console.log({ SERVICE_ACCOUNT, })
+                const { FIREBASE_SERVICE_ACCOUNT_KEY_JSON = '', } = process.env
                 let serviceAccountPathOrObject = null
-                if (typeof SERVICE_ACCOUNT === 'string') {
-                    serviceAccountPathOrObject = JSON.parse(SERVICE_ACCOUNT);
+                if (typeof FIREBASE_SERVICE_ACCOUNT_KEY_JSON === 'string') {
+                    serviceAccountPathOrObject = JSON.parse(FIREBASE_SERVICE_ACCOUNT_KEY_JSON);
                 } else {
-                    serviceAccountPathOrObject = SERVICE_ACCOUNT
+                    serviceAccountPathOrObject = FIREBASE_SERVICE_ACCOUNT_KEY_JSON
                 }
-                console.log({ serviceAccountPathOrObject })
                 const serviceAccountfrom: ServiceAccount = {
                     projectId: serviceAccountPathOrObject.project_id,
                     clientEmail: serviceAccountPathOrObject.client_email,
                     privateKey: serviceAccountPathOrObject.private_key
                 }
-                console.log({ serviceAccountfrom })
                 const credential =  admin.credential.cert(serviceAccountfrom)
-                console.log({ credential })
                 admin.initializeApp({
                     credential,
                 })
