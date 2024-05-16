@@ -27,12 +27,12 @@ export class FirebasePlugin {
                  * https://cloud.google.com/run/docs/tutorials/identity-platform#secret-manager
                  * https://firebase.google.com/docs/reference/admin/node/firebase-admin.credential_n.md#credentialcert
                  */
-                const { SERVICE_ACCOUNT = '', } = process.env
+                const { SERVICE_ACCOUNT_KEY_JSON = '', } = process.env
                 let serviceAccountPathOrObject = null
-                if (typeof SERVICE_ACCOUNT === 'string') {
-                    serviceAccountPathOrObject = JSON.parse(SERVICE_ACCOUNT);
+                if (typeof SERVICE_ACCOUNT_KEY_JSON === 'string') {
+                    serviceAccountPathOrObject = JSON.parse(SERVICE_ACCOUNT_KEY_JSON);
                 } else {
-                    serviceAccountPathOrObject = SERVICE_ACCOUNT
+                    serviceAccountPathOrObject = SERVICE_ACCOUNT_KEY_JSON
                 }
                 const serviceAccountfrom: ServiceAccount = {
                     projectId: serviceAccountPathOrObject.project_id,
