@@ -1,4 +1,4 @@
-console.time('Server boot')
+const startTimeMs = new Date().getTime()
 // Fastify core
 import Fastify from 'fastify'
 import { FastifyInstance, } from 'fastify'
@@ -26,33 +26,37 @@ import ChatController from './controllers/chat'
 const appService = async function (fastify: FastifyInstance,) {
     const { ready, } = fastify
     try {
-        // Plugins
-        await fastify.register(FormBody)
-        await fastify.register(corsPlugin)
+        // Plugins Core
         await fastify.register(envPlugin)
         await fastify.register(googleCloudPlugin)
         await fastify.register(firebasePlugin)
         await fastify.register(chatGptPlugin)
+        // Plugins Other
+        fastify.register(FormBody)
+        fastify.register(corsPlugin)
         // Models
-        await fastify.register(SelectModel)
-        await fastify.register(LocationModel)
-        await fastify.register(JcicModel)
-        await fastify.register(NdcModel)
-        await fastify.register(BankModel)
-        await fastify.register(UserModel)
+        fastify.register(SelectModel)
+        fastify.register(LocationModel)
+        fastify.register(JcicModel)
+        fastify.register(NdcModel)
+        fastify.register(BankModel)
+        fastify.register(UserModel)
         // Conterollers
-        await fastify.register(SelectController)
-        await fastify.register(BankController)
-        await fastify.register(CalculateController)
-        await fastify.register(RootController)
-        await fastify.register(UserController)
-        await fastify.register(ChatController)
+        fastify.register(SelectController)
+        fastify.register(BankController)
+        fastify.register(CalculateController)
+        fastify.register(RootController)
+        fastify.register(UserController)
+        fastify.register(ChatController)
     } catch (error: any) {
         console.error(error.message || error)
     }
     // Output log
     ready(() => {
-        console.timeEnd('Server boot')
+        const endTimeMs = new Date().getTime()
+        const startupTime = (endTimeMs - startTimeMs) / 1000
+        console.log(`Server boot:${startupTime}s`)
+        fastify.decorate('startupTime', startupTime)
     })
 }
 // start listening
