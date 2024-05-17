@@ -130,7 +130,7 @@ export default fp(async function (fastify) {
         }
     })
     // 不確定如果改成get, cache後會不會造成不驗證直接回傳的狀況
-    fastify.post('/user/:uid', async function (req: FastifyRequest, res: FastifyReply) {
+    fastify.get('/user', async function (req: FastifyRequest, res: FastifyReply) {
         try {
             const idToken = req.headers.authorization || ''
             const user = await firebase.verifyIdToken(idToken)
